@@ -1,6 +1,10 @@
 // Hide start button onclick
 const startButton = document.getElementById('start')
-startButton.addEventListener('click', () => {startButton.style.display = 'none'})
+startButton.addEventListener('click', () => {
+    startButton.style.display = 'none'
+})
+
+let bulletArray = []
 
 function startGame() {
     myGameArea.start();
@@ -34,7 +38,7 @@ function startGame() {
       }
   }
   
-  // Player
+  // Object Constructor
   function component(width, height, color, x, y, type) {
     this.type = type;
     if (type == "image") {
@@ -89,6 +93,15 @@ function startGame() {
     if (myGamePiece.crashWith(myObstacle)) {
         myObstacle.image.src = "./assets/explosion.png";
     } 
+
+    document.body.onkeyup = function(e) {
+        if (e.code == "Space") {
+          bulletArray.push(new component(50, 50, "./assets/bomb.png", 200, 120, "image"));
+          for (i = 0; i < bulletArray.length; i += 1) {
+              bulletArray[i].update();
+            }
+        }
+      }
 
     myGameArea.clear();
     myObstacle.update();
