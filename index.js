@@ -16,7 +16,7 @@ function launchEnemies () {
   let enemyX = 100
 
   for (let i =0; i < randomNumber; i++) {
-    enemyArray.push(new component(50, 50, "red", enemyX, 320, ""))
+    enemyArray.push(new component(50, 50, "red", enemyX, -100, ""))
     enemyX = enemyX + 60
   }
 
