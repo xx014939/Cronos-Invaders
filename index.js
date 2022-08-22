@@ -22,7 +22,7 @@ function startGame() {
       this.canvas.style.border = '1px solid black'
       this.context = this.canvas.getContext("2d");
       document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-      this.interval = setInterval(updateGameArea, 20); // Frame rate
+      this.interval = setInterval(updateGameArea, 30); // Frame rate
       window.addEventListener('keydown', function (e) {
         myGameArea.keys = (myGameArea.keys || []);
         myGameArea.keys[e.keyCode] = true;
@@ -100,8 +100,9 @@ function startGame() {
     } 
 
     document.body.onkeyup = function(e) {
-        if (e.code == "Space") {
-          bulletArray.push(new component(25, 25, "./assets/bullet.png", playerPosition[0], playerPosition[1], "image"));
+        if (e.code == "Space") 
+        {
+          bulletArray.push(new component(25, 25, "./assets/bullet.png", playerPosition[0] + ((myPlayer.width - 25) / 2), playerPosition[1], "image"));
         }
       }
 
