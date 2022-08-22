@@ -4,8 +4,20 @@ startButton.addEventListener('click', () => {
     startButton.style.display = 'none'
 })
 
+// Object & Position arrays
 let bulletArray = []
+let enemyArray = []
+
 let playerPosition = [10, 120]
+
+// Create Enemy Attack 
+function launchEnemies () {
+  let randomNumber = Math.floor(Math.random() * 10) + 1 // Will be used to determine the size of enemy horde
+  enemyArray.push(new component(50, 50, "red", 100, 320, ""))
+
+  console.log(randomNumber)
+  console.log(enemyArray)
+}
 
 function startGame() {
     myGameArea.start();
@@ -110,6 +122,8 @@ function startGame() {
     myObstacle.update();
     myPlayer.speedX = 0;
     myPlayer.speedY = 0;
+
+    // Update bullets
     for (i = 0; i < bulletArray.length; i += 1) {
         bulletArray[i].update();
         bulletArray[i].y -= 3 
@@ -125,5 +139,12 @@ function startGame() {
     if (myGameArea.keys && myGameArea.keys[40]) {myPlayer.speedY = 5; }
     myPlayer.newPos();
     myPlayer.update();
-      
+
+    // Update enemies
+      if (enemyArray.length > 0 ) {
+        for (let i = 0; i < enemyArray.length; i++) {
+          enemyArray[i].update()
+          enemyArray[i].y += 1
+        }
+      }   
   }
