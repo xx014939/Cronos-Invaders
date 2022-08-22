@@ -7,8 +7,11 @@ startButton.addEventListener('click', () => {
 // Object & Position arrays
 let bulletArray = []
 let enemyArray = []
+let enemyHitArray = []
 
 let playerPosition = [10, 120]
+
+let obstacleHit = false
 
 // Create Enemy Attack 
 function launchEnemies () {
@@ -17,6 +20,7 @@ function launchEnemies () {
 
   for (let i =0; i < randomNumber; i++) {
     enemyArray.push(new component(50, 50, "red", enemyX, -100, ""))
+    enemyHitArray.push(false)
     enemyX = enemyX + 60
   }
 
@@ -109,8 +113,18 @@ function startGame() {
 
   function updateGameArea() 
   {
+    // Collisions between bullet and enemies (comparing every element in each array)
+    for (let i = 0; i < bulletArray.length; i++) {
+        for (let j = 0; j < enemyArray.length; j++) {
+            if (bulletArray[i].crashWith(enemyArray[j])) {
+                console.log('HIT!')
+            } 
+        }
+    }
+
     if (myPlayer.crashWith(myObstacle)) {
         myObstacle.image.src = "./assets/explosion.png";
+        obstacleHit = true
     } 
 
     document.body.onkeyup = function(e) {
@@ -120,7 +134,7 @@ function startGame() {
         }
       }
 
-    myGameArea.clear();
+    myGameArea.clear(); // Clears entire canvas every frame
     myObstacle.update();
     myPlayer.speedX = 0;
     myPlayer.speedY = 0;
@@ -146,7 +160,7 @@ function startGame() {
       if (enemyArray.length > 0 ) {
         for (let i = 0; i < enemyArray.length; i++) {
           enemyArray[i].update()
-          enemyArray[i].y += 6
+          enemyArray[i].y += 3
         }
       }   
   }
