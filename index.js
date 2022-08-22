@@ -66,12 +66,12 @@ function startGame() {
     this.speedY = 0;
     this.update = function(){
       ctx = myGameArea.context;
-      if (type == "image") {
-        ctx.drawImage(this.image,
-          this.x,
-          this.y,
-          this.width, this.height);
-      } else {
+      if (type == "image") 
+      {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+      }
+      else 
+      {
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
       }
@@ -93,20 +93,17 @@ function startGame() {
         let otherright = otherobj.x + (otherobj.width);
         let othertop = otherobj.y;
         let otherbottom = otherobj.y + (otherobj.height);
-        let crash = true; // Default
-        if ((mybottom < othertop) ||
-        (mytop > otherbottom) ||
-        (myright < otherleft) ||
-        (myleft > otherright)) {
-          crash = false; // If player object is not in contact with obstacle set to false
-        } 
+
+        // If player object is not in contact with obstacle set to false
+        let crash = !((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)); // Default
+        
         return crash;
       }
   }
   
 
-  function updateGameArea() {
-
+  function updateGameArea() 
+  {
     if (myPlayer.crashWith(myObstacle)) {
         myObstacle.image.src = "./assets/explosion.png";
     } 
