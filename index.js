@@ -5,10 +5,11 @@ startButton.addEventListener('click', () => {
 })
 
 let bulletArray = []
+let playerPosition = [10, 120]
 
 function startGame() {
     myGameArea.start();
-    myGamePiece = new component(100, 100, "./assets/player.png", 10, 120, "image");
+    myPlayer = new component(100, 100, "./assets/player.png", 10, 120, "image");
     myObstacle = new component(50, 50, "./assets/bomb.png", 300, 120, "image");
   }
   
@@ -66,6 +67,9 @@ function startGame() {
     this.newPos = function() {
         this.x += this.speedX;
         this.y += this.speedY;
+
+        playerPosition[0] = this.x
+        playerPosition[1] = this.y
       }
       this.crashWith = function(otherobj) {
         // Define current coordinates of obstacle
@@ -90,30 +94,35 @@ function startGame() {
   
 
   function updateGameArea() {
-    if (myGamePiece.crashWith(myObstacle)) {
+
+    if (myPlayer.crashWith(myObstacle)) {
         myObstacle.image.src = "./assets/explosion.png";
     } 
 
     document.body.onkeyup = function(e) {
         if (e.code == "Space") {
-          bulletArray.push(new component(50, 50, "./assets/bomb.png", 200, 120, "image"));
-          for (i = 0; i < bulletArray.length; i += 1) {
-              bulletArray[i].update();
-            }
+          bulletArray.push(new component(25, 25, "./assets/bullet.png", playerPosition[0], playerPosition[1], "image"));
         }
       }
 
     myGameArea.clear();
     myObstacle.update();
-    myGamePiece.speedX = 0;
-    myGamePiece.speedY = 0;
+    myPlayer.speedX = 0;
+    myPlayer.speedY = 0;
+    for (i = 0; i < bulletArray.length; i += 1) {
+        bulletArray[i].update();
+        bulletArray[i].y -= 3 
+        if (bulletArray[i].crashWith(myObstacle)) {
+            myObstacle.image.src = "./assets/explosion.png";
+        } 
+      }
     
     // Movement 
-    if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -5; }
-    if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 5; }
-    if (myGameArea.keys && myGameArea.keys[38]) {myGamePiece.speedY = -5; }
-    if (myGameArea.keys && myGameArea.keys[40]) {myGamePiece.speedY = 5; }
-    myGamePiece.newPos();
-    myGamePiece.update();
+    if (myGameArea.keys && myGameArea.keys[37]) {myPlayer.speedX = -5; }
+    if (myGameArea.keys && myGameArea.keys[39]) {myPlayer.speedX = 5; }
+    if (myGameArea.keys && myGameArea.keys[38]) {myPlayer.speedY = -5; }
+    if (myGameArea.keys && myGameArea.keys[40]) {myPlayer.speedY = 5; }
+    myPlayer.newPos();
+    myPlayer.update();
       
   }
