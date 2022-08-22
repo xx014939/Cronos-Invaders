@@ -13,7 +13,12 @@ let playerPosition = [10, 120]
 // Create Enemy Attack 
 function launchEnemies () {
   let randomNumber = Math.floor(Math.random() * 10) + 1 // Will be used to determine the size of enemy horde
-  enemyArray.push(new component(50, 50, "red", 100, 320, ""))
+  let enemyX = 100
+
+  for (let i =0; i < randomNumber; i++) {
+    enemyArray.push(new component(50, 50, "red", enemyX, 320, ""))
+    enemyX = enemyX + 60
+  }
 
   console.log(randomNumber)
   console.log(enemyArray)
@@ -141,7 +146,7 @@ function startGame() {
       if (enemyArray.length > 0 ) {
         for (let i = 0; i < enemyArray.length; i++) {
           enemyArray[i].update()
-          enemyArray[i].y += 1
+          enemyArray[i].y += 6
         }
       }   
   }
