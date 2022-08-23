@@ -13,6 +13,11 @@ let playerPosition = [10, 120]
 
 let obstacleHit = false
 
+// Health Bar
+let hitPoints = 1000
+let currentHealthBarWidth = 500 // Pixels
+const healthBar = document.querySelector('.health-bar')
+
 // Create Enemy Attack 
 function launchEnemies () {
   let randomNumber = Math.floor(Math.random() * 10) + 1 // Will be used to determine the size of enemy horde
@@ -116,10 +121,27 @@ function startGame() {
     // Collisions between bullet and enemies (comparing every element in each array)
     for (let i = 0; i < bulletArray.length; i++) {
         for (let j = 0; j < enemyArray.length; j++) {
-            if (bulletArray[i].crashWith(enemyArray[j])) {
-                console.log('HIT!')
+          if (bulletArray[i] !== null && enemyArray[j] !== null) { // Check if enemy and bullet have already been destroyed
+            if (bulletArray[i].crashWith(enemyArray[j])) { // If not then check for collision
+              enemyArray[j] = null
+              bulletArray[i] = null
             } 
+          }
         }
+    }
+
+    // Collision between player and enemies
+    for (let k = 0; k < enemyArray.length; k++) {
+      if (enemyArray[k] !== null && myPlayer.crashWith(enemyArray[k])) {
+        hitPoints = hitPoints - 1
+        currentHealthBarWidth = currentHealthBarWidth - 2
+        healthBar.style.width = (currentHealthBarWidth) + 'px'
+
+        if (currentHealthBarWidth < 0) { // If HP reaches zero
+          alert('GAME OVER')
+          myGameArea.stop()
+        }
+      }
     }
 
     if (myPlayer.crashWith(myObstacle)) {
@@ -138,15 +160,6 @@ function startGame() {
     myObstacle.update();
     myPlayer.speedX = 0;
     myPlayer.speedY = 0;
-
-    // Update bullets
-    for (i = 0; i < bulletArray.length; i += 1) {
-        bulletArray[i].update();
-        bulletArray[i].y -= 3 
-        if (bulletArray[i].crashWith(myObstacle)) {
-            myObstacle.image.src = "./assets/explosion.png";
-        } 
-      }
     
     // Movement 
     if (myGameArea.keys && myGameArea.keys[37]) {myPlayer.speedX = -5; }
@@ -159,8 +172,22 @@ function startGame() {
     // Update enemies
       if (enemyArray.length > 0 ) {
         for (let i = 0; i < enemyArray.length; i++) {
-          enemyArray[i].update()
-          enemyArray[i].y += 3
+          if (enemyArray[i] !== null) { // If the enemy has not been destroyed
+            enemyArray[i].update()
+            enemyArray[i].y += 3
+          }
         }
       }   
+
+    // Update bullets
+    for (i = 0; i < bulletArray.length; i += 1) {
+      if (bulletArray[i] !== null) { // If the bullet has not been destroyed
+        bulletArray[i].update();
+        bulletArray[i].y -= 3 
+
+        if (bulletArray[i].crashWith(myObstacle)) {
+          myObstacle.image.src = "./assets/explosion.png";
+        } 
+      }
+    }
   }
