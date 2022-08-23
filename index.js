@@ -94,6 +94,26 @@ function startGame() {
         this.x += this.speedX;
         this.y += this.speedY;
 
+        if (this.x < 0)
+        {
+          this.x = myGameArea.canvas.width - this.width;
+        }
+
+        else if (this.x > myGameArea.canvas.width - this.width)
+        {
+          this.x = 0;
+        }
+
+        if (this.y < 0)
+        {
+          this.y = myGameArea.canvas.width - this.height;
+        }
+
+        else if (this.y > myGameArea.canvas.width - this.height)
+        {
+          this.y = 0;
+        }
+
         playerPosition[0] = this.x
         playerPosition[1] = this.y
       }
