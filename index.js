@@ -137,7 +137,7 @@ function startGame() {
         currentHealthBarWidth = currentHealthBarWidth - 2
         healthBar.style.width = (currentHealthBarWidth) + 'px'
 
-        if (currentHealthBarWidth < 0) { // If HP reaches zero
+        if (currentHealthBarWidth < 2) { // If HP reaches zero
           alert('GAME OVER')
           myGameArea.stop()
         }
