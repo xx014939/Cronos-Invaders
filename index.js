@@ -94,22 +94,22 @@ function startGame() {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        if (this.x < 0)
+        if (this.x < -(this.width / 2))
         {
-          this.x = myGameArea.canvas.width - this.width;
+          this.x = myGameArea.canvas.width - (this.width / 2);
         }
 
-        else if (this.x > myGameArea.canvas.width - this.width)
+        else if (this.x > myGameArea.canvas.width - (this.width / 2))
         {
-          this.x = 0;
+          this.x = -(this.width / 2);
         }
 
-        if (this.y < 0)
+        if (this.y < -(this.height / 2))
         {
-          this.y = myGameArea.canvas.width - this.height;
+          this.y = myGameArea.canvas.height - (this.height / 2);
         }
 
-        else if (this.y > myGameArea.canvas.width - this.height)
+        else if (this.y > myGameArea.canvas.height - (this.height / 2))
         {
           this.y = 0;
         }
