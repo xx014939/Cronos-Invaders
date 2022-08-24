@@ -1,3 +1,27 @@
+.start-screen {
+    width: 800px;
+    height: 800px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.game-menu-item {
+    padding: 20px;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
 .health-bar {
     background-color: red;
     width: 500px;

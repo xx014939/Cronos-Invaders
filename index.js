@@ -1,7 +1,8 @@
-// Hide start button onclick
-const startButton = document.getElementById('start')
+// Hide start screen onclick
+const startScreen = document.getElementById('startScreen')
 startButton.addEventListener('click', () => {
-    startButton.style.display = 'none'
+    startScreen.style.display = 'none'
+    gameStarted = true
 })
 
 // Object & Position arrays
@@ -12,6 +13,11 @@ let enemyHitArray = []
 let playerPosition = [10, 120]
 
 let obstacleHit = false
+
+let gameStarted = false
+
+let canvasWidth = 800
+let canvasHeight = 800
 
 // Health Bar
 let hitPoints = 1000
@@ -43,8 +49,8 @@ function startGame() {
   let myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-      this.canvas.width = 800;
-      this.canvas.height = 800;
+      this.canvas.width = canvasWidth;
+      this.canvas.height = canvasHeight;
       this.canvas.style.border = '1px solid black'
       this.context = this.canvas.getContext("2d");
       document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -138,76 +144,78 @@ function startGame() {
 
   function updateGameArea() 
   {
-    // Collisions between bullet and enemies (comparing every element in each array)
-    for (let i = 0; i < bulletArray.length; i++) {
-        for (let j = 0; j < enemyArray.length; j++) {
-          if (bulletArray[i] !== null && enemyArray[j] !== null) { // Check if enemy and bullet have already been destroyed
-            if (bulletArray[i].crashWith(enemyArray[j])) { // If not then check for collision
-              enemyArray[j] = null
-              bulletArray[i] = null
-            } 
+    if (gameStarted) {
+        // Collisions between bullet and enemies (comparing every element in each array)
+        for (let i = 0; i < bulletArray.length; i++) {
+          for (let j = 0; j < enemyArray.length; j++) {
+            if (bulletArray[i] !== null && enemyArray[j] !== null) { // Check if enemy and bullet have already been destroyed
+              if (bulletArray[i].crashWith(enemyArray[j])) { // If not then check for collision
+                enemyArray[j] = null
+                bulletArray[i] = null
+              } 
+            }
           }
-        }
-    }
-
-    // Collision between player and enemies
-    for (let k = 0; k < enemyArray.length; k++) {
-      if (enemyArray[k] !== null && myPlayer.crashWith(enemyArray[k])) {
-        hitPoints = hitPoints - 1
-        currentHealthBarWidth = currentHealthBarWidth - 2
-        healthBar.style.width = (currentHealthBarWidth) + 'px'
-
-        if (currentHealthBarWidth < 2) { // If HP reaches zero
-          alert('GAME OVER')
-          myGameArea.stop()
-        }
       }
-    }
 
-    if (myPlayer.crashWith(myObstacle)) {
-        myObstacle.image.src = "./assets/explosion.png";
-        obstacleHit = true
-    } 
+      // Collision between player and enemies
+      for (let k = 0; k < enemyArray.length; k++) {
+        if (enemyArray[k] !== null && myPlayer.crashWith(enemyArray[k])) {
+          hitPoints = hitPoints - 1
+          currentHealthBarWidth = currentHealthBarWidth - 2
+          healthBar.style.width = (currentHealthBarWidth) + 'px'
 
-    document.body.onkeyup = function(e) {
-        if (e.code == "Space") 
-        {
-          bulletArray.push(new component(25, 25, "./assets/bullet.png", playerPosition[0] + ((myPlayer.width - 25) / 2), playerPosition[1], "image"));
+          if (currentHealthBarWidth < 2) { // If HP reaches zero
+            alert('GAME OVER')
+            myGameArea.stop()
+          }
         }
       }
 
-    myGameArea.clear(); // Clears entire canvas every frame
-    myObstacle.update();
-    myPlayer.speedX = 0;
-    myPlayer.speedY = 0;
-    
-    // Movement 
-    if (myGameArea.keys && myGameArea.keys[37]) {myPlayer.speedX = -5; }
-    if (myGameArea.keys && myGameArea.keys[39]) {myPlayer.speedX = 5; }
-    if (myGameArea.keys && myGameArea.keys[38]) {myPlayer.speedY = -5; }
-    if (myGameArea.keys && myGameArea.keys[40]) {myPlayer.speedY = 5; }
-    myPlayer.newPos();
-    myPlayer.update();
-
-    // Update enemies
-      if (enemyArray.length > 0 ) {
-        for (let i = 0; i < enemyArray.length; i++) {
-          if (enemyArray[i] !== null) { // If the enemy has not been destroyed
-            enemyArray[i].update()
-            enemyArray[i].y += 3
-          }
-        }
-      }   
-
-    // Update bullets
-    for (i = 0; i < bulletArray.length; i += 1) {
-      if (bulletArray[i] !== null) { // If the bullet has not been destroyed
-        bulletArray[i].update();
-        bulletArray[i].y -= 3 
-
-        if (bulletArray[i].crashWith(myObstacle)) {
+      if (myPlayer.crashWith(myObstacle)) {
           myObstacle.image.src = "./assets/explosion.png";
-        } 
+          obstacleHit = true
+      } 
+
+      document.body.onkeyup = function(e) {
+          if (e.code == "Space") 
+          {
+            bulletArray.push(new component(25, 25, "./assets/bullet.png", playerPosition[0] + ((myPlayer.width - 25) / 2), playerPosition[1], "image"));
+          }
+        }
+
+      myGameArea.clear(); // Clears entire canvas every frame
+      myObstacle.update();
+      myPlayer.speedX = 0;
+      myPlayer.speedY = 0;
+      
+      // Movement 
+      if (myGameArea.keys && myGameArea.keys[37]) {myPlayer.speedX = -5; }
+      if (myGameArea.keys && myGameArea.keys[39]) {myPlayer.speedX = 5; }
+      if (myGameArea.keys && myGameArea.keys[38]) {myPlayer.speedY = -5; }
+      if (myGameArea.keys && myGameArea.keys[40]) {myPlayer.speedY = 5; }
+      myPlayer.newPos();
+      myPlayer.update();
+
+      // Update enemies
+        if (enemyArray.length > 0 ) {
+          for (let i = 0; i < enemyArray.length; i++) {
+            if (enemyArray[i] !== null) { // If the enemy has not been destroyed
+              enemyArray[i].update()
+              enemyArray[i].y += 3
+            }
+          }
+        }   
+
+      // Update bullets
+      for (i = 0; i < bulletArray.length; i += 1) {
+        if (bulletArray[i] !== null) { // If the bullet has not been destroyed
+          bulletArray[i].update();
+          bulletArray[i].y -= 3 
+
+          if (bulletArray[i].crashWith(myObstacle)) {
+            myObstacle.image.src = "./assets/explosion.png";
+          } 
+        }
       }
-    }
+    } 
   }
