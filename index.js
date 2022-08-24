@@ -16,8 +16,8 @@ let obstacleHit = false
 
 let gameStarted = false
 
-let canvasWidth = 800
-let canvasHeight = 800
+let canvasWidth = 720
+let canvasHeight = 960
 
 // Health Bar
 let hitPoints = 1000
@@ -30,7 +30,7 @@ function launchEnemies () {
   let enemyX = 100
 
   for (let i =0; i < randomNumber; i++) {
-    enemyArray.push(new component(50, 50, "red", enemyX, -100, ""))
+    enemyArray.push(new component(50, 50, "./assets/enemy.png", enemyX, -100, "image"))
     enemyHitArray.push(false)
     enemyX = enemyX + 60
   }
@@ -41,8 +41,8 @@ function launchEnemies () {
 
 function startGame() {
     myGameArea.start();
-    myPlayer = new component(100, 100, "./assets/player.png", 10, 120, "image");
-    myObstacle = new component(50, 50, "./assets/bomb.png", 300, 120, "image");
+    myPlayer = new component(100, 100, "./assets/playerTwo.png", 310, 430, "image");
+    myBackground = new component(canvasWidth, canvasHeight, "./assets/starBG.png", 0, 0, "image");
   }
   
   // Canvas Constructor 
@@ -51,7 +51,6 @@ function startGame() {
     start : function() {
       this.canvas.width = canvasWidth;
       this.canvas.height = canvasHeight;
-      this.canvas.style.border = '1px solid black'
       this.context = this.canvas.getContext("2d");
       document.body.insertBefore(this.canvas, document.body.childNodes[0]);
       this.interval = setInterval(updateGameArea, 30); // Frame rate
@@ -171,11 +170,6 @@ function startGame() {
         }
       }
 
-      if (myPlayer.crashWith(myObstacle)) {
-          myObstacle.image.src = "./assets/explosion.png";
-          obstacleHit = true
-      } 
-
       document.body.onkeyup = function(e) {
           if (e.code == "Space") 
           {
@@ -184,7 +178,8 @@ function startGame() {
         }
 
       myGameArea.clear(); // Clears entire canvas every frame
-      myObstacle.update();
+      myBackground.newPos();
+      myBackground.update();
       myPlayer.speedX = 0;
       myPlayer.speedY = 0;
       
