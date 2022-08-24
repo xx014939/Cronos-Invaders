@@ -24,6 +24,10 @@ let hitPoints = 1000
 let currentHealthBarWidth = 500 // Pixels
 const healthBar = document.querySelector('.health-bar')
 
+// Score
+let currentScore = 0
+const scoreElement = document.getElementById('score')
+
 // Create Enemy Attack 
 function launchEnemies () {
   let randomNumber = Math.floor(Math.random() * 10) + 1 // Will be used to determine the size of enemy horde
@@ -151,6 +155,10 @@ function startGame() {
               if (bulletArray[i].crashWith(enemyArray[j])) { // If not then check for collision
                 enemyArray[j] = null
                 bulletArray[i] = null
+         
+                // Update score
+                currentScore = currentScore + 5
+                scoreElement.innerHTML = currentScore
               } 
             }
           }
@@ -159,6 +167,8 @@ function startGame() {
       // Collision between player and enemies
       for (let k = 0; k < enemyArray.length; k++) {
         if (enemyArray[k] !== null && myPlayer.crashWith(enemyArray[k])) {
+
+          // Update Health
           hitPoints = hitPoints - 1
           currentHealthBarWidth = currentHealthBarWidth - 2
           healthBar.style.width = (currentHealthBarWidth) + 'px'
