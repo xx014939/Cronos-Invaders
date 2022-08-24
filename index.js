@@ -12,12 +12,12 @@ let enemyHitArray = []
 
 let playerPosition = [10, 120]
 
-let obstacleHit = false
-
 let gameStarted = false
 
 let canvasWidth = 720
 let canvasHeight = 960
+
+let currentFrame = 0
 
 // Health Bar
 let hitPoints = 1000
@@ -148,6 +148,13 @@ function startGame() {
   function updateGameArea() 
   {
     if (gameStarted) {
+
+        currentFrame++
+
+        if (currentFrame % 120 === 0) {
+            launchEnemies()
+        }
+
         // Collisions between bullet and enemies (comparing every element in each array)
         for (let i = 0; i < bulletArray.length; i++) {
           for (let j = 0; j < enemyArray.length; j++) {
@@ -216,10 +223,6 @@ function startGame() {
         if (bulletArray[i] !== null) { // If the bullet has not been destroyed
           bulletArray[i].update();
           bulletArray[i].y -= 3 
-
-          if (bulletArray[i].crashWith(myObstacle)) {
-            myObstacle.image.src = "./assets/explosion.png";
-          } 
         }
       }
     } 
