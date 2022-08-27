@@ -1,6 +1,6 @@
 .start-screen {
-    width: 720px;
-    height: 960px;
+    width: 800px;
+    height: 800px;
     border: 1px solid black;
     display: flex;
     flex-direction: row;

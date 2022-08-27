@@ -5,6 +5,12 @@ startButton.addEventListener('click', () => {
     gameStarted = true
 })
 
+let canFire = true
+
+let level = 0;
+
+let objectType = ["Player", "Background", "E1", "E2", "E3"]
+
 // Object & Position arrays
 let bulletArray = []
 let enemyArray = []
@@ -14,8 +20,8 @@ let playerPosition = [10, 120]
 
 let gameStarted = false
 
-let canvasWidth = 720
-let canvasHeight = 960
+let canvasWidth = 800
+let canvasHeight = 800
 
 let currentFrame = 0
 
@@ -29,26 +35,71 @@ let currentScore = 0
 const scoreElement = document.getElementById('score')
 
 // Create Enemy Attack 
-function launchEnemies () {
+function launchEnemies () 
+{
+  //let rowNumber = Math.floor(Math.random() * 3) + 1 // Will be used to determine the size of enemy horde
+
+  let EnemyID = Math.floor(Math.random() * 4) + 2;
+
+  let imageID = level + 2;
+  let iamge = "./assets/enemy.png";
+
+  if (level == 4)
+  {
+    switch(EnemyID) {
+      case 2:
+  
+        break;
+      case 3:
+  
+        break;
+      case 4:
+  
+        break;
+      case 5:
+  
+        break;
+      default:
+    }
+  }
+
   let randomNumber = Math.floor(Math.random() * 10) + 1 // Will be used to determine the size of enemy horde
   let enemyX = 100
 
-  for (let i =0; i < randomNumber; i++) {
-    enemyArray.push(new component(50, 50, "./assets/enemy.png", enemyX, -100, "image"))
+  for (let i = 0; i < randomNumber; i++) 
+  {
+    enemyArray.push(new component(50, 50, "./assets/enemy.png", enemyX, -100 + (row * 50), "image"))
     enemyHitArray.push(false)
     enemyX = enemyX + 60
   }
+
+  /*
+  for (let row = 0; row < rowNumber; row++)
+  {
+
+  }
+  */
 
   console.log(randomNumber)
   console.log(enemyArray)
 }
 
-function startGame() {
-    myGameArea.start();
-    myPlayer = new component(100, 100, "./assets/playerTwo.png", 310, 430, "image");
-    myBackground = new component(canvasWidth, canvasHeight, "./assets/starBG.png", 0, 0, "image");
-  }
+function startGame() 
+{
+  myGameArea.start();
+  myPlayer = new component(100, 100, "./assets/playerTwo.png", 310, 430, "image");
+  myBackground = new component(canvasWidth, canvasHeight, "./assets/starBG.png", 0, 0, "image");
+  setInterval(CheckFireRate, 250);
+}
   
+function CheckFireRate()
+{
+  if (!canFire)
+  {
+    canFire = true;
+  }
+}
+
   // Canvas Constructor 
   let myGameArea = {
     canvas : document.createElement("canvas"),
@@ -75,9 +126,10 @@ function startGame() {
   }
   
   // Object Constructor
-  function component(width, height, color, x, y, type) {
+  function component(width, height, color, x, y, dispType, type) {
     this.type = type;
-    if (type == "image") {
+    this.dispType = dispType;
+    if (dispType == "image") {
       this.image = new Image();
       this.image.src = color;
     }
@@ -89,7 +141,7 @@ function startGame() {
     this.speedY = 0;
     this.update = function(){
       ctx = myGameArea.context;
-      if (type == "image") 
+      if (dispType == "image") 
       {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
       }
@@ -151,7 +203,9 @@ function startGame() {
 
         currentFrame++
 
-        if (currentFrame % 120 === 0) {
+        // 120
+        if (currentFrame % 120 === 0) 
+        {
             launchEnemies()
         }
 
@@ -187,26 +241,44 @@ function startGame() {
         }
       }
 
-      document.body.onkeyup = function(e) {
+      /*
+      document.body.onkeydown = function(e) 
+      {
           if (e.code == "Space") 
           {
-            bulletArray.push(new component(25, 25, "./assets/bullet.png", playerPosition[0] + ((myPlayer.width - 25) / 2), playerPosition[1], "image"));
+            if (canFire)
+            {
+              bulletArray.push(new component(8, 29, "./assets/Shot_4_003.png", playerPosition[0] + ((myPlayer.width - 8) / 2), playerPosition[1], "image"));
+              canFire = false;
+            }
           }
+      }
+      */
+
+      // Movement 
+      if (myGameArea.keys && myGameArea.keys[32]) 
+      {
+        if (canFire)
+        {
+          bulletArray.push(new component(8, 29, "./assets/Shot_4_003.png", playerPosition[0] + ((myPlayer.width - 8) / 2), playerPosition[1], "image"));
+          canFire = false;
         }
+      }
 
       myGameArea.clear(); // Clears entire canvas every frame
       myBackground.newPos();
       myBackground.update();
       myPlayer.speedX = 0;
       myPlayer.speedY = 0;
-      
-      // Movement 
+          
       if (myGameArea.keys && myGameArea.keys[37]) {myPlayer.speedX = -5; }
       if (myGameArea.keys && myGameArea.keys[39]) {myPlayer.speedX = 5; }
       if (myGameArea.keys && myGameArea.keys[38]) {myPlayer.speedY = -5; }
       if (myGameArea.keys && myGameArea.keys[40]) {myPlayer.speedY = 5; }
       myPlayer.newPos();
       myPlayer.update();
+
+
 
       // Update enemies
         if (enemyArray.length > 0 ) {
