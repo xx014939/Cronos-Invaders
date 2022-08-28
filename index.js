@@ -226,6 +226,11 @@ function CheckFireRate()
                 if ((currentScore % 100 == 0) && (level < 3))
                 {
                   level++;
+
+                  if (level == 2)
+                  {
+
+                  }
                 }
               } 
             }
@@ -288,9 +293,7 @@ function CheckFireRate()
       // Update enemies
       if (enemyArray.length > 0 ) 
       {
-        shift = 60 * (Math.random() < 0.5 ? -1 : 1);
-        
-        
+        shift = 25 * (Math.random() < 0.5 ? -1 : 1);
         
         for (let i = 0; i < enemyArray.length; i++) 
         {
