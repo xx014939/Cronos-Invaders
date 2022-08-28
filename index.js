@@ -7,7 +7,7 @@ startButton.addEventListener('click', () => {
 
 let canFire = true
 
-let level = 0;
+let level = 1;
 
 let objectType = ["Player", "Background", "E1", "E2", "E3"]
 
@@ -40,27 +40,22 @@ function launchEnemies ()
   //let rowNumber = Math.floor(Math.random() * 3) + 1 // Will be used to determine the size of enemy horde
 
   let EnemyID = Math.floor(Math.random() * 4) + 2;
+  let image;
 
-  let imageID = level + 2;
-  let iamge = "./assets/enemy.png";
-
-  if (level == 4)
+  switch(level)
   {
-    switch(EnemyID) {
-      case 2:
-  
-        break;
-      case 3:
-  
-        break;
-      case 4:
-  
-        break;
-      case 5:
-  
-        break;
-      default:
-    }
+    case (1):
+      image = "./assets/enemy.png";
+      break;
+    case (2):
+      image = "./assets/E_Ship_05.png";
+      break;
+    case (3):
+      image = "./assets/P_Ship_05.png";
+      break;
+    default:
+      image = "./assets/enemy.png";
+      break;
   }
 
   let randomNumber = Math.floor(Math.random() * 10) + 1 // Will be used to determine the size of enemy horde
@@ -68,9 +63,9 @@ function launchEnemies ()
 
   for (let i = 0; i < randomNumber; i++) 
   {
-    enemyArray.push(new component(50, 50, "./assets/enemy.png", enemyX, -100 + (row * 50), "image"))
+    enemyArray.push(new component(50, 50, image, enemyX, -100, "image"))
     enemyHitArray.push(false)
-    enemyX = enemyX + 60
+    enemyX += 60
   }
 
   /*
@@ -80,8 +75,8 @@ function launchEnemies ()
   }
   */
 
-  console.log(randomNumber)
-  console.log(enemyArray)
+  //console.log(randomNumber)
+  //console.log(enemyArray)
 }
 
 function startGame() 
@@ -126,10 +121,11 @@ function CheckFireRate()
   }
   
   // Object Constructor
-  function component(width, height, color, x, y, dispType, type) {
-    this.type = type;
+  function component(width, height, color, x, y, dispType) {
+    //this.type = type;
     this.dispType = dispType;
-    if (dispType == "image") {
+    if (dispType == "image") 
+    {
       this.image = new Image();
       this.image.src = color;
     }
@@ -210,16 +206,27 @@ function CheckFireRate()
         }
 
         // Collisions between bullet and enemies (comparing every element in each array)
-        for (let i = 0; i < bulletArray.length; i++) {
-          for (let j = 0; j < enemyArray.length; j++) {
-            if (bulletArray[i] !== null && enemyArray[j] !== null) { // Check if enemy and bullet have already been destroyed
-              if (bulletArray[i].crashWith(enemyArray[j])) { // If not then check for collision
+        for (let i = 0; i < bulletArray.length; i++) 
+        {
+          for (let j = 0; j < enemyArray.length; j++) 
+          {
+            // Check if enemy and bullet have already been destroyed
+            if (bulletArray[i] !== null && enemyArray[j] !== null) 
+            {
+              // If not then check for collision
+              if (bulletArray[i].crashWith(enemyArray[j])) 
+              {
                 enemyArray[j] = null
                 bulletArray[i] = null
          
                 // Update score
-                currentScore = currentScore + 5
+                currentScore += 5
                 scoreElement.innerHTML = currentScore
+
+                if ((currentScore % 100 == 0) && (level < 3))
+                {
+                  level++;
+                }
               } 
             }
           }
@@ -278,17 +285,29 @@ function CheckFireRate()
       myPlayer.newPos();
       myPlayer.update();
 
-
-
       // Update enemies
-        if (enemyArray.length > 0 ) {
-          for (let i = 0; i < enemyArray.length; i++) {
-            if (enemyArray[i] !== null) { // If the enemy has not been destroyed
-              enemyArray[i].update()
-              enemyArray[i].y += 3
-            }
+      if (enemyArray.length > 0 ) 
+      {
+        shift = 60 * (Math.random() < 0.5 ? -1 : 1);
+        
+        
+        
+        for (let i = 0; i < enemyArray.length; i++) 
+        {
+          // If the enemy has not been destroyed
+          if (enemyArray[i] !== null) 
+          {
+              enemyArray[i].update();
+
+              if (enemyArray[i].image.src.includes("E_Ship_05.png"))
+              {
+                enemyArray[i].x += shift;
+              }
+
+              enemyArray[i].y += 3;
           }
-        }   
+        }
+      }   
 
       // Update bullets
       for (i = 0; i < bulletArray.length; i += 1) {
