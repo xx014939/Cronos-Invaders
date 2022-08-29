@@ -229,8 +229,15 @@ function CheckFireRate()
 
                   if (level == 2)
                   {
-
+                    myBackground = new component(canvasWidth, canvasHeight, "./assets/planetBG.png", 0, 0, "image");
                   }
+
+                  else if (level == 3)
+                  {
+                    myBackground = new component(canvasWidth, canvasHeight, "./assets/planetTwoBG.png", 0, 0, "image");
+                  }
+
+
                 }
               } 
             }
