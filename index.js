@@ -5,7 +5,9 @@ startButton.addEventListener('click', () => {
     gameStarted = true
 })
 
-let canFire = true
+let canFire = true;
+
+let enemyShift = false;
 
 let level = 1;
 
@@ -85,6 +87,7 @@ function startGame()
   myPlayer = new component(100, 100, "./assets/playerTwo.png", 310, 430, "image");
   myBackground = new component(canvasWidth, canvasHeight, "./assets/starBG.png", 0, 0, "image");
   setInterval(CheckFireRate, 250);
+  setInterval(CheckShift, 1000);
 }
   
 function CheckFireRate()
@@ -92,6 +95,14 @@ function CheckFireRate()
   if (!canFire)
   {
     canFire = true;
+  }
+}
+
+function CheckShift()
+{
+  if (!enemyShift)
+  {
+    enemyShift = true;
   }
 }
 
@@ -300,8 +311,13 @@ function CheckFireRate()
       // Update enemies
       if (enemyArray.length > 0 ) 
       {
-        shift = 25 * (Math.random() < 0.5 ? -1 : 1);
+        let shift = (enemyShift) ? 50 * (Math.random() < 0.5 ? -1 : 1) : 0;
         
+        if (enemyShift)
+        {
+          enemyShift = false;
+        }
+
         for (let i = 0; i < enemyArray.length; i++) 
         {
           // If the enemy has not been destroyed
