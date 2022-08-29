@@ -87,7 +87,7 @@ function startGame()
   myPlayer = new component(100, 100, "./assets/playerTwo.png", 310, 430, "image");
   myBackground = new component(canvasWidth, canvasHeight, "./assets/starBG.png", 0, 0, "image");
   setInterval(CheckFireRate, 250);
-  setInterval(CheckShift, 1000);
+  setInterval(CheckShift, 750);
 }
   
 function CheckFireRate()
@@ -328,6 +328,16 @@ function CheckShift()
               if (enemyArray[i].image.src.includes("E_Ship_05.png"))
               {
                 enemyArray[i].x += shift;
+                
+                if (enemyArray[i].x < 0)
+                {
+                  enemyArray[i].x = myGameArea.canvas.width - enemyArray[i].width;
+                }
+        
+                else if (enemyArray[i].x > myGameArea.canvas.width - enemyArray[i].width)
+                {
+                  enemyArray[i].x = 0;
+                }
               }
 
               enemyArray[i].y += 3;
