@@ -6,7 +6,6 @@ const app = express()
 app.use(cors())
 app.options('*', cors());
 const mongoose = require('mongoose')
-const dbo = require("./db/conn");
  
 
 mongoose.connect(process.env.ATLAS_URI, { useNewUrlParser: true })
