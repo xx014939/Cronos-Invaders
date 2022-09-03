@@ -6,7 +6,7 @@ const router = express.Router();
 // const {protect} = require('../middleware/authMiddleware')
 
 // Getting all
-router.get('/', cors(), async (req, res) => {
+router.get('/all', cors(), async (req, res) => {
     try {
       const users = await User.find()
       res.json(users)
