@@ -244,20 +244,40 @@ function EnemyFire()
                 currentScore += 5
                 scoreElement.innerHTML = currentScore
 
-                if ((currentScore % 100 == 0) && (level < 3))
+                if ((currentScore % 100 == 0))
                 {
-                  level++;
-
-                  if (level == 2)
+                  if (level < 3)
                   {
-                    myBackground = new component(canvasWidth, canvasHeight, "./assets/planetBG.png", 0, 0, "image");
+                    level++;
+
+                    if (level == 2)
+                    {
+                      myBackground = new component(canvasWidth, canvasHeight, "./assets/planetBG.png", 0, 0, "image");
+                    }
+  
+                    else if (level == 3)
+                    {
+                      myBackground = new component(canvasWidth, canvasHeight, "./assets/planetTwoBG.png", 0, 0, "image");
+                    }
                   }
 
-                  else if (level == 3)
-                  {
-                    myBackground = new component(canvasWidth, canvasHeight, "./assets/planetTwoBG.png", 0, 0, "image");
-                  }
+                  // Update Health
+                  hitPoints += 10
+                  currentHealthBarWidth += 20
+                  healthBar.style.width = (currentHealthBarWidth) + 'px'
                 }
+              }
+
+              // If not then check for collision
+              if (bulletArray[i].crashWith(myPlayer) && bulletArray[i].image.src.includes("EnemyBullet.png")) 
+              {
+                enemyArray[j] = null
+                bulletArray[i] = null
+
+                // Update Health
+                hitPoints -= 10
+                currentHealthBarWidth -= 20
+                healthBar.style.width = (currentHealthBarWidth) + 'px'
               } 
             }
           }
