@@ -14,7 +14,10 @@ router.get('/', cors(), async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: err.message })
     }
-  })
+})
 
-  module.exports = router;
+// Create User
+router.post('/register', registerUser)
+
+module.exports = router;
   
