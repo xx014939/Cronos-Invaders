@@ -3,7 +3,7 @@ const User = require('../models/userModel')
 const cors = require('cors'); 
 const { registerUser } = require("../controllers/userController");
 const router = express.Router();
-const {protect} = require('../middleware/authMiddleware')
+// const {protect} = require('../middleware/authMiddleware')
 
 // Getting all
 router.get('/', cors(), async (req, res) => {
@@ -15,4 +15,6 @@ router.get('/', cors(), async (req, res) => {
       res.status(500).json({ message: err.message })
     }
   })
+
+  module.exports = router;
   
