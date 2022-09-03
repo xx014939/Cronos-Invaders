@@ -8,6 +8,7 @@ startButton.addEventListener('click', () => {
 let canFire = true;
 
 let enemyShift = false;
+let enemyFire = false;
 
 let level = 1;
 
@@ -86,8 +87,9 @@ function startGame()
   myGameArea.start();
   myPlayer = new component(100, 100, "./assets/playerTwo.png", 310, 430, "image");
   myBackground = new component(canvasWidth, canvasHeight, "./assets/starBG.png", 0, 0, "image");
-  setInterval(CheckFireRate, 250);
+  setInterval(CheckFireRate, 500);
   setInterval(CheckShift, 750);
+  setInterval(EnemyFire, 5000);
 }
   
 function CheckFireRate()
@@ -103,6 +105,14 @@ function CheckShift()
   if (!enemyShift)
   {
     enemyShift = true;
+  }
+}
+
+function EnemyFire()
+{
+  if (!enemyFire)
+  {
+    enemyFire = true;
   }
 }
 
@@ -225,7 +235,7 @@ function CheckShift()
             if (bulletArray[i] !== null && enemyArray[j] !== null) 
             {
               // If not then check for collision
-              if (bulletArray[i].crashWith(enemyArray[j])) 
+              if (bulletArray[i].crashWith(enemyArray[j]) && bulletArray[i].image.src.includes("Shot_4_003.png")) 
               {
                 enemyArray[j] = null
                 bulletArray[i] = null
@@ -247,8 +257,6 @@ function CheckShift()
                   {
                     myBackground = new component(canvasWidth, canvasHeight, "./assets/planetTwoBG.png", 0, 0, "image");
                   }
-
-
                 }
               } 
             }
@@ -312,12 +320,7 @@ function CheckShift()
       if (enemyArray.length > 0 ) 
       {
         let shift = (enemyShift) ? 50 * (Math.random() < 0.5 ? -1 : 1) : 0;
-        
-        if (enemyShift)
-        {
-          enemyShift = false;
-        }
-
+      
         for (let i = 0; i < enemyArray.length; i++) 
         {
           // If the enemy has not been destroyed
@@ -325,7 +328,7 @@ function CheckShift()
           {
               enemyArray[i].update();
 
-              if (enemyArray[i].image.src.includes("E_Ship_05.png"))
+              if (enemyArray[i].image.src.includes("E_Ship_05.png") || enemyArray[i].image.src.includes("P_Ship_05.png"))
               {
                 enemyArray[i].x += shift;
                 
@@ -338,18 +341,47 @@ function CheckShift()
                 {
                   enemyArray[i].x = 0;
                 }
+                
+
+                if (enemyArray[i].image.src.includes("P_Ship_05.png") && enemyFire)
+                {
+                  bulletArray.push(new component(8, 29, "./assets/EnemyBullet.png", enemyArray[i].x + ((enemyArray[i].width - 8) / 2), enemyArray[i].y, "image"));
+                }
               }
 
-              enemyArray[i].y += 3;
+              enemyArray[i].y += 2;
           }
+        }
+
+        if (enemyShift)
+        {
+          enemyShift = false;
+        }
+
+        if (enemyFire)
+        {
+          enemyFire = false;
         }
       }   
 
       // Update bullets
-      for (i = 0; i < bulletArray.length; i += 1) {
-        if (bulletArray[i] !== null) { // If the bullet has not been destroyed
-          bulletArray[i].update();
-          bulletArray[i].y -= 3 
+      for (i = 0; i < bulletArray.length; i += 1) 
+      {
+        if (bulletArray[i] !== null) 
+        {
+          if (bulletArray[i].image.src.includes("Shot_4_003.png"))
+          {
+            // If the bullet has not been destroyed
+            bulletArray[i].update();
+            bulletArray[i].y -= 3 
+          }
+          
+          else
+          {
+            // If the bullet has not been destroyed
+            bulletArray[i].update();
+            bulletArray[i].y += 3 
+          }
         }
       }
     } 
