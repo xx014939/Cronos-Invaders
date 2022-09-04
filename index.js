@@ -19,6 +19,9 @@ let bulletArray = []
 let enemyArray = []
 let enemyHitArray = []
 
+
+//var audio = new Audio('./assets/fire.mp3');
+
 let playerPosition = [10, 120]
 
 let gameStarted = false
@@ -66,9 +69,9 @@ function launchEnemies ()
 
   for (let i = 0; i < randomNumber; i++) 
   {
-    enemyArray.push(new component(50, 50, image, enemyX, -100, "image"))
-    enemyHitArray.push(false)
-    enemyX += 60
+    enemyArray.push(new component(48, 48, image, enemyX, -100, "image"));
+    enemyHitArray.push(false);
+    enemyX += 60;
   }
 
   /*
@@ -85,7 +88,7 @@ function launchEnemies ()
 function startGame() 
 {
   myGameArea.start();
-  myPlayer = new component(100, 100, "./assets/playerTwo.png", 310, 430, "image");
+  myPlayer = new component(48, 48, "./assets/playerTwo.png", 310, 430, "image");
   myBackground = new component(canvasWidth, canvasHeight, "./assets/starBG.png", 0, 0, "image");
   setInterval(CheckFireRate, 500);
   setInterval(CheckShift, 750);
@@ -142,7 +145,8 @@ function EnemyFire()
   }
   
   // Object Constructor
-  function component(width, height, color, x, y, dispType) {
+  function component(width, height, color, x, y, dispType) 
+  {
     //this.type = type;
     this.dispType = dispType;
     if (dispType == "image") 
@@ -156,7 +160,8 @@ function EnemyFire()
     this.y = y;
     this.speedX = 0;
     this.speedY = 0;
-    this.update = function(){
+    this.update = function()
+    {
       ctx = myGameArea.context;
       if (dispType == "image") 
       {
@@ -216,8 +221,8 @@ function EnemyFire()
 
   function updateGameArea() 
   {
-    if (gameStarted) {
-
+    if (gameStarted) 
+    {
         currentFrame++
 
         // 120
@@ -237,8 +242,8 @@ function EnemyFire()
               // If not then check for collision
               if (bulletArray[i].crashWith(enemyArray[j]) && bulletArray[i].image.src.includes("Shot_4_003.png")) 
               {
-                enemyArray[j] = null
-                bulletArray[i] = null
+                enemyArray[j] = null;
+                bulletArray[i] = null;
          
                 // Update score
                 currentScore += 5
@@ -246,7 +251,7 @@ function EnemyFire()
 
                 if ((currentScore % 100 == 0))
                 {
-                  if (level < 3)
+                  if (level < 4)
                   {
                     level++;
 
@@ -259,25 +264,45 @@ function EnemyFire()
                     {
                       myBackground = new component(canvasWidth, canvasHeight, "./assets/planetTwoBG.png", 0, 0, "image");
                     }
+
+                    else if (level == 4)
+                    {
+                      myBackground = new component(canvasWidth, canvasHeight, "./assets/Starry-BG.png", 0, 0, "image");
+                    }
                   }
 
-                  // Update Health
-                  hitPoints += 10
-                  currentHealthBarWidth += 20
-                  healthBar.style.width = (currentHealthBarWidth) + 'px'
+                  if (hitPoints < 1000)
+                  {
+                    if (hitPoints <= 990)
+                    {
+                      // Update Health
+                      hitPoints += 10;
+                      currentHealthBarWidth += 20;
+                      healthBar.style.width = (currentHealthBarWidth) + 'px';
+                    }
+
+                    else
+                    {
+                      // Update Health
+                      hitPoints = 1000;
+                      currentHealthBarWidth = 500;
+                      healthBar.style.width = (currentHealthBarWidth) + 'px';
+                    }
+                  }
+
                 }
               }
 
               // If not then check for collision
-              if (bulletArray[i].crashWith(myPlayer) && bulletArray[i].image.src.includes("EnemyBullet.png")) 
+              else if (bulletArray[i].crashWith(myPlayer) && bulletArray[i].image.src.includes("EnemyBullet.png")) 
               {
-                enemyArray[j] = null
-                bulletArray[i] = null
+                enemyArray[j] = null;
+                bulletArray[i] = null;
 
                 // Update Health
-                hitPoints -= 10
-                currentHealthBarWidth -= 20
-                healthBar.style.width = (currentHealthBarWidth) + 'px'
+                hitPoints -= 10;
+                currentHealthBarWidth -= 20;
+                healthBar.style.width = (currentHealthBarWidth) + 'px';
               } 
             }
           }
@@ -292,7 +317,8 @@ function EnemyFire()
           currentHealthBarWidth = currentHealthBarWidth - 2
           healthBar.style.width = (currentHealthBarWidth) + 'px'
 
-          if (currentHealthBarWidth < 2) { // If HP reaches zero
+          if (currentHealthBarWidth < 2) 
+          { // If HP reaches zero
             alert('GAME OVER')
             myGameArea.stop()
           }
@@ -318,12 +344,14 @@ function EnemyFire()
       {
         if (canFire)
         {
-          bulletArray.push(new component(8, 29, "./assets/Shot_4_003.png", playerPosition[0] + ((myPlayer.width - 8) / 2), playerPosition[1], "image"));
+          bulletArray.push(new component(8, 24, "./assets/Shot_4_003.png", playerPosition[0] + ((myPlayer.width - 8) / 2), playerPosition[1], "image"));
           canFire = false;
+          //audio.play();
         }
       }
 
-      myGameArea.clear(); // Clears entire canvas every frame
+      // Clears entire canvas every frame
+      myGameArea.clear();
       myBackground.newPos();
       myBackground.update();
       myPlayer.speedX = 0;
@@ -339,6 +367,8 @@ function EnemyFire()
       // Update enemies
       if (enemyArray.length > 0 ) 
       {
+        enemyArray = enemyArray.filter(enemy => enemy);
+
         let shift = (enemyShift) ? 50 * (Math.random() < 0.5 ? -1 : 1) : 0;
       
         for (let i = 0; i < enemyArray.length; i++) 
@@ -365,13 +395,26 @@ function EnemyFire()
 
                 if (enemyArray[i].image.src.includes("P_Ship_05.png") && enemyFire)
                 {
-                  bulletArray.push(new component(8, 29, "./assets/EnemyBullet.png", enemyArray[i].x + ((enemyArray[i].width - 8) / 2), enemyArray[i].y, "image"));
+                  if ((Math.random() < 0.5 ? -1 : 1) > 0)
+                  {
+                    bulletArray.push(new component(8, 29, "./assets/EnemyBullet.png", enemyArray[i].x + ((enemyArray[i].width - 8) / 2), enemyArray[i].y, "image"));
+                  }
                 }
               }
 
               enemyArray[i].y += 2;
+
+              if (enemyArray[i].y >= canvasHeight)
+              {
+                // Update Health
+                hitPoints -= 5;
+                currentHealthBarWidth -= 10;
+                healthBar.style.width = (currentHealthBarWidth) + 'px';
+              }
           }
         }
+
+        enemyArray = enemyArray.filter(enemy => enemy.y < canvasHeight);
 
         if (enemyShift)
         {
