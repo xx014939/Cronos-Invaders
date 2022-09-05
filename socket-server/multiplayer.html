@@ -18,22 +18,27 @@
 <script>
 let socket = io();
 let myGamePiece;
-let playerArray = []
-playerArray.push(myGamePiece)
+let tempPlayerArray = []
+tempPlayerArray.push(myGamePiece)
 let lastCoordinates = [0,0]
 
+// Create new user
+tempPlayerArray[0] = new component(30, 30, "red", 10, 120);
 
-console.log(socket)
 
-let newUser = true
+// Emit user ID and object
+socket.on('connect', () => {
+  socket.emit('new-player', socket.id, tempPlayerArray[0])
 
-socket.emit('new-user', newUser)
+  // Retrieve user ID array + object array
+  socket.on('new-player', (id, playerObject) => {
+    console.log('users and their objects here -->', id, playerObject)
+  })
+});
+
 
 
 function startGame() {
-for (let i = 0; i < playerArray.length; i++) {
-  playerArray[i] = new component(30, 30, "red", 10, 120);
-}
 myGameArea.start();
 }
 
@@ -71,17 +76,17 @@ this.newPos = function() {
 
 function updateGameArea() {
   myGameArea.clear();
-  for (let i = 0; i < playerArray.length; i++) {
-    playerArray[i].newPos();
-    playerArray[i].update();
+  for (let i = 0; i < tempPlayerArray.length; i++) {
+    tempPlayerArray[i].newPos();
+    tempPlayerArray[i].update();
   }
-  let currentCoordinates = [playerArray[0].x, playerArray[0].y]
+  let currentCoordinates = [tempPlayerArray[0].x, tempPlayerArray[0].y]
 
   // Don't emit coordinates unless they change
   if (currentCoordinates[0] !== lastCoordinates[0] || currentCoordinates[1] !== lastCoordinates[1]) {
     lastCoordinates[0] = currentCoordinates[0]
     lastCoordinates[1] = currentCoordinates[1]
-    socket.emit('player-move', playerArray[0].x, playerArray[0].y)
+    socket.emit('player-move', tempPlayerArray[0].x, tempPlayerArray[0].y)
   }
 }
 
@@ -92,19 +97,19 @@ e = e || window.event;
 
 if (e.keyCode == '38') {
     // up arrow
-    playerArray[0].speedY -= 1;
+    tempPlayerArray[0].speedY -= 1;
 }
 else if (e.keyCode == '40') {
     // down arrow
-    playerArray[0].speedY += 1;
+    tempPlayerArray[0].speedY += 1;
 }
 else if (e.keyCode == '37') {
    // left arrow
-   playerArray[0].speedX -= 1;
+   tempPlayerArray[0].speedX -= 1;
 }
 else if (e.keyCode == '39') {
    // right arrow
-   playerArray[0].speedX += 1;
+   tempPlayerArray[0].speedX += 1;
 }
 
 }
