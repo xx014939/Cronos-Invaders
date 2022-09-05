@@ -6,14 +6,15 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/multiplayer.html');
 });
 
 io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-      io.emit('chat message', msg);
-    });
+    socket.on('player-move', (x,y) => {
+      console.log('X: ' + x, 'Y: ' + y)
+    })
   });
+  
 
 server.listen(3003, () => {
   console.log('listening on *:3003');
