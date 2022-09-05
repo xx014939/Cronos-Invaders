@@ -111,4 +111,14 @@ else if (e.keyCode == '39') {
 
 startGame()
 document.onkeydown = checkKey;
+
+// two mentions of event inside of client side code
+
+// first send ID + coordinates to server side
+
+// server side updates the appropriate player array (needs to be made)
+
+// server emits appropriate player array tagged to ID
+
+// client side uses "server.on" event syntax to then actually update that players position
 </script>
