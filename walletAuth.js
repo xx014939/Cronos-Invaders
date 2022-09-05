@@ -11,7 +11,17 @@ async function login() {
         .then(function (user) {
           console.log("logged in user:", user);
           console.log(user.get("ethAddress"));
-          
+          // Save data
+          let ethAddress = user.get("ethAddress")
+          let username = " "
+          // Create new user in DB
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", 'http://localhost:3002/register', true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify({
+            wallet_address: `${ethAddress}`,
+            username: username
+          }));
         })
         .catch(function (error) {
           console.log(error);
