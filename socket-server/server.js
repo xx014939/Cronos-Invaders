@@ -10,10 +10,15 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-    socket.on('player-move', (x,y) => {
-      console.log('X: ' + x, 'Y: ' + y)
-    })
-  });
+
+  socket.on('player-move', (x,y) => {
+    console.log('X: ' + x, 'Y: ' + y)
+  })
+
+  socket.on('new-user', (newUser) => {
+    console.log(newUser)
+  })
+});
   
 
 server.listen(3003, () => {
