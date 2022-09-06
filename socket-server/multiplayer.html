@@ -36,15 +36,16 @@ tempPlayerArray[0] = new component(30, 30, "red", 10, 120);
 
 // Emit user ID and object
 socket.on('connect', () => {
-  socket.emit('new-player', socket.id, tempPlayerArray[0])
+  socket.emit('new-player', socket.id, tempPlayerArray[tempPlayerArray.length -1])
   document.cookie = `userID=${socket.id}`
 
   // Retrieve user ID array + object array
   socket.on('new-player', (id, playerObject) => {
     console.log('users and their objects here -->', id, playerObject)
-    // Save ID's and player objects to cookies
+
+    // Save ID's to cookies
     document.cookie = `allUserIDs=${id}`
-    document.cookie = `allUserObjects=${playerObject}`
+    // document.cookie = `allUserObjects=${playerObject}`
   })
 });
 
@@ -67,21 +68,19 @@ document.getElementById('clickMe').addEventListener('click', () => {
 
   currentUser = getCookieValue('userID', false)
   allUsers = getCookieValue('allUserIDs', true)
-  allUserObjects = getCookieValue('allUserObjects', true)
 
-  // Check if user exists
+  // Find user index
   for (let i = 0; i < allUsers.length; i++) {
     if (currentUser === allUsers[i]) {
-      userExists = true
       document.cookie = `userIndex=${i}`
     }
   }
 
+  tempPlayerArray = []
+
   // Add all users to object array
-  if (userExists) {
-    for (let i = 0; i < allUserObjects.length; i++) {
+  for (let i = 0; i < allUsers.length; i++) {
       tempPlayerArray.push(new component(30, 30, "red", (10 + (50 * i)), 120))
-    }
   }
 })
 
@@ -124,6 +123,7 @@ this.newPos = function() {
 }
 
 function updateGameArea() {
+  console.log('being called')
   myGameArea.clear();
   for (let i = 0; i < tempPlayerArray.length; i++) {
     tempPlayerArray[i].newPos();
@@ -157,27 +157,19 @@ getCookieValue('userID', false) // user id
 
 if (e.keyCode == '38') {
     // up arrow
-    if (allUsers[getCookieValue('userIndex', false)] === getCookieValue('userID', false)) {
-      tempPlayerArray[getCookieValue('userIndex', false)].speedY -= 1;
-    }
+    tempPlayerArray[getCookieValue('userIndex', false)].speedY -= 1;
 }
 else if (e.keyCode == '40') {
     // down arrow
-    if (allUsers[getCookieValue('userIndex', false)] === getCookieValue('userID', false)) {
-      tempPlayerArray[getCookieValue('userIndex', false)].speedY += 1;
-    }
+    tempPlayerArray[getCookieValue('userIndex', false)].speedY += 1;
 }
 else if (e.keyCode == '37') {
    // left arrow
-   if (allUsers[getCookieValue('userIndex', false)] === getCookieValue('userID', false)) {
-      tempPlayerArray[getCookieValue('userIndex', false)].speedX -= 1;
-    }
+   tempPlayerArray[getCookieValue('userIndex', false)].speedX -= 1;
 }
 else if (e.keyCode == '39') {
    // right arrow
-   if (allUsers[getCookieValue('userIndex', false)] === getCookieValue('userID', false)) {
-      tempPlayerArray[getCookieValue('userIndex', false)].speedX += 1;
-    }
+   tempPlayerArray[getCookieValue('userIndex', false)].speedX += 1;
 }
 
 }
