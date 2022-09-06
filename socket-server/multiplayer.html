@@ -11,6 +11,7 @@
     </style>
   </head>
   <body>
+    <button id="clickMe">click</button>
     <script src="/socket.io/socket.io.js"></script>
   </body>
 </html>
@@ -22,6 +23,12 @@ let tempPlayerArray = []
 tempPlayerArray.push(myGamePiece)
 let lastCoordinates = [0,0]
 
+// User
+let currentUser = null
+let allUsers = []
+let allUserObjects = []
+let userExists = false
+
 // Create new user
 tempPlayerArray[0] = new component(30, 30, "red", 10, 120);
 
@@ -29,12 +36,52 @@ tempPlayerArray[0] = new component(30, 30, "red", 10, 120);
 // Emit user ID and object
 socket.on('connect', () => {
   socket.emit('new-player', socket.id, tempPlayerArray[0])
+  document.cookie = `userID=${socket.id}`
 
   // Retrieve user ID array + object array
   socket.on('new-player', (id, playerObject) => {
     console.log('users and their objects here -->', id, playerObject)
+    // Save ID's and player objects to cookies
+    document.cookie = `allUserIDs=${id}`
+    document.cookie = `allUserObjects=${playerObject}`
   })
 });
+
+
+function getCookieValue (cookieName, arrayBool) {
+  let cookieValue = document.cookie
+  .split('; ')
+  .find((row) => row.startsWith(`${cookieName}=`))
+  ?.split('=')[1];
+
+  if (arrayBool === true) {
+    cookieValue = cookieValue.split(',')
+  }
+
+  return cookieValue
+}
+
+document.getElementById('clickMe').addEventListener('click', () => {
+  console.log(getCookieValue('allUserIDs', true), "HERE!")
+
+  currentUser = getCookieValue('userID', false)
+  allUsers = getCookieValue('allUserIDs', true)
+  allUserObjects = getCookieValue('allUserObjects', true)
+
+  // Check if user exists
+  for (let i = 0; i < allUsers.length; i++) {
+    if(currentUser === allUsers[i]) {
+      userExists = true
+    }
+  }
+
+  // Add all users to object array
+  if (userExists) {
+    for (let i = 0; i < allUserObjects.length; i++) {
+      tempPlayerArray.push(new component(30, 30, "red", (10 + (50 * i)), 120))
+    }
+  }
+})
 
 
 
