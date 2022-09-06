@@ -144,17 +144,6 @@ function checkKey(e) {
 
 e = e || window.event;
 
-// userIndex cookie
-// compare user id cookie with alluserid[index]
-// if true then move tempPlayerArray[index]
-
-getCookieValue('userIndex', false) // user index
-
-getCookieValue('userID', false) // user id
-
-
-
-
 if (e.keyCode == '38') {
     // up arrow
     tempPlayerArray[getCookieValue('userIndex', false)].speedY -= 1;
