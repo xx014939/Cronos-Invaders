@@ -6,7 +6,26 @@ startButton.addEventListener('click', () => {
 })
 
 
+// Increments by 0.1 every 100 after level 4
+// Probability of the enemy effect happening. 
+let coinFlip = 0.5;
+
+// Decides between lower weaker effect and stronger effect.
+// Increments by 0.1 every 200
+let powerProbability = 0.5;
+
+// 1, 1.5, 2
 let FlagSpeed = false;
+let enemySpeed = 2;
+
+function EnemyPowerUp()
+{
+  let shift = (enemyShift) ? 50 * (Math.random() < coinFlip ? -1 : 1) : 0;
+}
+
+// Spawn rate
+
+// Fire rate
 
 
 let canFire = true;
@@ -299,6 +318,7 @@ function EnemyFire()
                     else if (level == 4)
                     {
                       myBackground = new component(canvasWidth, canvasHeight, "./assets/Starry-BG.png", 0, 0, "image");
+
                     }
                   }
 
@@ -434,12 +454,12 @@ function EnemyFire()
 
               if (level != 4 || Flag2xSpeed)
               {
-                enemyArray[i].y += 2;
+                enemyArray[i].y += enemySpeed;
               }
 
               else
               {
-                enemyArray[i].y += 1;
+                enemyArray[i].y += enemySpeed;
               }
 
 
