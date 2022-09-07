@@ -5,8 +5,11 @@ startButton.addEventListener('click', () => {
     gameStarted = true
 })
 
-let canFire = true;
 
+let FlagSpeed = false;
+
+
+let canFire = true;
 let enemyShift = false;
 let enemyFire = false;
 
@@ -48,7 +51,9 @@ function launchEnemies ()
   let EnemyID = Math.floor(Math.random() * 4) + 2;
   let image;
 
-  switch(level)
+  let enemySpawnVal = (level == 4) ? EnemyID : level;
+
+  switch(enemySpawnVal)
   {
     case (1):
       image = "./assets/enemy.png";
@@ -218,7 +223,6 @@ function EnemyFire()
       }
   }
   
-
   function updateGameArea() 
   {
     if (gameStarted) 
@@ -242,12 +246,39 @@ function EnemyFire()
               // If not then check for collision
               if (bulletArray[i].crashWith(enemyArray[j]) && bulletArray[i].image.src.includes("Shot_4_003.png")) 
               {
+                if (level == 4)
+                {
+                  if (enemyArray[j].image.src.includes("./assets/enemy.png"))
+                  {
+                    // Update score
+                    currentScore += 5
+                    scoreElement.innerHTML = currentScore
+                  }
+  
+                  else if (enemyArray[j].image.src.includes("./assets/E_Ship_05.png"))
+                  {
+                    // Update score
+                    currentScore += 10
+                    scoreElement.innerHTML = currentScore
+                  }
+
+                  else
+                  {
+                    // Update score
+                    currentScore += 15
+                    scoreElement.innerHTML = currentScore
+                  }
+                }
+
+                else
+                {
+                  // Update score
+                  currentScore += 5
+                  scoreElement.innerHTML = currentScore
+                }
+
                 enemyArray[j] = null;
                 bulletArray[i] = null;
-         
-                // Update score
-                currentScore += 5
-                scoreElement.innerHTML = currentScore
 
                 if ((currentScore % 100 == 0))
                 {
@@ -378,7 +409,7 @@ function EnemyFire()
           {
               enemyArray[i].update();
 
-              if (enemyArray[i].image.src.includes("E_Ship_05.png") || enemyArray[i].image.src.includes("P_Ship_05.png"))
+              if (enemyArray[i].image.src.includes("E_Ship_05.png"))
               {
                 enemyArray[i].x += shift;
                 
@@ -391,18 +422,26 @@ function EnemyFire()
                 {
                   enemyArray[i].x = 0;
                 }
-                
+              }
 
-                if (enemyArray[i].image.src.includes("P_Ship_05.png") && enemyFire)
+              else if (enemyArray[i].image.src.includes("P_Ship_05.png") && enemyFire)
+              {
+                if ((Math.random() < 0.5 ? -1 : 1) > 0)
                 {
-                  if ((Math.random() < 0.5 ? -1 : 1) > 0)
-                  {
-                    bulletArray.push(new component(8, 29, "./assets/EnemyBullet.png", enemyArray[i].x + ((enemyArray[i].width - 8) / 2), enemyArray[i].y, "image"));
-                  }
+                  bulletArray.push(new component(8, 29, "./assets/EnemyBullet.png", enemyArray[i].x + ((enemyArray[i].width - 8) / 2), enemyArray[i].y, "image"));
                 }
               }
 
-              enemyArray[i].y += 2;
+              if (level != 4 || Flag2xSpeed)
+              {
+                enemyArray[i].y += 2;
+              }
+
+              else
+              {
+                enemyArray[i].y += 1;
+              }
+
 
               if (enemyArray[i].y >= canvasHeight)
               {
