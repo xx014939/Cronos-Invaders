@@ -35,6 +35,16 @@ io.on('connection', (socket) => {
     playerObject[index].speedX += (value)
     io.emit('player-move-x', index, playerObject[index].speedX)
   })
+
+  socket.on("disconnecting", () => {
+    console.log('disconnecting'); // the Set contains at least the socket ID
+  });
+  
+  socket.on("disconnect", () => {
+    // socket.rooms.size === 0
+    console.log('disconnecting2');
+  });
+
 });
   
 
