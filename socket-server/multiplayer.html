@@ -11,7 +11,6 @@
     </style>
   </head>
   <body>
-    <button id="clickMe">CLICK TO STAR GAME</button>
     <script src="/socket.io/socket.io.js"></script>
   </body>
 </html>
@@ -31,7 +30,7 @@ let userExists = false
 let userIndex = 0
 
 // Create new user
-   tempPlayerArray[0] = new component(30, 30, "red", 10, 120);
+  tempPlayerArray[0] = new component(30, 30, "red", 10, 120);
 
 
 // Emit user ID and object
@@ -63,28 +62,8 @@ function getCookieValue (cookieName, arrayBool) {
   return cookieValue
 }
 
-document.getElementById('clickMe').addEventListener('click', () => {
-  console.log(getCookieValue('allUserIDs', true), "HERE!")
-
-  currentUser = getCookieValue('userID', false)
-  allUsers = getCookieValue('allUserIDs', true)
-
-  // Find user index
-  for (let i = 0; i < allUsers.length; i++) {
-    if (currentUser === allUsers[i]) {
-      document.cookie = `userIndex=${i}`
-    }
-  }
-
-  tempPlayerArray = []
-
-  // Add all users to object array
-  for (let i = 0; i < allUsers.length; i++) {
-      tempPlayerArray.push(new component(30, 30, "red", (10 + (50 * i)), 120))
-  }
-})
-
-function fixEverything() {
+// Find current user index and add to array
+function updateUsers() {
   currentUser = getCookieValue('userID', false)
   allUsers = getCookieValue('allUserIDs', true)
 
@@ -143,7 +122,7 @@ this.newPos = function() {
 
 function updateGameArea() {
   myGameArea.clear();
-  fixEverything()
+  updateUsers()
   for (let i = 0; i < tempPlayerArray.length; i++) {
     tempPlayerArray[i].newPos();
     tempPlayerArray[i].update();
@@ -165,20 +144,35 @@ e = e || window.event;
 
 if (e.keyCode == '38') {
     // up arrow
-    console.log(tempPlayerArray) 
-    tempPlayerArray[0].speedY -= 1;
+    console.log('The user index is -->', getCookieValue('userIndex', false))
+
+    socket.emit('player-move-y', getCookieValue('userIndex', false), -1)
+    socket.on('player-move-y', (index, value) => {
+      console.log('The index value being returned from server -->', index)
+      console.log('speed being returned from server -->', value)
+      tempPlayerArray[index].speedY = value;
+    })
 }
 else if (e.keyCode == '40') {
     // down arrow
-    tempPlayerArray[getCookieValue('userIndex', false)].speedY += 1;
+    socket.emit('player-move-y', getCookieValue('userIndex', false), +1)
+    socket.on('player-move-y', (index, value) => {
+      tempPlayerArray[index].speedY = value;
+    })
 }
 else if (e.keyCode == '37') {
    // left arrow
-   tempPlayerArray[getCookieValue('userIndex', false)].speedX -= 1;
+   socket.emit('player-move-x', getCookieValue('userIndex', false), -1)
+    socket.on('player-move-x', (index, value) => {
+      tempPlayerArray[index].speedX = value;
+    })
 }
 else if (e.keyCode == '39') {
    // right arrow
-   tempPlayerArray[getCookieValue('userIndex', false)].speedX += 1;
+   socket.emit('player-move-x', getCookieValue('userIndex', false), +1)
+    socket.on('player-move-x', (index, value) => {
+      tempPlayerArray[index].speedX = value;
+    })
 }
 
 }
@@ -186,13 +180,4 @@ else if (e.keyCode == '39') {
 startGame()
 document.onkeydown = checkKey;
 
-// two mentions of event inside of client side code
-
-// first send ID + coordinates to server side
-
-// server side updates the appropriate player array (needs to be made)
-
-// server emits appropriate player array tagged to ID
-
-// client side uses "server.on" event syntax to then actually update that players position
 </script>

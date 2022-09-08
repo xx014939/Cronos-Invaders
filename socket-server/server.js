@@ -25,6 +25,16 @@ io.on('connection', (socket) => {
     console.log(playerID, playerObject)
     io.emit('new-player', playerID, playerObject);
   })
+
+  socket.on('player-move-y', (index, value) => {
+    playerObject[index].speedY += (value)
+    io.emit('player-move-y', index, playerObject[index].speedY)
+  })
+
+  socket.on('player-move-x', (index, value) => {
+    playerObject[index].speedX += (value)
+    io.emit('player-move-x', index, playerObject[index].speedX)
+  })
 });
   
 
