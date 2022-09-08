@@ -131,7 +131,7 @@ function updateGameArea() {
   }
   let currentCoordinates = [tempPlayerArray[0].x, tempPlayerArray[0].y]
 
-  // Don't emit coordinates unless they change
+  // Don't emit coordinates unless they change - CURRENTLY THIS ONLY EMITS COORDINATES OF THE FIRST PLAYER
   if (currentCoordinates[0] !== lastCoordinates[0] || currentCoordinates[1] !== lastCoordinates[1]) {
     lastCoordinates[0] = currentCoordinates[0]
     lastCoordinates[1] = currentCoordinates[1]
@@ -146,12 +146,9 @@ e = e || window.event;
 
 if (e.keyCode == '38') {
     // up arrow
-    console.log('The user index is -->', getCookieValue('userIndex', false))
 
     socket.emit('player-move-y', getCookieValue('userIndex', false), -1)
     socket.on('player-move-y', (index, value) => {
-      console.log('The index value being returned from server -->', index)
-      console.log('speed being returned from server -->', value)
       tempPlayerArray[index].speedY = value;
     })
 }
@@ -183,6 +180,8 @@ startGame()
 document.onkeydown = checkKey;
 
 document.getElementById('logout').addEventListener('click', () => {
+  tempPlayerArray.splice(getCookieValue('userIndex', false), 1);
+  document.cookie = `userIndex=${(getCookieValue('userIndex', false)) - 1}`
   socket.disconnect()
 })
 

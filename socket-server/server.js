@@ -37,12 +37,26 @@ io.on('connection', (socket) => {
   })
 
   socket.on("disconnecting", () => {
-    console.log('disconnecting'); // the Set contains at least the socket ID
+    console.log('disconnecting'); 
+    console.log(socket.id)
+
+    for (let i = 0; i < playerID.length; i++) {
+      if (playerID[i] == socket.id) {
+        playerObject.splice(i,1)
+        playerID.splice(i,1)
+      }
+    }
   });
   
   socket.on("disconnect", () => {
-    // socket.rooms.size === 0
     console.log('disconnecting2');
+    console.log(socket.id)
+    for (let i = 0; i < playerID.length; i++) {
+      if (playerID[i] == socket.id) {
+        playerObject.splice(i,1)
+        playerID.splice(i,1)
+      }
+    }
   });
 
 });
