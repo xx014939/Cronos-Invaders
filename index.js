@@ -394,14 +394,9 @@ function EnemyFire()
                       spawnRate = 80;
                     }
 
-                    else if (spawnRate == 80)
-                    {
-                      spawnRate = 60;
-                    }
-
                     else
                     {
-                      spawnRate = 100;
+                      spawnRate = 120;
                     }
 
                     EnemyPowerUp();
