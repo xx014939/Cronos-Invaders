@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/playerImage', (req, res) => {
+    res.sendFile(__dirname + '/playerTwo.png');
+  });
+
 io.on('connect', (socket) => {
     console.log('Player - ', socket.id, ' has connected');
 

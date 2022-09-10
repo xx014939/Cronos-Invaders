@@ -49,16 +49,23 @@ var myGameArea = {
     update : function(myPlayer)
     {
         ctx = myGameArea.context;
-        ctx.fillStyle = myPlayer.color;
-        ctx.fillRect(myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
+        // ctx.fillStyle = myPlayer.color;
+        // ctx.fillRect(myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
+
+        myPlayer.image = new Image()
+        myPlayer.image.src = '/playerImage'
+        myPlayer.image.onload = function() {
+            ctx.drawImage(myPlayer.image, myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
+        }
     }
 }
 
 function component(width, height, color, x, y) 
 {
+    this.image = new Image();
+    this.image.src = '/playerImage';
     this.width = width;
     this.height = height;
-    this.color = color;
     this.x = x;
     this.y = y;
     this.speedX = 0;
