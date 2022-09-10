@@ -122,7 +122,7 @@ let canvasHeight = 800
 let currentFrame = 0
 
 // Health Bar
-let hitPoints = 1000
+let hitPoints = 10000
 let currentHealthBarWidth = 500 // Pixels
 const healthBar = document.querySelector('.health-bar')
 

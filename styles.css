@@ -51,10 +51,12 @@ body {
 
 
 .health-bar {
+    filter: drop-shadow(0 0 15px red) drop-shadow(0 0 50px red) contrast(2) brightness(2);
     background-color: red;
-    width: 500px;
+    width: 800px;
     height: 10px;
     display: none;
+    margin-top: 50px;
 }
 
 .score-container {
