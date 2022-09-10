@@ -21,11 +21,14 @@ async function login() {
           xhr.send(JSON.stringify({
             wallet_address: `${ethAddress}`,
             username: username
-          }));
+          }))
         })
         .catch(function (error) {
           console.log(error);
         });
+
+    } else {
+      window.location.pathname = '/index.html';
     }
 }
 

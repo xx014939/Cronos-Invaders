@@ -13,10 +13,16 @@
       <img src="./assets//Cronos invaders.svg"/>
     </div>
     <div class="login-buttons-container">
-        <button onclick="login()">LOGIN WITH METAMASK</button>
-        <!-- <button onclick="logOut()">LOGOUT WITH METAMASK</button>
-        <button onclick="userExists()">USER</button> -->
+        <button id="authButton" onclick="login()">AUTHENTICATE</button>
+        <button style="display: none" id="loginButton" onclick="login()">LOGIN</button>
+        <!-- <button onclick="logOut()">LOGOUT WITH METAMASK</button> -->
     </div>
     <script src="walletAuth.js"></script>
+    <script>
+      document.getElementById('authButton').addEventListener('click', () => {
+        document.getElementById('loginButton').style.display = 'block'
+        document.getElementById('authButton').style.display = 'none'
+      })
+    </script>
   </body>
 </html>
