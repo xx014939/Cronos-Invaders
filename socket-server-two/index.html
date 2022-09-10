@@ -37,11 +37,11 @@ function startGame() {
 var myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = 480;
-        this.canvas.height = 270;
+        this.canvas.width = 800;
+        this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea, 20);
+        this.interval = setInterval(updateGameArea, 60);
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -52,11 +52,13 @@ var myGameArea = {
         // ctx.fillStyle = myPlayer.color;
         // ctx.fillRect(myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
 
-        myPlayer.image = new Image()
-        myPlayer.image.src = '/playerImage'
-        myPlayer.image.onload = function() {
-            ctx.drawImage(myPlayer.image, myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
-        }
+        // myPlayer.image = new Image()
+        // myPlayer.image.src = '/playerImage'
+        // myPlayer.image.onload = function() {
+        //     ctx.drawImage(assets.playerSprite, myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
+        // }
+
+        ctx.drawImage(assets.playerSprite, myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
     }
 }
 
@@ -178,7 +180,11 @@ function checkKey(e)
     }
 }
 
-startGame()
+const assets = {
+  playerSprite: new Image()
+};
+assets.playerSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite.src = '/playerImage';
 document.onkeydown = checkKey;
 
 
