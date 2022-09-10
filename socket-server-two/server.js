@@ -8,6 +8,7 @@ const io = new Server(server);
 let playerID = []
 let playerCoordinates = []
 let playerHealth = []
+let sockets = []
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -15,6 +16,11 @@ app.get('/', (req, res) => {
 
 io.on('connect', (socket) => {
     console.log('Player - ', socket.id, ' has connected');
+
+    if (!playerID.includes(socket.id))
+    {
+        sockets.push(socket);
+    }
 
     // Upon connection add new entries to player arrays
     playerID.push(socket.id);
@@ -33,16 +39,24 @@ io.on('connect', (socket) => {
 
         // Determine players current index
         let disconnectedIndex
-        for (let i = 0; i < playerID.length; i++) {
-            if (socket.id === playerID[i]) {
-                disconnectedIndex = i
+        for (let i = 0; i < playerID.length; i++) 
+        {
+            if (socket.id === playerID[i]) 
+            {
+                disconnectedIndex = i;
+            }
+
+            else
+            {
+                sockets[i].emit('disconnection', disconnectedIndex)
             }
         }
 
         // Upon player disconnection, remove player entries from arrays
-        playerID.splice(disconnectedIndex, 1)
-        playerCoordinates.splice(disconnectedIndex, 1)
-        playerHealth.splice(disconnectedIndex, 1)
+        playerID.splice(disconnectedIndex, 1);
+        playerCoordinates.splice(disconnectedIndex, 1);
+        playerHealth.splice(disconnectedIndex, 1);
+        sockets.splice(disconnectedIndex, 1);
     });
 
     // PLAYER MOVEMENT
