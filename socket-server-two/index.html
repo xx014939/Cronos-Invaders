@@ -116,7 +116,7 @@ function updateGameArea() {
 }
 
 function moveup() {
-    socket.emit('player-move', 'y', -1) // 'player-move' event sends two arguments - Axis and Speed
+    socket.emit('player-move', 'y', -3) // 'player-move' event sends two arguments - Axis and Speed
 
     // The players index and new x,y values are returned from the server
     socket.on('player-update-coordinates', (playerIndex, playerCoordinates) => {
@@ -127,7 +127,7 @@ function moveup() {
 }
 
 function movedown() {
-    socket.emit('player-move', 'y', +1)
+    socket.emit('player-move', 'y', +3)
     socket.on('player-update-coordinates', (playerIndex, playerCoordinates) => {
         allPlayerObjects[playerIndex].x = playerCoordinates[0]
         allPlayerObjects[playerIndex].y = playerCoordinates[1]
@@ -135,7 +135,7 @@ function movedown() {
 }
 
 function moveleft() {
-    socket.emit('player-move', 'x', -1)
+    socket.emit('player-move', 'x', -3)
     socket.on('player-update-coordinates', (playerIndex, playerCoordinates) => {
         allPlayerObjects[playerIndex].x = playerCoordinates[0]
         allPlayerObjects[playerIndex].y = playerCoordinates[1]
@@ -143,7 +143,7 @@ function moveleft() {
 }
 
 function moveright() {
-    socket.emit('player-move', 'x', +1)
+    socket.emit('player-move', 'x', +3)
     socket.on('player-update-coordinates', (playerIndex, playerCoordinates) => {
         allPlayerObjects[playerIndex].x = playerCoordinates[0]
         allPlayerObjects[playerIndex].y = playerCoordinates[1]
