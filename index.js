@@ -1,7 +1,14 @@
-// Hide start screen onclick
+// Hide/show relevant elements when starting the game
 const startScreen = document.getElementById('startScreen')
+const userHealth = document.querySelector('.health-bar')
+const userScore = document.querySelector('.score-container')
+const logo = document.querySelector('.start-scren-logo')
+
 startButton.addEventListener('click', () => {
     startScreen.style.display = 'none'
+    logo.style.display = 'none'
+    userHealth.style.display = 'block'
+    userScore.style.display = 'flex'
     gameStarted = true
 })
 
