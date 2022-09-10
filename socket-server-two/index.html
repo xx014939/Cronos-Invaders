@@ -20,9 +20,10 @@
 let socket = io();
 let allPlayerObjects = [];
 
-socket.on('connection', (index, playerCoordinates) => {
-    
+socket.on('connection', (index, playerCoordinates) => 
+{
     console.log('being called')
+
     for (let i = 0; i < playerCoordinates.length; i++) 
     {
         allPlayerObjects[i] = new component(30, 30, "red", playerCoordinates[i][0], playerCoordinates[i][1])
@@ -70,28 +71,15 @@ function component(width, height, color, x, y)
 function updateGameArea() {
     myGameArea.clear();
 
+    socket.emit('update');
+    
     // GET LATEST POSITIONS AND LATEST VERSION OF THE LIST
-
-
-    // Return new coordinates back to the client side
-    socket.emit('update', allPlayerObjects);
-
-    /*
-    // The players index and new x,y values are returned from the server
-    socket.on('update', (playerIndex, playerCoordinates) => {
-        if (allPlayerObjects.length < playerCoordinates)
+    socket.on("update", (playerCoordinates) => {
+        for (let i = 0; i < playerCoordinates.length; i++) 
         {
-            for ()
-            {
-
-            }
+            allPlayerObjects[i] = new component(30, 30, "red", playerCoordinates[i][0], playerCoordinates[i][1])   
         }
-
-        // Update the appropriate player object with the new coordinates
-        allPlayerObjects[playerIndex].x = playerCoordinates[playerIndex][0]
-        allPlayerObjects[playerIndex].y = playerCoordinates[playerIndex][1]
-    })
-    */
+    });
 
     // Update positions.
     for (let i = 0; i < allPlayerObjects.length; i++) 
@@ -99,6 +87,7 @@ function updateGameArea() {
         allPlayerObjects[i].newPos();    
         allPlayerObjects[i].update();
     }
+    
 }
 
 function moveup() {

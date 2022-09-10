@@ -9,24 +9,25 @@ let playerID = []
 let playerCoordinates = []
 let playerHealth = []
 
-let players = []
-
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connect', (socket) => {
-
-    console.log('Player - ', socket.id, ' has connected')
+    console.log('Player - ', socket.id, ' has connected');
 
     // Upon connection add new entries to player arrays
-    playerID.push(socket.id)
-    playerCoordinates.push([0,0])
-    playerHealth.push(100)
+    playerID.push(socket.id);
+    playerCoordinates.push([0,0]);
+    playerHealth.push(100);
 
-    let playerIndex = playerID.length - 1
+    let playerIndex = playerID.length - 1;
     socket.emit('connection', playerIndex, playerCoordinates)
-  
+    
+    socket.on("update", () => {
+        socket.emit('update', playerCoordinates)
+    });
+
     socket.on("disconnect", () => {
         console.log(socket.id, ' has disconnected')
 
@@ -71,23 +72,7 @@ io.on('connect', (socket) => {
         // Return new coordinates back to the client side
         socket.emit('player-update-coordinates', playerIndex, playerCoordinates[playerIndex])
     })
-
-    socket.on("update", (allPlayerObjects) => {
-        let playerIndex
-        for (let i = 0; i < playerID.length; i++) 
-        {
-            if (socket.id === playerID[i]) 
-            {
-                playerIndex = i
-            }
-        }
-
-        // Return new coordinates back to the client side
-        socket.emit('update', allPlayerObjects)
-    });
-
 });
-  
 
 server.listen(3003, () => {
   console.log('listening on *:3003');
