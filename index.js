@@ -15,19 +15,80 @@ let coinFlip = 0.5;
 let powerProbability = 0.5;
 
 // 1, 1.5, 2
-let FlagSpeed = false;
-let enemySpeed = 2;
+let enemySpeed = 1;
+let spawnRate = 120;
 
 function EnemyPowerUp()
 {
-  let shift = (enemyShift) ? 50 * (Math.random() < coinFlip ? -1 : 1) : 0;
+  // Speed flag
+  if (Math.random() < coinFlip)
+  {
+    if (Math.random() < powerProbability)
+    {
+      enemySpeed = 2;
+    }
+
+    else
+    {
+      enemySpeed = 1.5;
+    }
+  }
+
+  else
+  {
+    enemySpeed = 1;
+  }
+
+  // Speed flag
+  if (Math.random() < coinFlip)
+  {
+    if (Math.random() < powerProbability)
+    {
+      enemySpeed = 2;
+    }
+
+    else
+    {
+      enemySpeed = 1.5;
+    }
+  }
+
+  else
+  {
+    enemySpeed = 1;
+  }
+
+  // Increment the probability of an effect happenening or what effect will take place.
+  if (coinFlip <= 1 && powerProbability <= 1)
+  {
+    if (Math.random() < 0.5)
+    {
+      coinFlip += 0.1;
+    }
+
+    else
+    {
+      powerProbability += 0.1;
+    }
+  }
+
+  else if (coinFlip >= 1)
+  {
+    powerProbability += 0.1;
+  }
+
+  else
+  {
+    coinFlip += 0.1;
+  }
+
+  console.log("1: " + coinFlip);
+  console.log("2: " + powerProbability);
 }
 
 // Spawn rate
 
 // Fire rate
-
-
 let canFire = true;
 let enemyShift = false;
 let enemyFire = false;
@@ -60,6 +121,7 @@ const healthBar = document.querySelector('.health-bar')
 
 // Score
 let currentScore = 0
+let lastScore = 0;
 const scoreElement = document.getElementById('score')
 
 // Create Enemy Attack 
@@ -70,7 +132,7 @@ function launchEnemies ()
   let EnemyID = Math.floor(Math.random() * 4) + 2;
   let image;
 
-  let enemySpawnVal = (level == 4) ? EnemyID : level;
+  let enemySpawnVal = (level >= 4) ? EnemyID : level;
 
   switch(enemySpawnVal)
   {
@@ -249,7 +311,7 @@ function EnemyFire()
         currentFrame++
 
         // 120
-        if (currentFrame % 120 === 0) 
+        if (currentFrame % spawnRate === 0) 
         {
             launchEnemies()
         }
@@ -299,27 +361,45 @@ function EnemyFire()
                 enemyArray[j] = null;
                 bulletArray[i] = null;
 
-                if ((currentScore % 100 == 0))
+                if (currentScore - lastScore > 100)
                 {
-                  if (level < 4)
+                  lastScore = currentScore;
+                  
+                  level++;
+
+                  if (level == 2)
                   {
-                    level++;
+                    myBackground = new component(canvasWidth, canvasHeight, "./assets/planetBG.png", 0, 0, "image");
+                  }
 
-                    if (level == 2)
-                    {
-                      myBackground = new component(canvasWidth, canvasHeight, "./assets/planetBG.png", 0, 0, "image");
-                    }
-  
-                    else if (level == 3)
-                    {
-                      myBackground = new component(canvasWidth, canvasHeight, "./assets/planetTwoBG.png", 0, 0, "image");
-                    }
+                  else if (level == 3)
+                  {
+                    myBackground = new component(canvasWidth, canvasHeight, "./assets/planetTwoBG.png", 0, 0, "image");
+                  }
 
-                    else if (level == 4)
+                  else if (level >= 4)
+                  {
+                    if (level == 4)
                     {
                       myBackground = new component(canvasWidth, canvasHeight, "./assets/Starry-BG.png", 0, 0, "image");
-
                     }
+                    
+                    if (spawnRate == 120)
+                    {
+                      spawnRate = 100;
+                    }
+
+                    else if (spawnRate == 100)
+                    {
+                      spawnRate = 80;
+                    }
+
+                    else
+                    {
+                      spawnRate = 120;
+                    }
+
+                    EnemyPowerUp();
                   }
 
                   if (hitPoints < 1000)
@@ -446,22 +526,13 @@ function EnemyFire()
 
               else if (enemyArray[i].image.src.includes("P_Ship_05.png") && enemyFire)
               {
-                if ((Math.random() < 0.5 ? -1 : 1) > 0)
+                if (Math.random() < coinFlip)
                 {
                   bulletArray.push(new component(8, 29, "./assets/EnemyBullet.png", enemyArray[i].x + ((enemyArray[i].width - 8) / 2), enemyArray[i].y, "image"));
                 }
               }
 
-              if (level != 4 || Flag2xSpeed)
-              {
-                enemyArray[i].y += enemySpeed;
-              }
-
-              else
-              {
-                enemyArray[i].y += enemySpeed;
-              }
-
+              enemyArray[i].y += enemySpeed;
 
               if (enemyArray[i].y >= canvasHeight)
               {
