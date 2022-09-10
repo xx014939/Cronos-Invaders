@@ -10,6 +10,8 @@ let playerCoordinates = []
 let playerHealth = []
 let sockets = []
 
+let playerSprite;
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
