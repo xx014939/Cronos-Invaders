@@ -33,4 +33,10 @@ async function logOut() {
     await Moralis.User.logOut();
     console.log("logged out");
 }
+
+function userExists () {
+  if (user) {
+    // Redirect to start page
+  }
+}
   

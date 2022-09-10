@@ -31,7 +31,7 @@ body {
     color: #db3eb1;
     border: 3px solid #db3eb1;
     border-radius:15px;
-    padding: 15px 25px;
+    padding: 20px 25px;
     font-size: 18px;
     text-align: center;
     font-family: tahoma;
@@ -44,7 +44,7 @@ body {
 }
 
 .game-menu-item:hover {
-    padding: 18px 150px;
+    padding: 23px 150px;
     margin-bottom: 110px;
     transform: rotate(360deg)
 }
