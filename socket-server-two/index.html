@@ -20,8 +20,10 @@ let socket = io();
 let allPlayerObjects = []
 
 socket.on('connection', (index, playerCoordinates) => {
+    
     console.log('being called')
-    for (let i = 0; i < playerCoordinates.length; i++) {
+    for (let i = 0; i < playerCoordinates.length; i++) 
+    {
         allPlayerObjects[i] = new component(30, 30, "red", playerCoordinates[i][0], playerCoordinates[i][1])
     }
 })
@@ -44,14 +46,16 @@ var myGameArea = {
     }
 }
 
-function component(width, height, color, x, y) {
+function component(width, height, color, x, y) 
+{
     this.width = width;
     this.height = height;
     this.speedX = 0;
     this.speedY = 0;
     this.x = x;
     this.y = y;    
-    this.update = function() {
+    this.update = function() 
+    {
         ctx = myGameArea.context;
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -59,13 +63,25 @@ function component(width, height, color, x, y) {
     this.newPos = function() {
         this.x += this.speedX;
         this.y += this.speedY;        
-    }    
+    }
 }
 
 function updateGameArea() {
     myGameArea.clear();
 
-    for (let i = 0; i < allPlayerObjects.length; i++) {
+    /*
+    // Return new coordinates back to the client side
+    socket.emit('update', allPlayerObjects);
+
+    // The players index and new x,y values are returned from the server
+    socket.on('update', (playerIndex, playerCoordinates) => {
+        // Update the appropriate player object with the new coordinates
+        allPlayerObjects[playerIndex].x = playerCoordinates[playerIndex][0]
+        allPlayerObjects[playerIndex].y = playerCoordinates[playerIndex][1]
+    })
+    */
+    for (let i = 0; i < allPlayerObjects.length; i++) 
+    {
         allPlayerObjects[i].newPos();    
         allPlayerObjects[i].update();
     }
@@ -106,27 +122,30 @@ function moveright() {
     })
 }
 
-function checkKey(e) {
+function checkKey(e) 
+{
+    e = e || window.event;
 
-e = e || window.event;
-
-    if (e.keyCode == '38') {
+    if (e.keyCode == '38') 
+    {
         // up arrow
         moveup()
     }
-    else if (e.keyCode == '40') {
+    else if (e.keyCode == '40') 
+    {
         // down arrow
         movedown()
     }
-    else if (e.keyCode == '37') {
-    // left arrow
+    else if (e.keyCode == '37') 
+    {
+        // left arrow
         moveleft()
     }
-    else if (e.keyCode == '39') {
+    else if (e.keyCode == '39') 
+    {
         // right arrow
         moveright()
     }
-
 }
 
 startGame()

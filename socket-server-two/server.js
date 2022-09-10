@@ -9,7 +9,6 @@ let playerID = []
 let playerCoordinates = []
 let playerHealth = []
 
-
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
@@ -44,27 +43,46 @@ io.on('connect', (socket) => {
     });
 
     // PLAYER MOVEMENT
-
     socket.on('player-move', (axis, speed) => {
 
         // Determine players current index
         let playerIndex
-        for (let i = 0; i < playerID.length; i++) {
-            if (socket.id === playerID[i]) {
+        for (let i = 0; i < playerID.length; i++) 
+        {
+            if (socket.id === playerID[i]) 
+            {
                 playerIndex = i
             }
         }
 
         // Modify player coordinates
-        if (axis === 'y') {
+        if (axis === 'y') 
+        {
             playerCoordinates[playerIndex][1] += speed
-        } else if (axis === 'x') {
+        } 
+        
+        else if (axis === 'x') 
+        {
             playerCoordinates[playerIndex][0] += speed
         }
 
         // Return new coordinates back to the client side
         socket.emit('player-update-coordinates', playerIndex, playerCoordinates[playerIndex])
     })
+
+    socket.on("update", (allPlayerObjects) => {
+        let playerIndex
+        for (let i = 0; i < playerID.length; i++) 
+        {
+            if (socket.id === playerID[i]) 
+            {
+                playerIndex = i
+            }
+        }
+
+        // Return new coordinates back to the client side
+        socket.emit('update', allPlayerObjects)
+    });
 
 });
   
