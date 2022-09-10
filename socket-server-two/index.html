@@ -16,8 +16,9 @@
 </html>
 
 <script>
+
 let socket = io();
-let allPlayerObjects = []
+let allPlayerObjects = [];
 
 socket.on('connection', (index, playerCoordinates) => {
     
@@ -69,17 +70,30 @@ function component(width, height, color, x, y)
 function updateGameArea() {
     myGameArea.clear();
 
-    /*
+    // GET LATEST POSITIONS AND LATEST VERSION OF THE LIST
+
+
     // Return new coordinates back to the client side
     socket.emit('update', allPlayerObjects);
 
+    /*
     // The players index and new x,y values are returned from the server
     socket.on('update', (playerIndex, playerCoordinates) => {
+        if (allPlayerObjects.length < playerCoordinates)
+        {
+            for ()
+            {
+
+            }
+        }
+
         // Update the appropriate player object with the new coordinates
         allPlayerObjects[playerIndex].x = playerCoordinates[playerIndex][0]
         allPlayerObjects[playerIndex].y = playerCoordinates[playerIndex][1]
     })
     */
+
+    // Update positions.
     for (let i = 0; i < allPlayerObjects.length; i++) 
     {
         allPlayerObjects[i].newPos();    

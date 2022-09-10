@@ -9,6 +9,8 @@ let playerID = []
 let playerCoordinates = []
 let playerHealth = []
 
+let players = []
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
