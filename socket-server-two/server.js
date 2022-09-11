@@ -11,6 +11,7 @@ let playerHealth = [];
 let sockets = [];
 
 let bulletArray = [];
+let secondBulletArray = []
 
 let playerWidth = 30;
 
@@ -108,10 +109,9 @@ io.on('connect', (socket) => {
         socket.emit('update', playerIndex, playerCoordinates, bulletArray)
     });
 
-    // PLAYER MOVEMENT
     socket.on('shoot', () => {
         // Determine players current index
-        let playerIndex
+        // let playerIndex
         for (let i = 0; i < playerID.length; i++) 
         {
             if (socket.id === playerID[i]) 
@@ -120,11 +120,12 @@ io.on('connect', (socket) => {
             }
         }
 
-        bulletArray[playerIndex].push([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
+        bulletArray[playerIndex] = ([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
 
-        // Return new coordinates back to the client side
-        //socket.emit('shoot', playerIndex, bulletArray)
+        socket.emit('shoot', playerIndex, bulletArray)
     })
+
+    // PLAYER MOVEMENT
 
 });
 

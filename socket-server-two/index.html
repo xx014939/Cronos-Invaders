@@ -19,7 +19,7 @@
 
 let socket = io();
 let allPlayerObjects = [];
-let bulletArray = [];
+let clientSideBulletArray = []; // Not server side - this array is used to hold the images
 
 socket.on('connection', (index, playerCoordinates) => 
 {
@@ -103,33 +103,16 @@ function updateGameArea() {
     socket.emit('update');
 
     // GET LATEST POSITIONS AND LATEST VERSION OF THE LIST
-    socket.on("update", (playerIndex, playerCoordinates, bullet2DArray) => {
+    socket.on("update", (playerIndex, playerCoordinates, bulletArray) => {
         for (let i = 0; i < playerCoordinates.length; i++) 
         {
             allPlayerObjects[i] = new component(30, 30, '/playerImage', playerCoordinates[i][0], playerCoordinates[i][1])
         }
-
-        for (let i = 0; i < bullet2DArray.length; i++)
-        {
-            //bulletArray.push([]);
-                /*
-                if (i == playerIndex)
-                {
-                    tempSprite = '/playerBulletImage';
-                }
-
-                else
-                {
-                    tempSprite = '/playerImage';
-                }
-                */
-
-            for (let j = 0; j < bullet2DArray[i].length; j++)
-            {
-                bulletArray[i][j] = new component(30, 30, '/playerBulletImage', bullet2DArray[i][j][0], bullet2DArray[i][j][1]);
-            }
-        }
     });
+
+    socket.on('shoot', (playerIndex, bulletArray) => {
+        clientSideBulletArray[playerIndex] = new component(30, 30, '/playerBulletImage', bulletArray[playerIndex][0], bulletArray[playerIndex][1]);
+    })
 
     // Update positions.
     for (let i = 0; i < allPlayerObjects.length; i++) 
@@ -139,13 +122,11 @@ function updateGameArea() {
         myGameArea.update(allPlayerObjects[i]);
     }
 
-    for (let i = 0; i < bulletArray.length; i++)
+    for (let i = 0; i < clientSideBulletArray.length; i++)
     {
-        for (let j = 0; j < bulletArray[i].length; j++)
-        {
-            bulletArray[i][j].y -= 2;
-            myGameArea.update(bulletArray[i][j]);
-        }
+        console.log(clientSideBulletArray)
+        clientSideBulletArray[i].y -= 2;
+        myGameArea.update(clientSideBulletArray[i]);
     }
 
     /*
@@ -223,6 +204,7 @@ function checkKey(e)
     
     else if (e.keyCode == '32') 
     {
+        console.log('space')
         socket.emit('shoot');
 
         /*
