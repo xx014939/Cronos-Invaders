@@ -10,15 +10,17 @@ let playerCoordinates = []
 let playerHealth = []
 let sockets = []
 
-let playerSprite;
-
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/playerImage', (req, res) => {
     res.sendFile(__dirname + '/playerTwo.png');
-  });
+});
+
+app.get('/playerBulletImage', (req, res) => {
+    res.sendFile(__dirname + '/Shot_4_003.png');
+});
 
 io.on('connect', (socket) => {
     console.log('Player - ', socket.id, ' has connected');
@@ -92,6 +94,23 @@ io.on('connect', (socket) => {
         // Return new coordinates back to the client side
         socket.emit('player-update-coordinates', playerIndex, playerCoordinates[playerIndex])
     })
+
+    // PLAYER MOVEMENT
+    socket.on('shoot', () => {
+        // Determine players current index
+        let playerIndex
+        for (let i = 0; i < playerID.length; i++) 
+        {
+            if (socket.id === playerID[i]) 
+            {
+                playerIndex = i
+            }
+        }
+
+        // Return new coordinates back to the client side
+        socket.emit('shoot', playerIndex, playerCoordinates[playerIndex])
+    })
+
 });
 
 server.listen(3003, () => {

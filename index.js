@@ -484,7 +484,6 @@ function EnemyFire()
         {
           bulletArray.push(new component(8, 24, "./assets/Shot_4_003.png", playerPosition[0] + ((myPlayer.width - 8) / 2), playerPosition[1], "image"));
           canFire = false;
-          //audio.play();
         }
       }
 

@@ -19,6 +19,7 @@
 
 let socket = io();
 let allPlayerObjects = [];
+let bulletArray = [];
 
 socket.on('connection', (index, playerCoordinates) => 
 {
@@ -63,7 +64,7 @@ var myGameArea = {
     }
 }
 
-function component(width, height, color, x, y) 
+function component(width, height, color, x, y)
 {
     this.image = new Image();
     this.image.src = '/playerImage';
@@ -113,6 +114,15 @@ function updateGameArea() {
         myGameArea.update(allPlayerObjects[i]);
     }
     
+    // Update positions.
+    for (let i = 0; i < bulletArray.length; i++) 
+    {
+        bulletArray[i].y -= 2;
+        //allPlayerObjects[i].newPos();    
+        //allPlayerObjects[i].update();
+        myGameArea.update(bulletArray[i]);
+    }
+
 }
 
 function moveup() {
@@ -174,19 +184,28 @@ function checkKey(e)
         // right arrow
         moveright()
     }
+    
     else if (e.keyCode == '32') 
     {
-        // space bar
-        //moveright()
+        socket.emit('shoot');
+        socket.on('shoot', (playerIndex, playerCoordinates) => {         
+            // space bar
+            bulletArray.push(new component(8, 24, "red", playerCoordinates[0] + ((allPlayerObjects[playerIndex].width - 8) / 2), playerCoordinates[1], "image"));
+        })
     }
 }
 
 const assets = {
-  playerSprite: new Image()
+  playerSprite: new Image(),
+  bulletSprite: new Image()
 };
+
 assets.playerSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 assets.playerSprite.src = '/playerImage';
-document.onkeydown = checkKey;
 
+assets.bulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.bulletSprite.src = '/playerBulletImage';
+
+document.onkeydown = checkKey;
 
 </script>
