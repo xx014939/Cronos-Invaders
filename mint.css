@@ -1,0 +1,81 @@
+body {
+    background-color: black;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    font-family: tahoma;
+    letter-spacing:5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.mint-header h2 {
+    font-size: 34px;
+}
+
+.mint-header span {
+    font-size: 34px;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }
+
+
+.nft-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border: 3px solid white;
+    width: 300px;
+    height: 400px;
+    margin: auto;
+    padding-top: 100px;
+    padding-bottom: 30px;
+}
+
+.nft-card-image-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.nft-card-image {
+    animation-name: spinning;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 50px;
+}
+
+.nft-card-image img {
+    width: 100%;
+}
+
+.mint-button {
+    width: 250px;
+    cursor: pointer;
+}
+
+.mint-button img {
+    width: 100%;
+}
+
+  
+@keyframes spinning {
+0%   {transform:rotateZ(0deg)}
+100% {transform:rotateY(360deg);
+} 

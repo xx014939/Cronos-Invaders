@@ -27,6 +27,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-top: 50px;
 }
 
 .game-menu-item {
@@ -47,7 +48,7 @@ body {
 
 .game-menu-item:hover {
     padding: 23px 150px;
-    margin-bottom: 110px;
+    margin-bottom: 100px;
     transform: rotate(360deg)
 }
 
