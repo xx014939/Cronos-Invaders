@@ -60,6 +60,7 @@ var myGameArea = {
         //     ctx.drawImage(assets.playerSprite, myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
         // }
 
+        //ctx.drawImage(myPlayer.image, myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
         ctx.drawImage(myPlayer.image, myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
         //ctx.drawImage(assets.playerSprite, myPlayer.x, myPlayer.y, myPlayer.width, myPlayer.height);
     }
@@ -91,6 +92,8 @@ function component(width, height, color, x, y)
 
 function updateGameArea() {
     myGameArea.clear();
+    let tempSprite;
+    //bulletArray = [];
 
     socket.on("disconnection", (playerLocation) => {
         // Upon player disconnection, remove player entries from arrays
@@ -98,12 +101,33 @@ function updateGameArea() {
     });
 
     socket.emit('update');
-    
+
     // GET LATEST POSITIONS AND LATEST VERSION OF THE LIST
-    socket.on("update", (playerCoordinates) => {
+    socket.on("update", (playerIndex, playerCoordinates, bullet2DArray) => {
         for (let i = 0; i < playerCoordinates.length; i++) 
         {
             allPlayerObjects[i] = new component(30, 30, '/playerImage', playerCoordinates[i][0], playerCoordinates[i][1])
+        }
+
+        for (let i = 0; i < bullet2DArray.length; i++)
+        {
+            //bulletArray.push([]);
+                /*
+                if (i == playerIndex)
+                {
+                    tempSprite = '/playerBulletImage';
+                }
+
+                else
+                {
+                    tempSprite = '/playerImage';
+                }
+                */
+
+            for (let j = 0; j < bullet2DArray[i].length; j++)
+            {
+                bulletArray[i][j] = new component(30, 30, '/playerBulletImage', bullet2DArray[i][j][0], bullet2DArray[i][j][1]);
+            }
         }
     });
 
@@ -114,7 +138,17 @@ function updateGameArea() {
         //allPlayerObjects[i].update();
         myGameArea.update(allPlayerObjects[i]);
     }
-    
+
+    for (let i = 0; i < bulletArray.length; i++)
+    {
+        for (let j = 0; j < bulletArray[i].length; j++)
+        {
+            bulletArray[i][j].y -= 2;
+            myGameArea.update(bulletArray[i][j]);
+        }
+    }
+
+    /*
     // Update positions.
     for (let i = 0; i < bulletArray.length; i++) 
     {
@@ -123,6 +157,7 @@ function updateGameArea() {
         //allPlayerObjects[i].update();
         myGameArea.update(bulletArray[i]);
     }
+    */
 
 }
 
@@ -189,10 +224,13 @@ function checkKey(e)
     else if (e.keyCode == '32') 
     {
         socket.emit('shoot');
-        socket.on('shoot', (playerIndex, playerCoordinates) => {         
+
+        /*
+        socket.on('shoot', (playerIndex, bulletList) => {
             // space bar
-            bulletArray.push(new component(8, 24, '/playerBulletImage', playerCoordinates[0] + ((allPlayerObjects[playerIndex].width - 8) / 2), playerCoordinates[1], "image"));
+            bulletArray[playerIndex].push(new component(8, 24, '/playerBulletImage', playerCoordinates[0] + ((allPlayerObjects[playerIndex].width - 8) / 2), playerCoordinates[1], "image"));
         })
+        */
     }
 }
 

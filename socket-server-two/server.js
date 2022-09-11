@@ -5,10 +5,14 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-let playerID = []
-let playerCoordinates = []
-let playerHealth = []
-let sockets = []
+let playerID = [];
+let playerCoordinates = [];
+let playerHealth = [];
+let sockets = [];
+
+let bulletArray = [];
+
+let playerWidth = 30;
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -34,13 +38,10 @@ io.on('connect', (socket) => {
     playerID.push(socket.id);
     playerCoordinates.push([0,0]);
     playerHealth.push(100);
+    bulletArray.push([]);
 
     let playerIndex = playerID.length - 1;
     socket.emit('connection', playerIndex, playerCoordinates)
-    
-    socket.on("update", () => {
-        socket.emit('update', playerCoordinates)
-    });
 
     socket.on("disconnect", () => {
         console.log(socket.id, ' has disconnected')
@@ -53,7 +54,6 @@ io.on('connect', (socket) => {
             {
                 disconnectedIndex = i;
             }
-
             else
             {
                 sockets[i].emit('disconnection', disconnectedIndex)
@@ -65,11 +65,11 @@ io.on('connect', (socket) => {
         playerCoordinates.splice(disconnectedIndex, 1);
         playerHealth.splice(disconnectedIndex, 1);
         sockets.splice(disconnectedIndex, 1);
+        bulletArray.splice(disconnectedIndex, 1);
     });
 
     // PLAYER MOVEMENT
     socket.on('player-move', (axis, speed) => {
-
         // Determine players current index
         let playerIndex
         for (let i = 0; i < playerID.length; i++) 
@@ -95,6 +95,19 @@ io.on('connect', (socket) => {
         socket.emit('player-update-coordinates', playerIndex, playerCoordinates[playerIndex])
     })
 
+    socket.on("update", () => {
+        // Determine players current index
+        let playerIndex
+        for (let i = 0; i < playerID.length; i++) 
+        {
+            if (socket.id === playerID[i]) 
+            {
+                playerIndex = i
+            }
+        }
+        socket.emit('update', playerIndex, playerCoordinates, bulletArray)
+    });
+
     // PLAYER MOVEMENT
     socket.on('shoot', () => {
         // Determine players current index
@@ -107,8 +120,10 @@ io.on('connect', (socket) => {
             }
         }
 
+        bulletArray[playerIndex].push([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
+
         // Return new coordinates back to the client side
-        socket.emit('shoot', playerIndex, playerCoordinates[playerIndex])
+        //socket.emit('shoot', playerIndex, bulletArray)
     })
 
 });
