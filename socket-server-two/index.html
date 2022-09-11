@@ -110,6 +110,7 @@ function updateGameArea() {
         }
     });
 
+    // JAMES, THIS IS THE NEW SHOOT EVENT. ALL WE'RE DOING IS ADDING A NEW COMPONENT TO THE CLIENT SIDE ARRAY
     socket.on('shoot', (playerIndex, bulletArray) => {
         clientSideBulletArray[playerIndex] = new component(30, 30, '/playerBulletImage', bulletArray[playerIndex][0], bulletArray[playerIndex][1]);
     })
@@ -122,6 +123,7 @@ function updateGameArea() {
         myGameArea.update(allPlayerObjects[i]);
     }
 
+    // HERE WE UPDATE THE BULLETS COORDINATES 
     for (let i = 0; i < clientSideBulletArray.length; i++)
     {
         console.log(clientSideBulletArray)
