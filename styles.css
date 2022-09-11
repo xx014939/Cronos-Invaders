@@ -5,6 +5,8 @@ body {
     justify-content: center;
     align-items: center;
     color: white;
+    height: 100vh;
+    overflow-y: hidden;
 }
 
 .start-scren-logo {
@@ -74,5 +76,39 @@ body {
     text-align: center;
     font-family: tahoma;
     letter-spacing:5px;
+    z-index: 10000;
 }
 
+.game-over {
+    position: fixed; 
+    z-index: 1000; 
+    background-color: black; 
+    height: 100vh; 
+    width: 100vh; 
+    top: 0px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-over a {
+    color: white;
+    font-size: 50px;
+    filter: drop-shadow(0 0 15px red) drop-shadow(0 0 50px red) contrast(2) brightness(2);
+    color: red;
+    border: 3px solid red;
+    border-radius:15px;
+    width: 800px;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 18px;
+    text-align: center;
+    font-family: tahoma;
+    letter-spacing:5px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    cursor: pointer;
+}

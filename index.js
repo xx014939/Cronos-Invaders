@@ -457,7 +457,7 @@ function EnemyFire()
 
           if (currentHealthBarWidth < 2) 
           { // If HP reaches zero
-            alert('GAME OVER')
+            document.querySelector('.game-over').style.display = 'flex'
             myGameArea.stop()
           }
         }
