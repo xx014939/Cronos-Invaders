@@ -8,6 +8,10 @@ const userSchema = mongoose.Schema({
     username: {
         type: String,
         required: true
+    },
+    stat_upgrade: {
+        type: String,
+        required: true
     }
 })
 

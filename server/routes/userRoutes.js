@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require('../models/userModel')
 const cors = require('cors'); 
-const { registerUser } = require("../controllers/userController");
+const { registerUser, getUser, getUserById } = require("../controllers/userController");
 const router = express.Router();
 // const {protect} = require('../middleware/authMiddleware')
 
@@ -15,6 +15,20 @@ router.get('/all', cors(), async (req, res) => {
       res.status(500).json({ message: err.message })
     }
 })
+
+// Getting One
+router.post('/wallet', getUser)
+
+// Deleting One
+router.delete('/:id', getUserById, async (req, res) => {
+  try {
+    await res.user.remove()
+    res.json({ message: 'Deleted User' })
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+})
+
 
 // Create User
 router.post('/register', registerUser)

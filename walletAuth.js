@@ -20,7 +20,8 @@ async function login() {
           xhr.setRequestHeader('Content-Type', 'application/json');
           xhr.send(JSON.stringify({
             wallet_address: `${ethAddress}`,
-            username: username
+            username: username,
+            stat_upgrade: "0"
           }))
         })
         .catch(function (error) {
