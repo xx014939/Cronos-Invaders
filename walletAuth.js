@@ -471,25 +471,9 @@ async function mintNFT () {
       "type": "function"
     }
   ]
-  const NameContract = new web3.eth.Contract(ABI, '0x4D93810cbdecA06dCa1A553A1BE8260eB8c0274E');
-  console.log('The contract is here -->', NameContract)
+  const smartContract = new web3.eth.Contract(ABI, '0x4D93810cbdecA06dCa1A553A1BE8260eB8c0274E');
+  console.log('The contract is here -->', smartContract)
 
-//   const ABI = []; // Add ABI of 0xdAC17F958D2ee523a2206206994597C13D831ec7
+  smartContract.methods.mint("1").send({from: `${ethAddress}`});
 
-//   const web3 = new Web3("http://localhost:8545")
-
-// const daiToken = new web3.eth.Contract(ERC20TransferABI, DAI_ADDRESS)
-
-
-//   const options = {
-//     chain: "eth",
-//     address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-//     function_name: "balanceOf",
-//     abi: ABI,
-//     params: { who: "0x3355d6E71585d4e619f4dB4C7c5Bfe549b278299" },
-//   };
-//   let allowance = await Moralis.Web3API.native.runContractFunction(options);
-//   console.log(allowance, 'is here!')
-//   return allowance
 }
-  
