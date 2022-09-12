@@ -31,9 +31,8 @@ async function login() {
       if (typeof web3 !== 'undefined') {
         console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)
         window.web3 = new Web3(web3.currentProvider);
-        mintNFT()
       } 
-      // window.location.pathname = '/index.html';
+      window.location.pathname = '/index.html';
     }
 }
  

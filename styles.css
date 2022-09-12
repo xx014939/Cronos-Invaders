@@ -46,6 +46,13 @@ body {
     margin-bottom: 45px;
 }
 
+.game-menu-item a {
+    text-decoration: none;
+    font-family: tahoma;
+    letter-spacing:5px;
+    color: #db3eb1;
+}
+
 .game-menu-item:hover {
     padding: 23px 150px;
     margin-bottom: 100px;
