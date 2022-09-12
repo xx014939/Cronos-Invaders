@@ -37,7 +37,7 @@ io.on('connect', (socket) => {
 
     // Upon connection add new entries to player arrays
     playerID.push(socket.id);
-    playerCoordinates.push([0,0]);
+    playerCoordinates.push([100,100]);
     playerHealth.push(100);
     bulletArray.push([]);
 
@@ -120,13 +120,31 @@ io.on('connect', (socket) => {
             }
         }
 
-        bulletArray[playerIndex] = ([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
+        //bulletArray[playerIndex][bulletArray[playerIndex].length] = ([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
+        bulletArray[playerIndex].push([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
 
         socket.emit('shoot', playerIndex, bulletArray)
     })
+    
+    socket.on('updateBullet', () => {
+        // Determine players current index
+        // let playerIndex
+        for (let i = 0; i < playerID.length; i++) 
+        {
+            if (socket.id === playerID[i]) 
+            {
+                playerIndex = i
+            }
+        }
+
+        for (let i = 0; i < bulletArray[playerIndex].length; i++)
+        {
+            bulletArray[playerIndex][1] -= 2;
+        }
+
+    })
 
     // PLAYER MOVEMENT
-
 });
 
 server.listen(3003, () => {
