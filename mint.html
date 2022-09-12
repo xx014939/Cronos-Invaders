@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/moralis-v1/dist/moralis.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.5/web3.min.js"></script>
     <title>Login</title>
     <script src="https://unpkg.com/moralis-v1/dist/moralis.js"></script>
     <link rel="stylesheet" href="mint.css">
@@ -30,9 +32,10 @@
                 Health: +0
             </div>
         </div>
-        <div class="mint-button">
+        <div class="mint-button" onclick="mintNFT()">
             <img src="/run.png"/>
         </div>
     </div>
+    <script src="mint.js"></script>
   </body>
 </html>
