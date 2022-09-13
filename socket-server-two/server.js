@@ -28,6 +28,10 @@ app.get('/playerBulletImage', (req, res) => {
     res.sendFile(__dirname + '/Shot_4_003.png');
 });
 
+app.get('/EnemyBullet', (req, res) => {
+    res.sendFile(__dirname + '/EnemyBullet.png');
+});
+
 io.on('connect', (socket) => {
     console.log('Player - ', socket.id, ' has connected');
 
@@ -104,7 +108,7 @@ io.on('connect', (socket) => {
         {
             if (socket.id === playerID[i]) 
             {
-                playerIndex = i
+                playerIndex = i;
             }
         }
         socket.emit('update', playerIndex, playerCoordinates, bulletArray)
@@ -127,7 +131,7 @@ io.on('connect', (socket) => {
         {
             if (socket.id === playerID[i]) 
             {
-                playerIndex = i
+                playerIndex = i;
             }
         }
 

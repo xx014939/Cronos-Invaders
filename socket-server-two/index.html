@@ -42,7 +42,8 @@ var myGameArea = {
         this.canvas.height = 800;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea, 60);
+        this.interval = setInterval(updateGameArea, 30);
+        this.interval = setInterval(updateCoords, 500);
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -92,16 +93,8 @@ function component(width, height, color, x, y)
 
 let lastNum = 0;
 
-function updateGameArea() {
-    myGameArea.clear();
-    let tempSprite;
-    //bulletArray = [];
-
-    socket.on("disconnection", (playerLocation) => {
-        // Upon player disconnection, remove player entries from arrays
-        allPlayerObjects.splice(playerLocation, 1)
-    });
-
+function updateCoords()
+{
     socket.emit('update');
 
     // THIS WON'T WORK FOR SOME REASON HENCE WHY UPDATE BULLET CODE IS IN UPDATE
@@ -111,15 +104,16 @@ function updateGameArea() {
     socket.on("update", (playerIndex, playerCoordinates, bulletArray) => {
         for (let i = 0; i < playerCoordinates.length; i++) 
         {
-            allPlayerObjects[i] = new component(30, 30, '/playerImage', playerCoordinates[i][0], playerCoordinates[i][1])
+            allPlayerObjects[i] = new component(30, 30, '/playerImage', playerCoordinates[i][0], playerCoordinates[i][1]);
         }
 
+        /*
         if (lastNum != bulletArray.length)
         {
             console.log(bulletArray.length);
             lastNum = bulletArray.length;
         }
-
+        */
         if (bulletArray.length == 1)
         {
             //console.log(bulletArray.length);
@@ -138,18 +132,40 @@ function updateGameArea() {
                 clientSideBulletArray[i] = new component(15, 30, '/playerBulletImage', bulletArray[0][i][0], bulletArray[0][i][1]);
             }
             */
-           
+
             let count = 0;
             for (let i = 0; i < bulletArray.length; i++)
             {
+                if (i == playerIndex)
+                {
+                    tempSprite = '/playerBulletImage';
+                }
+
+                else
+                {
+                    tempSprite = '/EnemyBullet';
+                }
                 for (let j = 0; j < bulletArray[i].length; j++)
                 {
-                    clientSideBulletArray[count] = new component(15, 30, '/playerBulletImage', bulletArray[i][j][0], bulletArray[i][j][1]);
+                    clientSideBulletArray[count] = new component(15, 30, tempSprite, bulletArray[i][j][0], bulletArray[i][j][1]);
                     count++;
                 }
             }
         }
     });
+}
+
+function updateGameArea() {
+    myGameArea.clear();
+    let tempSprite;
+    //bulletArray = [];
+
+    socket.on("disconnection", (playerLocation) => {
+        // Upon player disconnection, remove player entries from arrays
+        allPlayerObjects.splice(playerLocation, 1)
+    });
+
+
 
     /*
     // JAMES, THIS IS THE NEW SHOOT EVENT. ALL WE'RE DOING IS ADDING A NEW COMPONENT TO THE CLIENT SIDE ARRAY
@@ -267,7 +283,8 @@ function checkKey(e)
 
 const assets = {
   playerSprite: new Image(),
-  bulletSprite: new Image()
+  bulletSprite: new Image(),
+  EbulletSprite: new Image()
 };
 
 assets.playerSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
@@ -275,6 +292,9 @@ assets.playerSprite.src = '/playerImage';
 
 assets.bulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 assets.bulletSprite.src = '/playerBulletImage';
+
+assets.EbulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.EbulletSprite.src = '/EnemyBullet';
 
 document.onkeydown = checkKey;
 
