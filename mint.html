@@ -23,7 +23,8 @@
         <div class="stats-container">
             <div class="stats-header">STATS</div>
             <div class="stats">
-                Speed: +1
+                <span>Speed: +</span> 
+                <span class="number">1</span>
             </div>
             <div class="stats">
                 Damage: +0
@@ -37,5 +38,17 @@
         </div>
     </div>
     <script src="mint.js"></script>
+    <script>
+        let iterations = 0
+        const generateNumbers = (interval) => {
+            document.querySelector('.number').innerHTML = Math.floor(Math.random() * 1000)
+            iterations++
+            if (iterations === 20) {
+                clearInterval(interval)
+            }
+        }
+
+       let numberInterval = setInterval(() => {generateNumbers(numberInterval)}, 80);
+    </script>
   </body>
 </html>
