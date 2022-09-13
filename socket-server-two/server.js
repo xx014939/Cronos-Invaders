@@ -42,9 +42,18 @@ io.on('connect', (socket) => {
 
     // Upon connection add new entries to player arrays
     playerID.push(socket.id);
-    playerCoordinates.push([100,100]);
     playerHealth.push(100);
     bulletArray.push([]);
+
+    if (playerID.length == 1)
+    {
+        playerCoordinates.push([400, 770]);
+    }
+
+    else
+    {
+        playerCoordinates.push([400, 0]);
+    }
 
     let playerIndex = playerID.length - 1;
     socket.emit('connection', playerIndex, playerCoordinates)
@@ -134,7 +143,7 @@ io.on('connect', (socket) => {
                 playerIndex = i;
             }
         }
-
+        
         for (let i = 0; i < bulletArray[playerIndex].length; i++)
         {
             bulletArray[playerIndex][i][1] -= 2;
