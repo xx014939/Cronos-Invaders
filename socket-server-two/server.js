@@ -177,6 +177,15 @@ io.on('connect', (socket) => {
 
         //bulletArray[playerIndex][bulletArray[playerIndex].length] = ([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
         bulletArray[playerIndex].push([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
+        
+        /*
+        //
+        for (let i = 0; i < playerID.length; i++) 
+        {
+            // ADD TO NEW BULLET TO ALL INSTANCES.
+            sockets[i].emit('shoot', playerIndex, bulletArray);
+        }
+        */
 
         socket.emit('shoot', playerIndex, bulletArray);
     });

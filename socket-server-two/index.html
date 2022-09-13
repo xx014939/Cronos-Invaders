@@ -266,6 +266,8 @@ function checkKey(e)
         console.log('space')
         socket.emit('shoot');
 
+        // WHEN SHOOT IS RECIEVED WE SHOULD ADD 
+        // Might need to make client side array multi dimensional too for collisions.
         /*
         socket.on('shoot', (playerIndex, bulletList) => {
             // space bar
