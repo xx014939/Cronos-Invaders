@@ -20,12 +20,12 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/playerImage1', (req, res) => {
-    res.sendFile(__dirname + '/Player1.png');
+app.get('/Ship1Player1', (req, res) => {
+    res.sendFile(__dirname + '/Ship1Player1.png');
 });
 
-app.get('/playerImage2', (req, res) => {
-    res.sendFile(__dirname + '/Player2.png');
+app.get('/Ship2Player2', (req, res) => {
+    res.sendFile(__dirname + '/Ship2Player2.png');
 });
 
 app.get('/playerBulletImage', (req, res) => {

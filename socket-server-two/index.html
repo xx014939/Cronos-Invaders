@@ -27,7 +27,7 @@ socket.on('connection', (index, playerCoordinates) =>
 
     for (let i = 0; i < playerCoordinates.length; i++) 
     {
-        allPlayerObjects[i] = new component(30, 30, '/playerImage1', playerCoordinates[i][0], playerCoordinates[i][1]);
+        allPlayerObjects[i] = new component(30, 30, '/Ship1Player1', playerCoordinates[i][0], playerCoordinates[i][1]);
     }
 })
 
@@ -107,12 +107,12 @@ function updateCoords()
         {
             if (i == playerIndex)
             {
-                tempSprite = '/playerImage1';
+                tempSprite = '/Ship1Player1';
             }
 
             else
             {
-                tempSprite = '/playerImage2';
+                tempSprite = '/Ship2Player2';
             }
             allPlayerObjects[i] = new component(30, 30, tempSprite, playerCoordinates[i][0], playerCoordinates[i][1]);
         }
@@ -285,10 +285,10 @@ const assets = {
 };
 
 assets.playerSprite1.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite1.src = '/playerImage1';
+assets.playerSprite1.src = '/Ship1Player1';
 
 assets.playerSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite2.src = '/playerImage2';
+assets.playerSprite2.src = '/Ship2Player2';
 
 assets.bulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 assets.bulletSprite.src = '/playerBulletImage';
