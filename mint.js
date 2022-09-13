@@ -1,9 +1,32 @@
 const serverUrl = "https://6hs6vzjfxpwd.usemoralis.com:2053/server";
 const appId = "8B9E4nYSiOlMo116PtN1JKmjA6QjuteqFTqWtxoC";
 Moralis.start({ serverUrl, appId });
+let iterations = 0
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
+}
+
+function getCookieValue (cookieName) {
+  let cookieValue = document.cookie
+  .split('; ')
+  .find((row) => row.startsWith(`${cookieName}=`))
+  ?.split('=')[1];
+
+  return cookieValue
+}
+
+const generateNumbers = (interval) => {
+    document.querySelector('.number').innerHTML = Math.floor(Math.random() * 1000)
+    iterations++
+    if (iterations === 20) {
+        clearInterval(interval)
+        document.querySelector('.number').innerHTML = `${getCookieValue('statUpgrade')}`
+    }
+}
+
+function triggerNumbersAnimation() {
+  let numberInterval = setInterval(() => {generateNumbers(numberInterval)}, 80);
 }
 
 async function mintNFT () {
@@ -1286,6 +1309,8 @@ async function mintNFT () {
     let randomNumber = getRandomInt(3)
 
     document.cookie = `statUpgrade=${randomNumber + 1}`
+
+    triggerNumbersAnimation()
 
   
     let response = await conctractArray[randomNumber].methods.mint("1").send({from: `${ethAddress}`}).then(function (response) {
