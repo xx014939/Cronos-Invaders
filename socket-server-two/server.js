@@ -139,8 +139,8 @@ io.on('connect', (socket) => {
         {
             bulletArray[playerIndex][i][1] -= 2;
         }
-        
-        //socket.emit('shoot', playerIndex, bulletArray);
+
+        socket.emit('shoot', playerIndex, bulletArray);
     });
 
     socket.on('shoot', () => {

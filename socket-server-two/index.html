@@ -43,7 +43,7 @@ var myGameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 30);
-        this.interval = setInterval(updateCoords, 500);
+        //this.interval = setInterval(updateCoords, 500);
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -106,17 +106,8 @@ function updateCoords()
         {
             allPlayerObjects[i] = new component(30, 30, '/playerImage', playerCoordinates[i][0], playerCoordinates[i][1]);
         }
-
-        /*
-        if (lastNum != bulletArray.length)
-        {
-            console.log(bulletArray.length);
-            lastNum = bulletArray.length;
-        }
-        */
         if (bulletArray.length == 1)
         {
-            //console.log(bulletArray.length);
             for (let i = 0; i < bulletArray[playerIndex].length; i++)
             {
                 clientSideBulletArray[i] = new component(15, 30, '/playerBulletImage', bulletArray[playerIndex][i][0], bulletArray[playerIndex][i][1]);
@@ -125,14 +116,6 @@ function updateCoords()
 
         else
         {
-            //console.log(bulletArray.length);
-            /*
-            for (let i = 0; i < bulletArray[0].length; i++)
-            {
-                clientSideBulletArray[i] = new component(15, 30, '/playerBulletImage', bulletArray[0][i][0], bulletArray[0][i][1]);
-            }
-            */
-
             let count = 0;
             for (let i = 0; i < bulletArray.length; i++)
             {
@@ -165,7 +148,7 @@ function updateGameArea() {
         allPlayerObjects.splice(playerLocation, 1)
     });
 
-
+    updateCoords();
 
     /*
     // JAMES, THIS IS THE NEW SHOOT EVENT. ALL WE'RE DOING IS ADDING A NEW COMPONENT TO THE CLIENT SIDE ARRAY
