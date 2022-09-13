@@ -4,6 +4,7 @@ Moralis.start({ serverUrl, appId });
 
 async function login() {
     let user = Moralis.User.current();
+    document.cookie = `userAddress=${user.get("ethAddress")}`
     if (!user) {
       user = await Moralis.authenticate({
         signingMessage: "Log in using Moralis",
@@ -23,6 +24,8 @@ async function login() {
             username: username,
             stat_upgrade: "0"
           }))
+
+          document.cookie = `userAddress=${user.get("ethAddress")}`
         })
         .catch(function (error) {
           console.log(error);
@@ -33,6 +36,7 @@ async function login() {
         console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)
         window.web3 = new Web3(web3.currentProvider);
       } 
+      document.cookie = `userAddress=${user.get("ethAddress")}`
       window.location.pathname = '/index.html';
     }
 }

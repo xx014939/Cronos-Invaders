@@ -12,6 +12,36 @@ startButton.addEventListener('click', () => {
     gameStarted = true
 })
 
+// Retrieve stat upgrade from backend server
+
+function getCookieValue (cookieName) {
+  let cookieValue = document.cookie
+  .split('; ')
+  .find((row) => row.startsWith(`${cookieName}=`))
+  ?.split('=')[1];
+
+  return cookieValue
+}
+
+async function getStats () {
+  let walletAddress = getCookieValue('userAddress')
+  let bodyContent = JSON.stringify({wallet_address: `${walletAddress}`})
+  let response = await fetch('http://localhost:3002/wallet',  
+  {method: "POST",
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: bodyContent
+  })
+
+  let jsonResponse = await response.json()
+  document.cookie = `statUpgrade=${jsonResponse.stat_upgrade}`
+  return jsonResponse.stat_upgrade
+}
+
+getStats()
+
 
 // Increments by 0.1 every 100 after level 4
 // Probability of the enemy effect happening. 
@@ -493,11 +523,14 @@ function EnemyFire()
       myBackground.update();
       myPlayer.speedX = 0;
       myPlayer.speedY = 0;
-          
-      if (myGameArea.keys && myGameArea.keys[37]) {myPlayer.speedX = -5; }
-      if (myGameArea.keys && myGameArea.keys[39]) {myPlayer.speedX = 5; }
-      if (myGameArea.keys && myGameArea.keys[38]) {myPlayer.speedY = -5; }
-      if (myGameArea.keys && myGameArea.keys[40]) {myPlayer.speedY = 5; }
+      let statBuff = getCookieValue('statUpgrade')
+      let negativeSpeed = (-5 - parseInt(statBuff))
+      let positiveSpeed = (5 + parseInt(statBuff))
+
+      if (myGameArea.keys && myGameArea.keys[37]) {myPlayer.speedX = (negativeSpeed); }
+      if (myGameArea.keys && myGameArea.keys[39]) {myPlayer.speedX = positiveSpeed; }
+      if (myGameArea.keys && myGameArea.keys[38]) {myPlayer.speedY = (negativeSpeed); }
+      if (myGameArea.keys && myGameArea.keys[40]) {myPlayer.speedY = positiveSpeed; }
       myPlayer.newPos();
       myPlayer.update();
 
