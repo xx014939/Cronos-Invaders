@@ -27,7 +27,7 @@ socket.on('connection', (index, playerCoordinates) =>
 
     for (let i = 0; i < playerCoordinates.length; i++) 
     {
-        allPlayerObjects[i] = new component(30, 30, '/playerImage', playerCoordinates[i][0], playerCoordinates[i][1]);
+        allPlayerObjects[i] = new component(30, 30, '/playerImage1', playerCoordinates[i][0], playerCoordinates[i][1]);
     }
 })
 
@@ -106,15 +106,15 @@ function updateCoords()
         for (let i = 0; i < playerCoordinates.length; i++) 
         {
             if (i == playerIndex)
-                {
-                    tempSprite = '/playerImage';
-                }
+            {
+                tempSprite = '/playerImage1';
+            }
 
-                else
-                {
-                    tempSprite = '/playerImage';
-                }
-            allPlayerObjects[i] = new component(30, 30, '/playerImage', playerCoordinates[i][0], playerCoordinates[i][1]);
+            else
+            {
+                tempSprite = '/playerImage2';
+            }
+            allPlayerObjects[i] = new component(30, 30, tempSprite, playerCoordinates[i][0], playerCoordinates[i][1]);
         }
 
         if (bulletArray.length == 1)
@@ -276,13 +276,17 @@ function checkKey(e)
 }
 
 const assets = {
-  playerSprite: new Image(),
+  playerSprite1: new Image(),
+  playerSprite2: new Image(),
   bulletSprite: new Image(),
   EbulletSprite: new Image()
 };
 
-assets.playerSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite.src = '/playerImage';
+assets.playerSprite1.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite1.src = '/playerImage1';
+
+assets.playerSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite2.src = '/playerImage2';
 
 assets.bulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 assets.bulletSprite.src = '/playerBulletImage';

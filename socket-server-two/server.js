@@ -20,8 +20,12 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/playerImage', (req, res) => {
-    res.sendFile(__dirname + '/playerTwo.png');
+app.get('/playerImage1', (req, res) => {
+    res.sendFile(__dirname + '/Player1.png');
+});
+
+app.get('/playerImage2', (req, res) => {
+    res.sendFile(__dirname + '/Player2.png');
 });
 
 app.get('/playerBulletImage', (req, res) => {
@@ -136,7 +140,7 @@ io.on('connect', (socket) => {
         }
         */
         
-        for (let i = 0; i < playerID.length; i++) 
+        for (let i = 0; i < playerID.length; i++)
         {
             if (socket.id === playerID[i]) 
             {
@@ -146,7 +150,15 @@ io.on('connect', (socket) => {
         
         for (let i = 0; i < bulletArray[playerIndex].length; i++)
         {
-            bulletArray[playerIndex][i][1] -= 2;
+            if (playerIndex % 2 == 0)
+            {
+                bulletArray[playerIndex][i][1] -= 2;
+            }
+
+            else
+            {
+                bulletArray[playerIndex][i][1] += 2;
+            }
         }
 
         socket.emit('shoot', playerIndex, bulletArray);
