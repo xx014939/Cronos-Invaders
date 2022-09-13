@@ -26,7 +26,7 @@ function getCookieValue (cookieName) {
 async function getStats () {
   let walletAddress = getCookieValue('userAddress')
   let bodyContent = JSON.stringify({wallet_address: `${walletAddress}`})
-  let response = await fetch('http://localhost:3002/wallet',  
+  let response = await fetch('https://secure-forest-38431.herokuapp.com/wallet',  
   {method: "POST",
   headers: {
     'Accept': 'application/json',

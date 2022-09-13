@@ -17,7 +17,7 @@ async function login() {
           let username = " "
           // Create new user in DB
           var xhr = new XMLHttpRequest();
-          xhr.open("POST", 'http://localhost:3002/register', true);
+          xhr.open("POST", 'https://secure-forest-38431.herokuapp.com/register', true);
           xhr.setRequestHeader('Content-Type', 'application/json');
           xhr.send(JSON.stringify({
             wallet_address: `${ethAddress}`,
