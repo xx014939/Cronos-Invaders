@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const http = require('http');
+const { emit } = require('process');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
@@ -109,26 +110,19 @@ io.on('connect', (socket) => {
         socket.emit('update', playerIndex, playerCoordinates, bulletArray)
     });
 
-    socket.on('shoot', () => {
-        // Determine players current index
-        // let playerIndex
-        for (let i = 0; i < playerID.length; i++) 
-        {
-            if (socket.id === playerID[i]) 
-            {
-                playerIndex = i
-            }
-        }
-
-        //bulletArray[playerIndex][bulletArray[playerIndex].length] = ([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
-        bulletArray[playerIndex].push([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
-
-        socket.emit('shoot', playerIndex, bulletArray)
-    })
-    
     socket.on('updateBullet', () => {
         // Determine players current index
         // let playerIndex
+        /*
+        for (let i = 0; i < bulletArray.length; i++) 
+        {
+            for (let j = 0; j < bulletArray[i].length; i++)
+            {
+                bulletArray[i][j][1] -= 2;
+            }
+        }
+        */
+        
         for (let i = 0; i < playerID.length; i++) 
         {
             if (socket.id === playerID[i]) 
@@ -139,10 +133,28 @@ io.on('connect', (socket) => {
 
         for (let i = 0; i < bulletArray[playerIndex].length; i++)
         {
-            bulletArray[playerIndex][1] -= 2;
+            bulletArray[playerIndex][i][1] -= 2;
+        }
+        
+        //socket.emit('shoot', playerIndex, bulletArray);
+    });
+
+    socket.on('shoot', () => {
+        // Determine players current index
+        // let playerIndex
+        for (let i = 0; i < playerID.length; i++) 
+        {
+            if (socket.id === playerID[i]) 
+            {
+                playerIndex = i;
+            }
         }
 
-    })
+        //bulletArray[playerIndex][bulletArray[playerIndex].length] = ([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
+        bulletArray[playerIndex].push([playerCoordinates[playerIndex][0] + ((playerWidth - 8) / 2), playerCoordinates[playerIndex][1]]);
+
+        socket.emit('shoot', playerIndex, bulletArray);
+    });
 
     // PLAYER MOVEMENT
 });

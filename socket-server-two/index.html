@@ -90,6 +90,8 @@ function component(width, height, color, x, y)
     }
 }
 
+let lastNum = 0;
+
 function updateGameArea() {
     myGameArea.clear();
     let tempSprite;
@@ -102,16 +104,44 @@ function updateGameArea() {
 
     socket.emit('update');
 
+    // THIS WON'T WORK FOR SOME REASON HENCE WHY UPDATE BULLET CODE IS IN UPDATE
+    socket.emit('updateBullet');
+
     // GET LATEST POSITIONS AND LATEST VERSION OF THE LIST
     socket.on("update", (playerIndex, playerCoordinates, bulletArray) => {
         for (let i = 0; i < playerCoordinates.length; i++) 
         {
             allPlayerObjects[i] = new component(30, 30, '/playerImage', playerCoordinates[i][0], playerCoordinates[i][1])
         }
+
+        if (lastNum != bulletArray.length)
+        {
+            console.log(bulletArray.length);
+            lastNum = bulletArray.length;
+        }
+
+        if (bulletArray.length == 1)
+        {
+            //console.log(bulletArray.length);
+            for (let i = 0; i < bulletArray[playerIndex].length; i++)
+            {
+                clientSideBulletArray[i] = new component(15, 30, '/playerBulletImage', bulletArray[playerIndex][i][0], bulletArray[playerIndex][i][1]);
+            }
+        }
+
+        else
+        {
+            //console.log(bulletArray.length);
+            for (let i = 0; i < bulletArray[0].length; i++)
+            {
+                clientSideBulletArray[i] = new component(15, 30, '/playerBulletImage', bulletArray[0][i][0], bulletArray[0][i][1]);
+            }
+        }
+
+
     });
 
-    
-
+    /*
     // JAMES, THIS IS THE NEW SHOOT EVENT. ALL WE'RE DOING IS ADDING A NEW COMPONENT TO THE CLIENT SIDE ARRAY
     socket.on('shoot', (playerIndex, bulletArray) => {
         console.log(bulletArray[playerIndex].length);
@@ -119,7 +149,8 @@ function updateGameArea() {
         {
             clientSideBulletArray[i] = new component(15, 30, '/playerBulletImage', bulletArray[playerIndex][i][0], bulletArray[playerIndex][i][1]);
         }
-    })
+    });
+    */
 
     // Update positions.
     for (let i = 0; i < allPlayerObjects.length; i++) 
@@ -133,7 +164,7 @@ function updateGameArea() {
     for (let i = 0; i < clientSideBulletArray.length; i++)
     {
         //console.log(clientSideBulletArray)
-        clientSideBulletArray[i].y -= 2;
+        //clientSideBulletArray[i].y -= 2;
         myGameArea.update(clientSideBulletArray[i]);
     }
 
