@@ -13,7 +13,7 @@
 </html>
 
 <script>
-  let socket = io();
+  const socket = io();
   let allPlayers = []
   let allBullets = []
 
@@ -99,6 +99,16 @@ function updateGameArea() {
 
 // Movement
 
+socket.on('shoot', (bulletsArray, playerIndex) => {
+            let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
+            allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+    })
+
+socket.on('enemy-shoot', (bulletsArray, playerIndex) => {
+        let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
+        allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+    })
+
 socket.on('enemy-update-coordinates', (enemyIndex, enemyCoordinates) => {
     allPlayers[enemyIndex].x = enemyCoordinates[0]
     allPlayers[enemyIndex].y = enemyCoordinates[1]
@@ -138,6 +148,10 @@ function moveright() {
     })
 }
 
+function shootBullet() {
+    socket.emit('shoot');
+}
+
 function checkKey(e) 
 {
     e = e || window.event;
@@ -165,18 +179,10 @@ function checkKey(e)
     
     else if (e.keyCode == '32') 
     {
-        socket.emit('shoot');
-        socket.on('shoot', (bulletsArray, playerIndex) => {
-            let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-            allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
-        })
+        // space
+        shootBullet()
     }
 }
-
-socket.on('enemy-shoot', (bulletsArray, playerIndex) => {
-        let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-        allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
-    })
 
 
 // if (myGameArea.key && myGameArea.key == 37) {myGamePiece.speedX = -1;}
