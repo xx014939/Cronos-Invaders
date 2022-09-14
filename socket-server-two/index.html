@@ -107,12 +107,28 @@ function updateCoords()
         {
             if (i == playerIndex)
             {
-                tempSprite = '/Ship1Player1';
+                if (i % 2 == 0)
+                {
+                    tempSprite = '/Ship1Player1';
+                }
+
+                else
+                {
+                    tempSprite = '/Ship1Player2';
+                }    
             }
 
             else
-            {
-                tempSprite = '/Ship2Player2';
+            {                
+                if (i % 2 == 0)
+                {
+                    tempSprite = '/Ship2Player1';
+                }
+
+                else
+                {
+                    tempSprite = '/Ship2Player2';
+                }
             }
             allPlayerObjects[i] = new component(30, 30, tempSprite, playerCoordinates[i][0], playerCoordinates[i][1]);
         }
@@ -278,17 +294,25 @@ function checkKey(e)
 }
 
 const assets = {
-  playerSprite1: new Image(),
-  playerSprite2: new Image(),
+  playerSprite11: new Image(),
+  playerSprite12: new Image(),
+  playerSprite21: new Image(),
+  playerSprite22: new Image(),
   bulletSprite: new Image(),
   EbulletSprite: new Image()
 };
 
-assets.playerSprite1.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite1.src = '/Ship1Player1';
+assets.playerSprite11.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite11.src = '/Ship1Player1';
 
-assets.playerSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite2.src = '/Ship2Player2';
+assets.playerSprite12.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite12.src = '/Ship1Player2';
+
+assets.playerSprite21.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite21.src = '/Ship1Player2';
+
+assets.playerSprite22.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite22.src = '/Ship2Player2';
 
 assets.bulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 assets.bulletSprite.src = '/playerBulletImage';

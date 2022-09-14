@@ -24,6 +24,14 @@ app.get('/Ship1Player1', (req, res) => {
     res.sendFile(__dirname + '/Ship1Player1.png');
 });
 
+app.get('/Ship1Player2', (req, res) => {
+    res.sendFile(__dirname + '/Ship1Player2.png');
+});
+
+app.get('/Ship2Player1', (req, res) => {
+    res.sendFile(__dirname + '/Ship2Player1.png');
+});
+
 app.get('/Ship2Player2', (req, res) => {
     res.sendFile(__dirname + '/Ship2Player2.png');
 });
