@@ -15,6 +15,7 @@
 <script>
   let socket = io();
   let allPlayers = []
+  let allBullets = []
 
   // Update server with new player
   socket.emit('new-player-clientside')
@@ -22,6 +23,7 @@
   // Update client with new player
   socket.on('new-player-serverside', () => {
     allPlayers.push(new component(30, 30, "red", 0, 0));
+    allBullets.push([]) // Push empty bullet array at player index
   })
 
   // Ask server for all current players including yourself + coordinates
@@ -31,10 +33,7 @@
     for (let i = 0; i < playerArray.length; i++) {
       allPlayers[i] = (new component(30, 30, "red", playerArray[i][0], playerArray[i][1]));
     }
-  })
-
-  socket.on('message', () => {
-      console.log('WORKING')
+    allBullets.push([]) // Push empty bullet array at player index
   })
 
 function startGame() {
@@ -87,28 +86,20 @@ function updateGameArea() {
     allPlayers[i].speedY = 0;    
     allPlayers[i].newPos();    
     allPlayers[i].update();
-    // updateEnemies()
   }
-}
 
-function updateEnemies() {
-    console.log('Enemey Function')
-    socket.emit('update-enemy-positions')
-    socket.on('update-enemy-positions-two', (allPlayerObjects, myIndex) => {
-        for (let i = 0; i < allPlayerObjects.length; i++) {
-                if (i !== myIndex) {
-                    console.log('Enemey Function Two')
-                    allPlayers[i].x = allPlayerObjects[i][0]
-                    allPlayers[i].y = allPlayerObjects[i][1]
-                }
-        }
-    })
+  for (let i = 0; i < allBullets.length; i++) {
+    for (let j = 0; j < allBullets[i].length; j++) {
+        allBullets[i][j].speedY = -2
+        allBullets[i][j].newPos()
+        allBullets[i][j].update()
+    }
+  }
 }
 
 // Movement
 
 socket.on('enemy-update-coordinates', (enemyIndex, enemyCoordinates) => {
-    console.log('REGISTERING')
     allPlayers[enemyIndex].x = enemyCoordinates[0]
     allPlayers[enemyIndex].y = enemyCoordinates[1]
 })
@@ -175,8 +166,17 @@ function checkKey(e)
     else if (e.keyCode == '32') 
     {
         socket.emit('shoot');
+        socket.on('shoot', (bulletsArray, playerIndex) => {
+            let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
+            allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+        })
     }
 }
+
+socket.on('enemy-shoot', (bulletsArray, playerIndex) => {
+        let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
+        allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+    })
 
 
 // if (myGameArea.key && myGameArea.key == 37) {myGamePiece.speedX = -1;}

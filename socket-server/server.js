@@ -77,7 +77,9 @@ io.on('connect', (socket) => {
         for (let i = 0; i < playerIdArray.length; i++) {
             if (socket.id === playerIdArray[i]) {
                 playerIndex = i // save index
-                let currentCoordinates = [playerObjects[playerIndex][0], playerObjects[playerIndex][1]] // [x,y]
+                let currentCoordinates = [playerObjects[playerIndex][0], playerObjects[playerIndex][1]] // Starting coordinates - [x,y]
+                
+                // Update 3D array to contain a new bullet (second dimension) and starting coordinates (third dimension)
                 if (playerBullets[playerIndex]) {
                     let lastIndex = playerBullets[playerIndex].length
                     playerBullets[playerIndex][lastIndex] = (currentCoordinates)
@@ -87,6 +89,8 @@ io.on('connect', (socket) => {
                 }
             }
             console.log(playerBullets)
+            socket.emit('shoot', playerBullets, playerIndex)
+            socket.broadcast.emit('enemy-shoot', playerBullets, playerIndex)
         }
     })
 
@@ -95,6 +99,7 @@ io.on('connect', (socket) => {
             if (playerIdArray[i] === socket.id) {
                 playerIdArray.splice(i, 1)
                 playerObjects.splice(i, 1)
+                playerBullets.splice(i, 1)
                 console.log('Disconnected')
             }
         }
