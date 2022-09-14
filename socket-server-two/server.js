@@ -61,6 +61,7 @@ io.on('connect', (socket) => {
 
     let playerIndex = playerID.length - 1;
     socket.emit('connection', playerIndex, playerCoordinates)
+    socket.emit('new-player', playerID)
 
     socket.on("disconnect", () => {
         console.log(socket.id, ' has disconnected')
@@ -90,7 +91,7 @@ io.on('connect', (socket) => {
     // PLAYER MOVEMENT
     socket.on('player-move', (axis, speed) => {
         // Determine players current index
-        let playerIndex
+        let playerIndex, opponentCoordinates
         for (let i = 0; i < playerID.length; i++) 
         {
             if (socket.id === playerID[i]) 
@@ -110,8 +111,15 @@ io.on('connect', (socket) => {
             playerCoordinates[playerIndex][0] += speed
         }
 
+        if (playerCoordinates.length > 1) {
+            if (playerIndex === 0) {
+                opponentCoordinates = playerCoordinates[1]
+            } else {
+                opponentCoordinates = playerCoordinates[0]
+            }
+        }
         // Return new coordinates back to the client side
-        socket.emit('player-update-coordinates', playerIndex, playerCoordinates[playerIndex])
+        socket.emit('player-update-coordinates', playerIndex, playerCoordinates[playerIndex], opponentCoordinates)
     })
 
     socket.on("update", () => {

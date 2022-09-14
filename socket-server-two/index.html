@@ -21,13 +21,22 @@ let socket = io();
 let allPlayerObjects = [];
 let clientSideBulletArray = []; // Not server side - this array is used to hold the images
 
-socket.on('connection', (index, playerCoordinates) => 
+ socket.on('connection', (index, playerCoordinates) => 
 {
     console.log('being called')
 
     for (let i = 0; i < playerCoordinates.length; i++) 
     {
         allPlayerObjects[i] = new component(30, 30, '/Ship1Player1', playerCoordinates[i][0], playerCoordinates[i][1]);
+        
+    }
+})
+
+socket.on('new-player', (serverPlayerArray) => {
+    console.log('working')
+    if (allPlayerObjects.length !== serverPlayerArray.length) {
+        let lastIndex = allPlayerObjects.length -1
+        allPlayerObjects[lastIndex] = new component(30, 30, '/Ship1Player1', playerCoordinates[lastIndex][0], playerCoordinates[lastIndex][1]);
     }
 })
 
@@ -43,7 +52,6 @@ var myGameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 30);
-        //this.interval = setInterval(updateCoords, 500);
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -159,24 +167,9 @@ function updateGameArea() {
         allPlayerObjects.splice(playerLocation, 1)
     });
 
-    updateCoords();
-
-    /*
-    // JAMES, THIS IS THE NEW SHOOT EVENT. ALL WE'RE DOING IS ADDING A NEW COMPONENT TO THE CLIENT SIDE ARRAY
-    socket.on('shoot', (playerIndex, bulletArray) => {
-        console.log(bulletArray[playerIndex].length);
-        for (let i = 0; i < bulletArray[playerIndex].length; i++)
-        {
-            clientSideBulletArray[i] = new component(15, 30, '/playerBulletImage', bulletArray[playerIndex][i][0], bulletArray[playerIndex][i][1]);
-        }
-    });
-    */
-
     // Update positions.
     for (let i = 0; i < allPlayerObjects.length; i++) 
     {
-        allPlayerObjects[i].newPos();    
-        //allPlayerObjects[i].update();
         myGameArea.update(allPlayerObjects[i]);
     }
 
@@ -188,27 +181,33 @@ function updateGameArea() {
         myGameArea.update(clientSideBulletArray[i]);
     }
 
-    /*
-    // Update positions.
-    for (let i = 0; i < bulletArray.length; i++) 
-    {
-        bulletArray[i].y -= 2;
-        //allPlayerObjects[i].newPos();    
-        //allPlayerObjects[i].update();
-        myGameArea.update(bulletArray[i]);
-    }
-    */
+}
 
+function updateOpponent(playerIndex, allPlayerObjects, opponentCoordinates) {
+    if (opponentCoordinates !== null) {
+        if (playerIndex === 0) {
+            if (allPlayerObjects[1]) {
+                allPlayerObjects[1].x = opponentCoordinates[0]
+                allPlayerObjects[1].y = opponentCoordinates[1]
+            } else {
+                allPlayerObjects[1] = new component(30, 30, '/Ship1Player1', opponentCoordinates[0], opponentCoordinates[1])
+            }
+        } else {
+            allPlayerObjects[0].x = opponentCoordinates[0]
+            allPlayerObjects[0].y = opponentCoordinates[1]
+        }
+    }
 }
 
 function moveup() {
     socket.emit('player-move', 'y', -3) // 'player-move' event sends two arguments - Axis and Speed
-
     // The players index and new x,y values are returned from the server
-    socket.on('player-update-coordinates', (playerIndex, playerCoordinates) => {
+    socket.on('player-update-coordinates', (playerIndex, playerCoordinates, opponentCoordinates) => {
         // Update the appropriate player object with the new coordinates
         allPlayerObjects[playerIndex].x = playerCoordinates[0]
         allPlayerObjects[playerIndex].y = playerCoordinates[1]
+
+        updateOpponent(playerIndex, allPlayerObjects, opponentCoordinates)
     })
 }
 
