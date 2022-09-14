@@ -36,12 +36,20 @@ app.get('/Ship2Player2', (req, res) => {
     res.sendFile(__dirname + '/Ship2Player2.png');
 });
 
-app.get('/playerBulletImage', (req, res) => {
-    res.sendFile(__dirname + '/Shot_4_003.png');
+app.get('/PlayerBullet', (req, res) => {
+    res.sendFile(__dirname + '/PlayerBullet.png');
+});
+
+app.get('/PlayerBullet2', (req, res) => {
+    res.sendFile(__dirname + '/PlayerBullet2.png');
 });
 
 app.get('/EnemyBullet', (req, res) => {
     res.sendFile(__dirname + '/EnemyBullet.png');
+});
+
+app.get('/EnemyBullet2', (req, res) => {
+    res.sendFile(__dirname + '/EnemyBullet2.png');
 });
 
 io.on('connect', (socket) => {

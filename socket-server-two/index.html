@@ -137,7 +137,7 @@ function updateCoords()
         {
             for (let i = 0; i < bulletArray[playerIndex].length; i++)
             {
-                clientSideBulletArray[i] = new component(15, 30, '/playerBulletImage', bulletArray[playerIndex][i][0], bulletArray[playerIndex][i][1]);
+                clientSideBulletArray[i] = new component(15, 30, '/PlayerBullet', bulletArray[playerIndex][i][0], bulletArray[playerIndex][i][1]);
             }
         }
 
@@ -148,12 +148,32 @@ function updateCoords()
             {
                 if (i == playerIndex)
                 {
-                    tempSprite = '/playerBulletImage';
+                    //tempSprite = '/PlayerBullet';
+
+                    if (i % 2 == 0)
+                    {
+                        tempSprite = '/PlayerBullet';
+                    }
+
+                    else
+                    {
+                        tempSprite = '/PlayerBullet2';
+                    }    
                 }
 
                 else
                 {
-                    tempSprite = '/EnemyBullet';
+                    //tempSprite = '/EnemyBullet';
+                    if (i % 2 == 0)
+                    {
+                        tempSprite = '/EnemyBullet2';
+
+                    }
+
+                    else
+                    {
+                        tempSprite = '/EnemyBullet';
+                    }   
                 }
                 for (let j = 0; j < bulletArray[i].length; j++)
                 {
@@ -299,7 +319,9 @@ const assets = {
   playerSprite21: new Image(),
   playerSprite22: new Image(),
   bulletSprite: new Image(),
-  EbulletSprite: new Image()
+  bulletSprite2: new Image(),
+  EbulletSprite: new Image(),
+  EbulletSprite2: new Image()
 };
 
 assets.playerSprite11.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
@@ -315,10 +337,16 @@ assets.playerSprite22.onload = e => startGame(); // Once sprite image is loaded,
 assets.playerSprite22.src = '/Ship2Player2';
 
 assets.bulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.bulletSprite.src = '/playerBulletImage';
+assets.bulletSprite.src = '/PlayerBullet';
+
+assets.bulletSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.bulletSprite2.src = '/PlayerBullet2';
 
 assets.EbulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 assets.EbulletSprite.src = '/EnemyBullet';
+
+assets.EbulletSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.EbulletSprite2.src = '/EnemyBullet2';
 
 document.onkeydown = checkKey;
 
