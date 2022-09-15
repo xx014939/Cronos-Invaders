@@ -14,6 +14,40 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/client/client.html');
 });
 
+
+app.get('/Ship1Player1', (req, res) => {
+    res.sendFile(__dirname + '/client/Ship1Player1.png');
+});
+
+app.get('/Ship1Player2', (req, res) => {
+    res.sendFile(__dirname + '/client/Ship1Player2.png');
+});
+
+app.get('/Ship2Player1', (req, res) => {
+    res.sendFile(__dirname + '/client/Ship2Player1.png');
+});
+
+app.get('/Ship2Player2', (req, res) => {
+    res.sendFile(__dirname + '/client/Ship2Player2.png');
+});
+
+app.get('/PlayerBullet', (req, res) => {
+    res.sendFile(__dirname + '/client/PlayerBullet.png');
+});
+
+app.get('/PlayerBullet2', (req, res) => {
+    res.sendFile(__dirname + '/client/PlayerBullet2.png');
+});
+
+app.get('/EnemyBullet', (req, res) => {
+    res.sendFile(__dirname + '/client/EnemyBullet.png');
+});
+
+app.get('/EnemyBullet2', (req, res) => {
+    res.sendFile(__dirname + '/client/EnemyBullet2.png');
+});
+
+
 io.on('connect', (socket) => {
     console.log('Player - ', socket.id, ' has connected');
 

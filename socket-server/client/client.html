@@ -123,17 +123,23 @@ function updateGameArea() {
 
   for (let i = 0; i < allBullets.length; i++) {
     for (let j = 0; j < allBullets[i].length; j++) {
-        allBullets[i][j].speedY = -2
-        allBullets[i][j].newPos()
-        allBullets[i][j].update()
 
         if (i === 0) { // Player One
+            allBullets[i][j].speedY = -2
+            allBullets[i][j].newPos()
+            allBullets[i][j].update()
+
             if (allBullets[i][j].crashWith(allPlayers[1])) {
-            console.log('HITTTT')
+            console.log('Player One Wins')
+            
             }
         } else { // Player Two
+            allBullets[i][j].speedY = +2
+            allBullets[i][j].newPos()
+            allBullets[i][j].update()
+
             if (allBullets[i][j].crashWith(allPlayers[0])) {
-            console.log('HITTTT')
+            console.log('Player Two Wins')
             }
         }
     }
@@ -241,6 +247,29 @@ function checkKey(e)
     }
 }
 
+const assets = {
+  playerSprite11: new Image(),
+  playerSprite12: new Image(),
+  playerSprite21: new Image(),
+  playerSprite22: new Image(),
+  bulletSprite: new Image(),
+  bulletSprite2: new Image(),
+  EbulletSprite: new Image(),
+  EbulletSprite2: new Image()
+};
+
+assets.playerSprite11.src = '/Ship1Player1';
+assets.playerSprite12.src = '/Ship1Player2';
+assets.playerSprite21.src = '/Ship1Player2';
+assets.playerSprite22.src = '/Ship2Player2';
+assets.bulletSprite.src = '/PlayerBullet';
+assets.bulletSprite2.src = '/PlayerBullet2';
+assets.EbulletSprite.src = '/EnemyBullet';
+assets.EbulletSprite2.src = '/EnemyBullet2';
+
+
 startGame()
+
+// assets.playerSprite11.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 document.onkeydown = checkKey;
 </script>
