@@ -81,6 +81,22 @@ function component(width, height, color, x, y) {
         this.x += this.speedX;
         this.y += this.speedY;        
     }
+    this.crashWith = function(otherobj) {
+        // Define current coordinates of obstacle
+        let myleft = this.x;
+        let myright = this.x + (this.width);
+        let mytop = this.y;
+        let mybottom = this.y + (this.height);
+        let otherleft = otherobj.x;
+        let otherright = otherobj.x + (otherobj.width);
+        let othertop = otherobj.y;
+        let otherbottom = otherobj.y + (otherobj.height);
+
+        // If player object is not in contact with obstacle set to false
+        let crash = !((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)); // Default
+        
+        return crash;
+    }
 }
 
 function updateGameArea() {
@@ -97,6 +113,16 @@ function updateGameArea() {
         allBullets[i][j].speedY = -2
         allBullets[i][j].newPos()
         allBullets[i][j].update()
+
+        if (i === 0) { // Player One
+            if (allBullets[i][j].crashWith(allPlayers[1])) {
+            console.log('HITTTT')
+            }
+        } else { // Player Two
+            if (allBullets[i][j].crashWith(allPlayers[0])) {
+            console.log('HITTTT')
+            }
+        }
     }
   }
 }
