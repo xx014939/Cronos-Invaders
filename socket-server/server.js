@@ -17,16 +17,20 @@ app.get('/', (req, res) => {
 io.on('connect', (socket) => {
     console.log('Player - ', socket.id, ' has connected');
 
+    socket.on("connect_error", (err) => {
+        console.log(`connect_error due to ${err.message}`);
+      });
+
     socket.on('new-player-clientside', () => {
         playerIdArray.push(socket.id)
         playerObjects.push([0,0]) // Push new starting coordinates
-
+        playerBullets.push([]) // Add a new player (1st dimension)
         socket.broadcast.emit('new-player-serverside')
     })
 
     // Retrieve all current players + their coordinates
     socket.on('all-current-players', () => {
-        socket.emit('all-current-players', playerObjects, (playerObjects.length -1)) // Player objects array + users index. This only gets called upon connection, so we know that the last element is the current user
+        socket.emit('all-current-players', playerObjects, (playerObjects.length -1), playerBullets) // Player objects array + users index. This only gets called upon connection, so we know that the last element is the current user
     })
 
     // Player Movement
@@ -70,8 +74,7 @@ io.on('connect', (socket) => {
     
 
     socket.on('shoot', () => {
-
-        console.log('SHOOT')
+        
         let playerIndex
         // Locate player index
         for (let i = 0; i < playerIdArray.length; i++) {
@@ -87,10 +90,16 @@ io.on('connect', (socket) => {
                     playerBullets[playerIndex] = []
                     playerBullets[playerIndex].push(currentCoordinates)
                 }
+                
+                if (playerIndex === 0 ) {
+                    //socket.emit('test', playerBullets, true)
+                } else {
+                    //socket.emit('test', playerBullets, false)
+                }
+                socket.emit('shoot', playerBullets, playerIndex)
+                socket.broadcast.emit('enemy-shoot', playerBullets, playerIndex)
             }
             console.log(playerBullets)
-            socket.emit('shoot', playerBullets, playerIndex)
-            socket.broadcast.emit('enemy-shoot', playerBullets, playerIndex)
         }
     })
 

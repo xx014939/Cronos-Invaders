@@ -16,6 +16,7 @@
   const socket = io();
   let allPlayers = []
   let allBullets = []
+  let allBulletsCoordinates = []
 
   // Update server with new player
   socket.emit('new-player-clientside')
@@ -24,17 +25,25 @@
   socket.on('new-player-serverside', () => {
     allPlayers.push(new component(30, 30, "red", 0, 0));
     allBullets.push([]) // Push empty bullet array at player index
+    allBulletsCoordinates.push([])
   })
 
   // Ask server for all current players including yourself + coordinates
   socket.emit('all-current-players')
-  socket.on('all-current-players', (playerArray, myIndex) => {
+  socket.on('all-current-players', (playerArray, myIndex, serverBulletArray) => {
     console.log(playerArray)
     for (let i = 0; i < playerArray.length; i++) {
       allPlayers[i] = (new component(30, 30, "red", playerArray[i][0], playerArray[i][1]));
     }
+
     allBullets.push([]) // Push empty bullet array at player index
-  })
+    // for (let i = 0; i < serverBulletArray.length; i++) {
+    //     for (let j = 0; i < serverBulletArray[i][j].length; j++) {
+    //         allBullets[i] = (new component(10, 10, "red", serverBulletArray[i][j][0], serverBulletArray[i][j][1]));
+    //     }
+    // }
+    allBulletsCoordinates.push([])
+    })
 
 function startGame() {
     myGameArea.start();
@@ -100,14 +109,54 @@ function updateGameArea() {
 // Movement
 
 socket.on('shoot', (bulletsArray, playerIndex) => {
+            console.log('Server side bullet array -->', bulletsArray)
+            console.log('Client side bullet array -->', allBullets)
             let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-            allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+            if (allBullets[playerIndex]) {
+                allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+            } else {
+                allBullets[playerIndex] = []
+                allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+            }
     })
 
 socket.on('enemy-shoot', (bulletsArray, playerIndex) => {
+        console.log('Server side bullet array -->', bulletsArray)
+        console.log('Client side bullet array -->', allBullets)
         let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-        allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+        if (allBullets[playerIndex]) {
+                allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+            } else {
+                allBullets[playerIndex] = []
+                allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+            }
     })
+
+socket.on('test', (bulletsArray, boolean) => {
+    //let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
+    //allBulletsCoordinates[playerIndex][allBulletsCoordinates[playerIndex].length] = [bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]]
+    // if (boolean === true) {
+    //     console.log(allBulletsCoordinates[0].length)
+    // } else {
+    //     console.log(allBulletsCoordinates[1].length)
+    // }
+    if (boolean) {
+        let latestBulletIndex = bulletsArray[0].length -1 // Last bullet
+        console.log(allBulletsCoordinates[0].length, boolean, latestBulletIndex)
+        allBulletsCoordinates[0][allBulletsCoordinates[0].length] = [bulletsArray[0][latestBulletIndex][0], bulletsArray[0][latestBulletIndex][1]]
+        console.log('Coordinate array --> ', allBulletsCoordinates)
+        console.log('Bullet object array -->', allBullets)
+        allBullets[0][allBulletsCoordinates[0].length] = new component(10, 10, "red", allBulletsCoordinates[0][latestBulletIndex][0], allBulletsCoordinates[0][latestBulletIndex][1])
+    } else {
+        let latestBulletIndex = bulletsArray[1].length -1 // Last bullet
+        if (allBulletsCoordinates.length === 1) {
+            allBulletsCoordinates.push([])
+        }
+        console.log(allBulletsCoordinates[1].length, boolean, latestBulletIndex)
+    }
+    //tempBulletArray[[tempBulletArray[playerIndex].length]] = (new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+    // allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+})
 
 socket.on('enemy-update-coordinates', (enemyIndex, enemyCoordinates) => {
     allPlayers[enemyIndex].x = enemyCoordinates[0]
