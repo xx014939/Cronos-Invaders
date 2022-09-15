@@ -61,18 +61,6 @@ io.on('connect', (socket) => {
         socket.broadcast.emit('enemy-update-coordinates', playerIndex, playerObjects[playerIndex])
     })
 
-    socket.on('update-enemy-positions', () => {
-        let userIndex
-        for (let i = 0; i < playerIdArray.length; i++) {
-            if (socket.id === playerIdArray[i]) {
-                userIndex = i
-            }
-        }
-        // console.log(playerObjects)
-        socket.emit('update-enemy-positions-two', playerObjects, userIndex)
-    })
-    
-
     socket.on('shoot', () => {
         
         let playerIndex

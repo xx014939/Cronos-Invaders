@@ -132,32 +132,6 @@ socket.on('enemy-shoot', (bulletsArray, playerIndex) => {
             }
     })
 
-socket.on('test', (bulletsArray, boolean) => {
-    //let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-    //allBulletsCoordinates[playerIndex][allBulletsCoordinates[playerIndex].length] = [bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]]
-    // if (boolean === true) {
-    //     console.log(allBulletsCoordinates[0].length)
-    // } else {
-    //     console.log(allBulletsCoordinates[1].length)
-    // }
-    if (boolean) {
-        let latestBulletIndex = bulletsArray[0].length -1 // Last bullet
-        console.log(allBulletsCoordinates[0].length, boolean, latestBulletIndex)
-        allBulletsCoordinates[0][allBulletsCoordinates[0].length] = [bulletsArray[0][latestBulletIndex][0], bulletsArray[0][latestBulletIndex][1]]
-        console.log('Coordinate array --> ', allBulletsCoordinates)
-        console.log('Bullet object array -->', allBullets)
-        allBullets[0][allBulletsCoordinates[0].length] = new component(10, 10, "red", allBulletsCoordinates[0][latestBulletIndex][0], allBulletsCoordinates[0][latestBulletIndex][1])
-    } else {
-        let latestBulletIndex = bulletsArray[1].length -1 // Last bullet
-        if (allBulletsCoordinates.length === 1) {
-            allBulletsCoordinates.push([])
-        }
-        console.log(allBulletsCoordinates[1].length, boolean, latestBulletIndex)
-    }
-    //tempBulletArray[[tempBulletArray[playerIndex].length]] = (new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
-    // allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
-})
-
 socket.on('enemy-update-coordinates', (enemyIndex, enemyCoordinates) => {
     allPlayers[enemyIndex].x = enemyCoordinates[0]
     allPlayers[enemyIndex].y = enemyCoordinates[1]
@@ -232,12 +206,6 @@ function checkKey(e)
         shootBullet()
     }
 }
-
-
-// if (myGameArea.key && myGameArea.key == 37) {myGamePiece.speedX = -1;}
-// if (myGameArea.key && myGameArea.key == 39) {myGamePiece.speedX = 1; }
-// if (myGameArea.key && myGameArea.key == 38) {myGamePiece.speedY = -1; }
-// if (myGameArea.key && myGameArea.key == 40) {myGamePiece.speedY = 1; }
 
 startGame()
 document.onkeydown = checkKey;
