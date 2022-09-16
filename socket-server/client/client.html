@@ -36,7 +36,7 @@
 
   // Update client with new player
   socket.on('new-player-serverside', () => {
-    allPlayers.push(new component(30, 30, "/Ship1Player2", 0, 0));
+    allPlayers.push(new component(30, 30, "/Ship2Player2", 0, 0));
     allBullets.push([]) // Push empty bullet array at player index
     allBulletsCoordinates.push([])
   })
@@ -45,11 +45,15 @@
   socket.emit('all-current-players')
   socket.on('all-current-players', (playerArray, myIndex, serverBulletArray) => {
     console.log(playerArray)
-    for (let i = 0; i < playerArray.length; i++) {
-        if (i === 0) {
+    for (let i = 0; i < playerArray.length; i++) 
+    {
+        if (i === 0) 
+        {
             allPlayers[i] = (new component(30, 30, "/Ship1Player1", playerArray[i][0], playerArray[i][1]));
-        } else {
-            allPlayers[i] = (new component(30, 30, "/Ship1Player2", playerArray[i][0], playerArray[i][1]));
+        } 
+        else 
+        {
+            allPlayers[i] = (new component(30, 30, "/Ship2Player2", playerArray[i][0], playerArray[i][1]));
         }
     }
 
@@ -82,10 +86,17 @@ var myGameArea = {
 }
 
 function component(width, height, color, x, y) {
-    if (width > 20) {
+    /*
+    if (width > 20) 
+    {
         this.image = new Image()
         this.image.src = color
     }
+    */
+    
+    this.image = new Image();
+    this.image.src = color;
+
     this.gamearea = myGameArea;
     this.width = width;
     this.height = height;
@@ -93,15 +104,19 @@ function component(width, height, color, x, y) {
     this.speedY = 0;    
     this.x = x;
     this.y = y;    
-    this.update = function() {
+    this.update = function() 
+    {
         ctx = myGameArea.context;
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
 
+        /*
         if (this.width > 20) {
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         } else {
             ctx.fillStyle = color;
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
+        */
     }
     this.newPos = function() {
         this.x += this.speedX;
@@ -165,11 +180,14 @@ socket.on('shoot', (bulletsArray, playerIndex) => {
             console.log('Server side bullet array -->', bulletsArray)
             console.log('Client side bullet array -->', allBullets)
             let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-            if (allBullets[playerIndex]) {
-                allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
-            } else {
+            if (allBullets[playerIndex]) 
+            {
+                allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+            } 
+            else 
+            {
                 allBullets[playerIndex] = []
-                allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+                allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
             }
     })
 
@@ -177,12 +195,15 @@ socket.on('enemy-shoot', (bulletsArray, playerIndex) => {
         console.log('Server side bullet array -->', bulletsArray)
         console.log('Client side bullet array -->', allBullets)
         let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-        if (allBullets[playerIndex]) {
-                allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
-            } else {
-                allBullets[playerIndex] = []
-                allBullets[playerIndex].push(new component(10, 10, "red", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
-            }
+        if (allBullets[playerIndex]) 
+        {
+            allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+        } 
+        else 
+        {
+            allBullets[playerIndex] = []
+            allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+        }
     })
 
 socket.on('enemy-update-coordinates', (enemyIndex, enemyCoordinates) => {
@@ -271,6 +292,7 @@ const assets = {
   EbulletSprite2: new Image()
 };
 
+
 assets.EbulletSprite2.onload = e => startGame()
 
 assets.playerSprite11.src = '/Ship1Player1';
@@ -282,6 +304,32 @@ assets.bulletSprite2.src = '/PlayerBullet2';
 assets.EbulletSprite.src = '/EnemyBullet';
 assets.EbulletSprite2.src = '/EnemyBullet2';
 
+
+/*
+assets.playerSprite11.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite11.src = '/Ship1Player1';
+
+assets.playerSprite12.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite12.src = '/Ship1Player2';
+
+assets.playerSprite21.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite21.src = '/Ship1Player2';
+
+assets.playerSprite22.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.playerSprite22.src = '/Ship2Player2';
+
+assets.bulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.bulletSprite.src = '/PlayerBullet';
+
+assets.bulletSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.bulletSprite2.src = '/PlayerBullet2';
+
+assets.EbulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.EbulletSprite.src = '/EnemyBullet';
+
+assets.EbulletSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
+assets.EbulletSprite2.src = '/EnemyBullet2';
+*/
 // assets.playerSprite11.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 document.onkeydown = checkKey;
 </script>
