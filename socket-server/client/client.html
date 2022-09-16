@@ -36,7 +36,7 @@
 
   // Update client with new player
   socket.on('new-player-serverside', () => {
-    allPlayers.push(new component(30, 30, "red", 0, 0));
+    allPlayers.push(new component(30, 30, "/Ship1Player2", 0, 0));
     allBullets.push([]) // Push empty bullet array at player index
     allBulletsCoordinates.push([])
   })
@@ -46,7 +46,11 @@
   socket.on('all-current-players', (playerArray, myIndex, serverBulletArray) => {
     console.log(playerArray)
     for (let i = 0; i < playerArray.length; i++) {
-      allPlayers[i] = (new component(30, 30, "red", playerArray[i][0], playerArray[i][1]));
+        if (i === 0) {
+            allPlayers[i] = (new component(30, 30, "/Ship1Player1", playerArray[i][0], playerArray[i][1]));
+        } else {
+            allPlayers[i] = (new component(30, 30, "/Ship1Player2", playerArray[i][0], playerArray[i][1]));
+        }
     }
 
     allBullets.push([]) // Push empty bullet array at player index
@@ -78,6 +82,10 @@ var myGameArea = {
 }
 
 function component(width, height, color, x, y) {
+    if (width > 20) {
+        this.image = new Image()
+        this.image.src = color
+    }
     this.gamearea = myGameArea;
     this.width = width;
     this.height = height;
@@ -87,8 +95,13 @@ function component(width, height, color, x, y) {
     this.y = y;    
     this.update = function() {
         ctx = myGameArea.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+
+        if (this.width > 20) {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+        } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
     this.newPos = function() {
         this.x += this.speedX;
@@ -258,6 +271,8 @@ const assets = {
   EbulletSprite2: new Image()
 };
 
+assets.EbulletSprite2.onload = e => startGame()
+
 assets.playerSprite11.src = '/Ship1Player1';
 assets.playerSprite12.src = '/Ship1Player2';
 assets.playerSprite21.src = '/Ship1Player2';
@@ -266,9 +281,6 @@ assets.bulletSprite.src = '/PlayerBullet';
 assets.bulletSprite2.src = '/PlayerBullet2';
 assets.EbulletSprite.src = '/EnemyBullet';
 assets.EbulletSprite2.src = '/EnemyBullet2';
-
-
-startGame()
 
 // assets.playerSprite11.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 document.onkeydown = checkKey;
