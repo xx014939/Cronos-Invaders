@@ -24,6 +24,7 @@ body {
     position: fixed;
     top: 50px;
     left: 50px;
+    z-index: 1000;
 }
 
 .start-scren-logo {
@@ -76,6 +77,14 @@ body {
     transform: rotate(360deg)
 }
 
+.inactive {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+.inactive a {
+    cursor: not-allowed !important;
+}
 
 .health-bar {
     filter: drop-shadow(0 0 15px red) drop-shadow(0 0 50px red) contrast(2) brightness(2);
@@ -106,7 +115,7 @@ body {
 
 .game-over {
     position: fixed; 
-    z-index: 1000; 
+    z-index: 999; 
     background-color: black; 
     height: 100vh; 
     width: 100vh; 

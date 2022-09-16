@@ -4,12 +4,24 @@ const userHealth = document.querySelector('.health-bar')
 const userScore = document.querySelector('.score-container')
 const logo = document.querySelector('.start-scren-logo')
 
+const backButton = document.querySelector('.back-button')
+
 startButton.addEventListener('click', () => {
     startScreen.style.display = 'none'
     logo.style.display = 'none'
     userHealth.style.display = 'block'
     userScore.style.display = 'flex'
     gameStarted = true
+})
+
+backButton.addEventListener('click', () => {
+  startScreen.style.display = 'flex'
+  logo.style.display = 'block'
+  userHealth.style.display = 'none'
+  userScore.style.display = 'none'
+  myGameArea.stop();
+  document.querySelector('canvas').style.display = 'none'
+  gameStarted = false
 })
 
 // Retrieve stat upgrade from backend server
@@ -40,6 +52,20 @@ async function getStats () {
   return jsonResponse.stat_upgrade
 }
 
+// let tournament = false
+// let tournamentButton = document.getElementById('tournamentButton')
+// function tournamentPass(boolean) {
+//   tournament = boolean
+//   if (tournament) {
+//     tournamentButton.href = '/multiplayer'
+//     tournamentButton.classList.remove('inactive')
+//   } else {
+//     tournamentButton.href = '#'
+//     tournamentButton.classList.add('inactive')
+//   }
+// }
+
+// tournamentButton(false)
 getStats()
 
 
@@ -210,6 +236,8 @@ function launchEnemies ()
 
 function startGame() 
 {
+  myGameArea.canvas.classList.add('canvas')
+  myGameArea.canvas.style.display = 'block'
   myGameArea.start();
   myPlayer = new component(48, 48, "./assets/playerTwo.png", 310, 430, "image");
   myBackground = new component(canvasWidth, canvasHeight, "./assets/starBG.png", 0, 0, "image");
@@ -524,8 +552,12 @@ function EnemyFire()
       myPlayer.speedX = 0;
       myPlayer.speedY = 0;
       let statBuff = getCookieValue('statUpgrade')
-      let negativeSpeed = (-5 - parseInt(statBuff))
-      let positiveSpeed = (5 + parseInt(statBuff))
+      let negativeSpeed = (-5)
+      let positiveSpeed = (5)
+      if (statBuff) {
+        negativeSpeed = (-5 - parseInt(statBuff))
+        positiveSpeed = (5 + parseInt(statBuff))
+      }
 
       if (myGameArea.keys && myGameArea.keys[37]) {myPlayer.speedX = (negativeSpeed); }
       if (myGameArea.keys && myGameArea.keys[39]) {myPlayer.speedX = positiveSpeed; }
