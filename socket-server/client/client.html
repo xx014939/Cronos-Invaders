@@ -47,13 +47,32 @@
     console.log(playerArray)
     for (let i = 0; i < playerArray.length; i++) 
     {
-        if (i === 0) 
+        //if (i === 0)
+        if (i === myIndex) 
         {
-            allPlayers[i] = (new component(30, 30, "/Ship1Player1", playerArray[i][0], playerArray[i][1]));
-        } 
-        else 
+            if (i % 2 == 0)
+            {
+                allPlayers[i] = (new component(30, 30, "/Ship1Player1", playerArray[i][0], playerArray[i][1]));
+            }
+
+            else
+            {
+                allPlayers[i] = (new component(30, 30, "/Ship1Player2", playerArray[i][0], playerArray[i][1]));
+            }  
+
+            //allPlayers[i] = (new component(30, 30, "/Ship1Player1", playerArray[i][0], playerArray[i][1]));
+        }
+        else
         {
-            allPlayers[i] = (new component(30, 30, "/Ship2Player2", playerArray[i][0], playerArray[i][1]));
+            if (i % 2 == 0)
+            {
+                allPlayers[i] = (new component(30, 30, "/Ship2Player1", playerArray[i][0], playerArray[i][1]));
+            }
+
+            else
+            {
+                allPlayers[i] = (new component(30, 30, "/Ship2Player2", playerArray[i][0], playerArray[i][1]));
+            }
         }
     }
 
@@ -179,30 +198,32 @@ function updateGameArea() {
 socket.on('shoot', (bulletsArray, playerIndex) => {
             console.log('Server side bullet array -->', bulletsArray)
             console.log('Client side bullet array -->', allBullets)
-            let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-            if (allBullets[playerIndex]) 
+            let latestBulletIndex = bulletsArray[playerIndex].length - 1; // Last bullet
+            if (allBullets[playerIndex])
             {
                 allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
             } 
             else 
             {
                 allBullets[playerIndex] = []
-                allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+                allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet2", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
             }
     })
 
 socket.on('enemy-shoot', (bulletsArray, playerIndex) => {
         console.log('Server side bullet array -->', bulletsArray)
         console.log('Client side bullet array -->', allBullets)
-        let latestBulletIndex = bulletsArray[playerIndex].length -1 // Last bullet
-        if (allBullets[playerIndex]) 
+        
+        let latestBulletIndex = bulletsArray[playerIndex].length - 1; // Last bullet
+        
+        if (allBullets[playerIndex])
         {
             allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
         } 
         else 
         {
             allBullets[playerIndex] = []
-            allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+            allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet2", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
         }
     })
 
