@@ -617,8 +617,8 @@ function EnemyFire()
 
                 else
                 {
-                  hitPoints = 0;
-                  currentHealthBarWidth = 0;
+                  document.querySelector('.game-over').style.display = 'flex'
+                  myGameArea.stop()
                 }
 
                 healthBar.style.width = (currentHealthBarWidth) + 'px';
