@@ -182,7 +182,7 @@ let currentFrame = 0
 
 // Health Bar
 let hitPoints = 10000
-let currentHealthBarWidth = 500 // Pixels
+let currentHealthBarWidth = 800 // Pixels
 const healthBar = document.querySelector('.health-bar')
 
 // Score
@@ -484,7 +484,7 @@ function EnemyFire()
                     {
                       // Update Health
                       hitPoints = 1000;
-                      currentHealthBarWidth = 500;
+                      currentHealthBarWidth = 800;
                       healthBar.style.width = (currentHealthBarWidth) + 'px';
                     }
                   }
@@ -518,8 +518,8 @@ function EnemyFire()
         if (enemyArray[k] !== null && myPlayer.crashWith(enemyArray[k])) {
 
           // Update Health
-          hitPoints = hitPoints - 1
-          currentHealthBarWidth = currentHealthBarWidth - 2
+          hitPoints -= 1;
+          currentHealthBarWidth -= 2;
           healthBar.style.width = (currentHealthBarWidth) + 'px'
 
           if (currentHealthBarWidth < 2) 
