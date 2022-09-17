@@ -102,7 +102,7 @@ io.on('connect', (socket) => {
         for (let i = 0; i < playerIdArray.length; i++) {
             if (socket.id === playerIdArray[i]) {
                 playerIndex = i // save index
-                let currentCoordinates = [playerObjects[playerIndex][0], playerObjects[playerIndex][1]] // Starting coordinates - [x,y]
+                let currentCoordinates = [playerObjects[playerIndex][0] + ((30 - 10) / 2), playerObjects[playerIndex][1] + ((30 - 10) / 2)] // Starting coordinates - [x,y]
                 
                 // Update 3D array to contain a new bullet (second dimension) and starting coordinates (third dimension)
                 if (playerBullets[playerIndex]) {
