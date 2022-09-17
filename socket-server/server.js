@@ -56,9 +56,20 @@ io.on('connect', (socket) => {
       });
 
     socket.on('new-player-clientside', () => {
+
         playerIdArray.push(socket.id)
-        playerObjects.push([0,0]) // Push new starting coordinates
         playerBullets.push([]) // Add a new player (1st dimension)
+
+        // Locate player index
+        for (let i = 0; i < playerIdArray.length; i++) {
+            if (socket.id === playerIdArray[i]) {
+                if (i === 0) {
+                    playerObjects.push([200,700]) // Push new starting coordinates for player one
+                } else {
+                    playerObjects.push([200,0]) // Push new starting coordinates for player two   
+                }
+            }
+        }
         socket.broadcast.emit('new-player-serverside')
     })
 
