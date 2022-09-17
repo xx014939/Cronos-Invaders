@@ -499,6 +499,12 @@ function EnemyFire()
                 hitPoints -= 10;
                 currentHealthBarWidth -= 20;
                 healthBar.style.width = (currentHealthBarWidth) + 'px';
+
+                if (currentHealthBarWidth < 2) 
+                { // If HP reaches zero
+                  document.querySelector('.game-over').style.display = 'flex'
+                  myGameArea.stop()
+                }
               } 
             }
           }
@@ -608,8 +614,19 @@ function EnemyFire()
               if (enemyArray[i].y >= canvasHeight)
               {
                 // Update Health
-                hitPoints -= 5;
-                currentHealthBarWidth -= 10;
+
+                if (hitPoints >= 5 && currentHealthBarWidth >= 10)
+                {
+                  hitPoints -= 5;
+                  currentHealthBarWidth -= 10;
+                }
+
+                else
+                {
+                  document.querySelector('.game-over').style.display = 'flex'
+                  myGameArea.stop()
+                }
+
                 healthBar.style.width = (currentHealthBarWidth) + 'px';
               }
           }

@@ -194,15 +194,24 @@ function updateGameArea() {
 }
 
 // Movement
-
 socket.on('shoot', (bulletsArray, playerIndex) => {
             console.log('Server side bullet array -->', bulletsArray)
             console.log('Client side bullet array -->', allBullets)
             let latestBulletIndex = bulletsArray[playerIndex].length - 1; // Last bullet
             if (allBullets[playerIndex])
             {
-                allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
-            } 
+                if (playerIndex % 2 == 0)
+                {
+                    allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]));
+                }
+
+                else
+                {
+                    allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet2", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]));
+                }
+
+                //allBullets[playerIndex].push(new component(10, 10, "/PlayerBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]));
+            }
             else 
             {
                 allBullets[playerIndex] = []
@@ -218,7 +227,17 @@ socket.on('enemy-shoot', (bulletsArray, playerIndex) => {
         
         if (allBullets[playerIndex])
         {
-            allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]))
+            if (playerIndex % 2 == 0)
+            {
+                allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet2", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]));
+            }
+
+            else
+            {
+                allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]));
+            }
+
+            //allBullets[playerIndex].push(new component(10, 10, "/EnemyBullet", bulletsArray[playerIndex][latestBulletIndex][0], bulletsArray[playerIndex][latestBulletIndex][1]));
         } 
         else 
         {
