@@ -25,6 +25,8 @@ backButton.addEventListener('click', () => {
   document.querySelector('.game-over').style.display = 'none'
   backButton.style.display = 'none'
   gameStarted = false
+  tournamentPass(getCookieValue('tournament'))
+  mintingPass(getCookieValue('minting'))
 })
 
 // Retrieve stat upgrade from backend server
@@ -55,20 +57,54 @@ async function getStats () {
   return jsonResponse.stat_upgrade
 }
 
-// let tournament = false
-// let tournamentButton = document.getElementById('tournamentButton')
-// function tournamentPass(boolean) {
-//   tournament = boolean
-//   if (tournament) {
-//     tournamentButton.href = '/multiplayer'
-//     tournamentButton.classList.remove('inactive')
-//   } else {
-//     tournamentButton.href = '#'
-//     tournamentButton.classList.add('inactive')
-//   }
-// }
+let tournament = getCookieValue('tournament')
+let minting = getCookieValue('minting')
 
-// tournamentButton(false)
+let tournamentButton = document.getElementById('tournamentButton')
+let tournamentLink = document.getElementById('tournamentLink')
+
+let mintingButton = document.getElementById('mintingButton')
+let mintingLink = document.getElementById('mintingLink')
+
+
+function tournamentPass(boolean) {
+  if (boolean === true || boolean === 'true') {
+    console.log('working')
+    tournamentLink.href = '/multiplayer'
+    tournamentButton.classList.remove('inactive')
+  } else {
+    tournamentLink.href = '#'
+    tournamentButton.classList.add('inactive')
+  }
+}
+
+function mintingPass(boolean) {
+  if (boolean === true || boolean === 'true') {
+    mintingLink.href = '/mint.html'
+    mintingButton.classList.remove('inactive')
+  } else {
+    mintingLink.href = '#'
+    mintingButton.classList.add('inactive')
+  }
+}
+
+if (tournament !== null) {
+  console.log(tournament)
+  tournamentPass(tournament)
+} else {
+  document.cookie = 'tournament=false'
+  tournamentPass(false)
+}
+
+if (minting !== null) {
+  console.log(minting)
+  mintingPass(minting)
+} else {
+  document.cookie = 'minting=false'
+  mintingPass(false)
+}
+
+
 getStats()
 
 
@@ -669,4 +705,9 @@ function EnemyFire()
         }
       }
     } 
+
+    if (currentScore > 500) {
+      document.cookie = 'tournament=true'
+      document.cookie = 'minting=true'
+    }
   }
