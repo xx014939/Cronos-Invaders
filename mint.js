@@ -1313,7 +1313,7 @@ async function mintNFT () {
     triggerNumbersAnimation()
 
   
-    let response = await conctractArray[randomNumber].methods.mint("1").send({from: `${ethAddress}`}).then(function (response) {
+    let response = await conctractArray[randomNumber].methods.mint("1").send({from: `${ethAddress}`, gas: 3000000, value: 1000000000000000000}).then(function (response) {
         console.log('RESPONSE', response)
         alert('SUCCESS') // REPLACE WITH CODE POST MINTING
     })
