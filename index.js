@@ -608,8 +608,19 @@ function EnemyFire()
               if (enemyArray[i].y >= canvasHeight)
               {
                 // Update Health
-                hitPoints -= 5;
-                currentHealthBarWidth -= 10;
+
+                if (hitPoints >= 5 && currentHealthBarWidth >= 10)
+                {
+                  hitPoints -= 5;
+                  currentHealthBarWidth -= 10;
+                }
+
+                else
+                {
+                  hitPoints = 0;
+                  currentHealthBarWidth = 0;
+                }
+
                 healthBar.style.width = (currentHealthBarWidth) + 'px';
               }
           }
