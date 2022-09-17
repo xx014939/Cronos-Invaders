@@ -11,6 +11,7 @@ startButton.addEventListener('click', () => {
     logo.style.display = 'none'
     userHealth.style.display = 'block'
     userScore.style.display = 'flex'
+    backButton.style.display = 'block'
     gameStarted = true
 })
 
@@ -21,6 +22,8 @@ backButton.addEventListener('click', () => {
   userScore.style.display = 'none'
   myGameArea.stop();
   document.querySelector('canvas').style.display = 'none'
+  document.querySelector('.game-over').style.display = 'none'
+  backButton.style.display = 'none'
   gameStarted = false
 })
 
