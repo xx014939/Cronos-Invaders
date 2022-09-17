@@ -499,6 +499,12 @@ function EnemyFire()
                 hitPoints -= 10;
                 currentHealthBarWidth -= 20;
                 healthBar.style.width = (currentHealthBarWidth) + 'px';
+
+                if (currentHealthBarWidth < 2) 
+                { // If HP reaches zero
+                  document.querySelector('.game-over').style.display = 'flex'
+                  myGameArea.stop()
+                }
               } 
             }
           }
