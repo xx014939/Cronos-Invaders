@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Multiplayer</title>
+    <title>CRO Tournament</title>
     <style>
 
         body {
@@ -17,10 +17,60 @@
         canvas{
             background-color: white;
         }
+
+        .winner {
+            margin-top: 20px;
+            color: white;
+            font-size: 50px;
+            filter: drop-shadow(0 0 15px green) drop-shadow(0 0 50px green) contrast(2) brightness(2);
+            color: green;
+            border-radius:15px;
+            text-align: center;
+            font-family: tahoma;
+            letter-spacing:5px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .winnings {
+            margin-top: 10px;
+            color: white;
+            font-size: 20px;
+            color: green;
+            text-align: center;
+            font-family: tahoma;
+            letter-spacing:5px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .loser {
+            margin-top: 20px;
+            color: white;
+            font-size: 50px;
+            filter: drop-shadow(0 0 15px red) drop-shadow(0 0 50px red) contrast(2) brightness(2);
+            color: red;
+            border: 3px solid red;
+            border-radius:15px;
+            text-align: center;
+            font-family: tahoma;
+            letter-spacing:5px;
+            font-weight: bold;
+            display: none;
+        }
     
     </style>
   </head>
   <body>
+        <div class="winner">
+            WINNER
+        </div>
+        <div class="winnings">
+            Claim Winnings
+        </div>
+        <div class="loser">
+            LOSER
+        </div>
   <script src="/socket.io/socket.io.js"></script>
   </body>
 </html>
@@ -31,6 +81,7 @@
   let allBullets = []
   let allBulletsCoordinates = []
 
+  let tournamentPassword = prompt('Enter Password');
   // Update server with new player
   socket.emit('new-player-clientside')
 
@@ -81,10 +132,22 @@
     })
 
 function startGame() {
-    myGameArea.start();
+    if (tournamentPassword === 'password') {
+        myGameArea.start();
+    } else {
+        alert('PASSWORD INCORRECT')
+    }
 }
 
-var myGameArea = {
+function stopGame() {
+    myGameArea.stop()
+}
+
+function endGameScreen() {
+    alert('Finished')
+}
+
+let myGameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
         this.canvas.width = 480;
@@ -101,6 +164,9 @@ var myGameArea = {
     }, 
     clear : function(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {
+        clearInterval(this.interval);
     }
 }
 
@@ -178,6 +244,8 @@ function updateGameArea() {
 
             if (allBullets[i][j].crashWith(allPlayers[1])) {
             console.log('Player One Wins')
+            endGameScreen()
+            stopGame()
             
             }
         } else { // Player Two
@@ -187,6 +255,8 @@ function updateGameArea() {
 
             if (allBullets[i][j].crashWith(allPlayers[0])) {
             console.log('Player Two Wins')
+            endGameScreen()
+            stopGame()
             }
         }
     }
@@ -332,7 +402,6 @@ const assets = {
   EbulletSprite2: new Image()
 };
 
-
 assets.EbulletSprite2.onload = e => startGame()
 
 assets.playerSprite11.src = '/Ship1Player1';
@@ -344,32 +413,5 @@ assets.bulletSprite2.src = '/PlayerBullet2';
 assets.EbulletSprite.src = '/EnemyBullet';
 assets.EbulletSprite2.src = '/EnemyBullet2';
 
-
-/*
-assets.playerSprite11.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite11.src = '/Ship1Player1';
-
-assets.playerSprite12.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite12.src = '/Ship1Player2';
-
-assets.playerSprite21.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite21.src = '/Ship1Player2';
-
-assets.playerSprite22.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.playerSprite22.src = '/Ship2Player2';
-
-assets.bulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.bulletSprite.src = '/PlayerBullet';
-
-assets.bulletSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.bulletSprite2.src = '/PlayerBullet2';
-
-assets.EbulletSprite.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.EbulletSprite.src = '/EnemyBullet';
-
-assets.EbulletSprite2.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
-assets.EbulletSprite2.src = '/EnemyBullet2';
-*/
-// assets.playerSprite11.onload = e => startGame(); // Once sprite image is loaded, start game (this prevents image flickering)
 document.onkeydown = checkKey;
 </script>
