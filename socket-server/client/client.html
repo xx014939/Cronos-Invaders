@@ -144,8 +144,19 @@ function stopGame() {
     myGameArea.stop()
 }
 
-function endGameScreen() {
-    alert('Finished')
+// Win/lose screen elements
+
+const winSign = document.querySelector('.winner')
+const winButton = document.querySelector('.winnings')
+const loseSign = document.querySelector('.loser')
+
+function endGameScreen(boolean) {
+    if (boolean) {
+        winSign.style.display = 'block'
+        winButton.style.display = 'block'
+    } else {
+        loseSign.style.display = 'block'
+    }
 }
 
 let myGameArea = {
@@ -244,10 +255,15 @@ function updateGameArea() {
             allBullets[i][j].update()
 
             if (allBullets[i][j].crashWith(allPlayers[1])) {
-            console.log('Player One Wins')
-            endGameScreen()
-            stopGame()
-            
+            socket.emit('player-one-wins')
+            socket.on('player-wins', () => {
+                endGameScreen(true)
+                stopGame()
+                })
+                socket.on('player-loses', () => {
+                endGameScreen(false)
+                stopGame()
+                })
             }
         } else { // Player Two
             allBullets[i][j].speedY = +2
@@ -255,9 +271,15 @@ function updateGameArea() {
             allBullets[i][j].update()
 
             if (allBullets[i][j].crashWith(allPlayers[0])) {
-            console.log('Player Two Wins')
-            endGameScreen()
-            stopGame()
+            socket.emit('player-two-wins')
+            socket.on('player-wins', () => {
+                endGameScreen(true)
+                stopGame()
+                })
+            socket.on('player-loses', () => {
+                endGameScreen(false)
+                stopGame()
+                })
             }
         }
     }
