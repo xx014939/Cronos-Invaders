@@ -21,6 +21,25 @@
             background-color: white;
         }
 
+        .back-button {
+            color: #db3eb1;
+            border: 2px solid #db3eb1;
+            border-radius:15px;
+            padding: 20px 25px;
+            font-size: 14px;
+            text-align: center;
+            font-family: tahoma;
+            letter-spacing:5px;
+            cursor: pointer;
+            font-weight: bold;
+            filter: drop-shadow(0 0 15px #db3eb1) drop-shadow(0 0 50px #db3eb1) contrast(2) brightness(2);
+            position: fixed;
+            top: 50px;
+            left: 50px;
+            z-index: 1000;
+            text-decoration: none;
+        }
+
         .winner {
             margin-top: 20px;
             color: white;
@@ -66,6 +85,10 @@
     </style>
   </head>
   <body>
+    <a class="back-button" href="http://cronosinvaders.com/">
+        <span>&lt;--</span>
+        <span>BACK</span>
+    </a>
         <div class="winner">
             WINNER
         </div>
