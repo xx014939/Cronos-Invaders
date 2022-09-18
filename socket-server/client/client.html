@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/moralis-v1/dist/moralis.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.5/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis-v1/dist/moralis.js"></script>
     <title>CRO Tournament</title>
     <style>
 
@@ -66,13 +69,14 @@
         <div class="winner">
             WINNER
         </div>
-        <div class="winnings">
+        <div class="winnings" onclick="withdrawWinnings()">
             Claim Winnings
         </div>
         <div class="loser">
             LOSER
         </div>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/contractInteractions.js"></script>
   </body>
 </html>
 

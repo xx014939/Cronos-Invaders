@@ -14,6 +14,10 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/client/client.html');
 });
 
+app.get('/contractInteractions.js', (req, res) => {
+    res.sendFile(__dirname + '/client/contractInteraction.js');
+  });
+  
 
 app.get('/Ship1Player1', (req, res) => {
     res.sendFile(__dirname + '/client/Ship1Player1.png');
