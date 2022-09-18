@@ -255,15 +255,14 @@ function updateGameArea() {
             allBullets[i][j].update()
 
             if (allBullets[i][j].crashWith(allPlayers[1])) {
-            socket.emit('player-one-wins')
-            socket.on('player-wins', () => {
-                endGameScreen(true)
-                stopGame()
-                })
-                socket.on('player-loses', () => {
-                endGameScreen(false)
-                stopGame()
-                })
+            socket.emit('find-player-index')
+            socket.on('return-player-index', (i) => {
+                if (i === 0) {
+                    endGameScreen(true)
+                } else {
+                    endGameScreen(false)
+                }
+            })
             }
         } else { // Player Two
             allBullets[i][j].speedY = +2
@@ -271,15 +270,14 @@ function updateGameArea() {
             allBullets[i][j].update()
 
             if (allBullets[i][j].crashWith(allPlayers[0])) {
-            socket.emit('player-two-wins')
-            socket.on('player-wins', () => {
-                endGameScreen(true)
-                stopGame()
-                })
-            socket.on('player-loses', () => {
-                endGameScreen(false)
-                stopGame()
-                })
+            socket.emit('find-player-index')
+            socket.on('return-player-index', (i) => {
+                if (i === 0) {
+                    endGameScreen(false)
+                } else {
+                    endGameScreen(true)
+                }
+            })
             }
         }
     }

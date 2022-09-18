@@ -136,21 +136,12 @@ io.on('connect', (socket) => {
         }
     })
 
-    socket.on('player-one-wins', () => {
-
-        if (socket.id === playerIdArray[0]) {
-            socket.emit('player-wins')
+    socket.on('find-player-index', () => {
+        for (let i = 0; i < playerIdArray.length; i++) {
+            if (socket.id === playerIdArray[i]) {
+                socket.emit('return-player-index', i)
+            }
         }
-        socket.broadcast.emit('player-loses')
-    })
-
-    socket.on('player-two-wins', () => {
-
-        if (socket.id === playerIdArray[1]) {
-            console.log('player two')
-            socket.emit('player-wins')
-        }
-        socket.broadcast.emit('player-loses')
     })
 
     socket.on('disconnect', () => {
