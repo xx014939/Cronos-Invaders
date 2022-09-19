@@ -18,7 +18,8 @@ const registerUser = asyncHandler ( async (req, res) => {
         const user = new User({
             wallet_address: req.body.wallet_address,
             username: req.body.username,
-            stat_upgrade: req.body.stat_upgrade
+            stat_upgrade: req.body.stat_upgrade,
+            wallet_balance: req.body.wallet_balance
           })
         
         try {
@@ -27,7 +28,8 @@ const registerUser = asyncHandler ( async (req, res) => {
                 __id: user.id, 
                 name: user.username,
                 walletAddress: user.wallet_address,
-                stat_upgrade: user.stat_upgrade
+                stat_upgrade: user.stat_upgrade,
+                wallet_balance: user.wallet_balance
             })
         } catch (error) {
             res.status(400).json({ message: err.message })
@@ -43,7 +45,8 @@ const getUser = asyncHandler(async (req, res) => {
         res.json({
             message: 'User Successfully Found',
             address: wallet_address,
-            stat_upgrade: user.stat_upgrade
+            stat_upgrade: user.stat_upgrade,
+            wallet_balance: user.wallet_balance
         })
     } else {
         return res.status(400).json({ message: err.message })

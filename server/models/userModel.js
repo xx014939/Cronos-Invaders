@@ -12,6 +12,10 @@ const userSchema = mongoose.Schema({
     stat_upgrade: {
         type: String,
         required: true
+    },
+    wallet_balance: {
+        type: String,
+        required: false
     }
 })
 
