@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require('../models/userModel')
 const cors = require('cors'); 
-const { registerUser, getUser, getUserById } = require("../controllers/userController");
+const { registerUser, getUser, getUserById, updateUser } = require("../controllers/userController");
 const router = express.Router();
 // const {protect} = require('../middleware/authMiddleware')
 
@@ -18,6 +18,9 @@ router.get('/all', cors(), async (req, res) => {
 
 // Getting One
 router.post('/wallet', getUser)
+
+// Updating One
+router.patch('/wallet', updateUser)
 
 // Deleting One
 router.delete('/:id', getUserById, async (req, res) => {

@@ -53,6 +53,22 @@ const getUser = asyncHandler(async (req, res) => {
     }
   })
 
+const updateUser = asyncHandler(async (req,res) => {
+  const {wallet_address, wallet_balance} = req.body
+  // Check if user already exists
+  let user = await User.findOne({wallet_address})
+  if (user) {
+    user.wallet_balance = wallet_balance
+    res.json({
+      message: 'User Successfully Updated',
+      address: wallet_address,
+      stat_upgrade: user.stat_upgrade,
+      wallet_balance: user.wallet_balance
+    })
+  } else {
+      return res.status(400).json({ message: err.message })
+  }
+})
 
   const getUserById = asyncHandler(async (req, res, next) => {
     let user
@@ -72,5 +88,6 @@ const getUser = asyncHandler(async (req, res) => {
 module.exports = {
     registerUser,
     getUser,
-    getUserById
+    getUserById,
+    updateUser
 }
