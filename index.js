@@ -70,7 +70,7 @@ let mintingLink = document.getElementById('mintingLink')
 function tournamentPass(boolean) {
   if (boolean === true || boolean === 'true') {
     console.log('working')
-    tournamentLink.href = '/multiplayer'
+    tournamentLink.href = 'https://radiant-river-21952.herokuapp.com/'
     tournamentButton.classList.remove('inactive')
   } else {
     tournamentLink.href = '#'
