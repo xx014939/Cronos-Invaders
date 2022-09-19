@@ -1379,3 +1379,35 @@ async function mintNFT () {
       alert('SUCCESS')
     })
   }
+
+  async function retrieveWalletData() {
+    // Retrieve wallet contents and send to backend server
+
+    let user = Moralis.User.current();
+    let userAddress = user.get("ethAddress")
+
+    const APIKEY = 'ckey_87d806dd3003422a8db15ca359d';
+    const baseURL = 'https://api.covalenthq.com/v1'
+    const blockchainChainId = '25' // Main net as test net is currently not supported
+
+    async function getWalletBalance(chainId, address) {
+        const url = new URL(`${baseURL}/${chainId}/address/${address}/balances_v2/?key=${APIKEY}`);
+        const response = await fetch(url);
+        const result = await response.json();
+        const data = result.data;
+        let bodyContent = JSON.stringify({wallet_address: `${userAddress}`, wallet_balance: `${data}`})
+
+        let secondResponse = await fetch('https://secure-forest-38431.herokuapp.com/wallet',  
+        {method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: bodyContent
+        })
+    }
+    getWalletBalance(blockchainChainId, userAddress);
+
+  }
+
+  retrieveWalletData()
