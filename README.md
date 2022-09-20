@@ -2,7 +2,9 @@
 
 ## Quick Links
 
-http://cronosinvaders.com/walletLogin.html
+Application URL - http://cronosinvaders.com/walletLogin.html
+
+Video Demo - https://youtu.be/T0Gzpt_jogU
 
 ## Product & Use Cases
 
